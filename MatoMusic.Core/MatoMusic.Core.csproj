@@ -1,0 +1,48 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net6.0;net6.0-android;net6.0-ios;net6.0-maccatalyst</TargetFrameworks>
+		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows')) and '$(MSBuildRuntimeType)' == 'Full'">$(TargetFrameworks);net6.0-windows10.0.19041</TargetFrameworks>
+		<UseMaui>true</UseMaui>
+		<SingleProject>true</SingleProject>
+
+		<SupportedOSPlatformVersion Condition="'$(TargetFramework)' == 'net6.0-ios'">14.2</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="'$(TargetFramework)' == 'net6.0-maccatalyst'">14.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="'$(TargetFramework)' == 'net6.0-android'">21.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$(TargetFramework.Contains('-windows'))">10.0.17763.0</SupportedOSPlatformVersion>
+		<TargetPlatformMinVersion Condition="$(TargetFramework.Contains('-windows'))">10.0.17763.0</TargetPlatformMinVersion>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <Compile Remove="Platforms\Android\MusicInfoManager\MusicInfoManager.cs" />
+	  <Compile Remove="Platforms\iOS\MusicInfoManager\MusicInfoManager.cs" />
+	  <Compile Remove="Platforms\iOS\MusicSystem\MusicSystem.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="Platforms\Android\MusicInfoManager\MusicInfoManager.cs" />
+	  <None Include="Platforms\iOS\MusicInfoManager\MusicInfoManager.cs" />
+	  <None Include="Platforms\iOS\MusicSystem\MusicSystem.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Platforms\MacCatalyst\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="Abp" Version="6.6.0" />
+	  <PackageReference Include="Abp.AutoMapper" Version="6.6.0" />
+	  <PackageReference Include="Abp.EntityFrameworkCore" Version="6.6.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\MatoMusic.Infrastructure\MatoMusic.Infrastructure.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Reference Include="ChnCharInfo">
+	    <HintPath>..\Libs\ChnCharInfo.dll</HintPath>
+	  </Reference>
+	</ItemGroup>
+
+</Project>
