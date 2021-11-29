@@ -4,22 +4,23 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Transactions;
+using Abp.Dependency;
 using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
 using Abp.EntityFrameworkCore.Repositories;
 using Android.Database;
 using Android.Provider;
-using MatoMusic.Core.MusicSystem;
-using MatoMusic.Core.MusicSystem.Interfaces;
-using MatoMusic.Core.MusicSystem.Models;
+using MatoMusic.Core.Interfaces;
+using MatoMusic.Core.Models;
+using MatoMusic.Core.ViewModel;
 using MatoMusic.Infrastructure;
+using MatoMusic.Infrastructure.Helper;
 using Microsoft.International.Converters.PinYinConverter;
 using Application = Android.App.Application;
 
 namespace MatoMusic.Core
 {
-    public partial class MusicInfoManager
+    public partial class MusicInfoManager : IMusicInfoManager
     {
         private static string[] _mediaProjections =
      {
@@ -141,14 +142,15 @@ namespace MatoMusic.Core
         private readonly IRepository<Playlist, long> playlistRepository;
         private readonly IUnitOfWorkManager unitOfWorkManager;
         private readonly IMusicSystem _musicSystem;
+        private readonly MusicRelatedViewModel musicRelatedViewModel;
         List<MusicInfo> _musicInfos;
 
         public MusicInfoManager(IRepository<Queue, long> queueRepository,
             IRepository<PlaylistItem, long> playlistItemRepository,
             IRepository<Playlist, long> playlistRepository,
             IUnitOfWorkManager unitOfWorkManager,
-            IMusicSystem musicSystem
-
+            IMusicSystem musicSystem,
+            MusicRelatedViewModel musicRelatedViewModel
             )
         {
             this.queueRepository = queueRepository;
@@ -156,6 +158,7 @@ namespace MatoMusic.Core
             this.playlistRepository = playlistRepository;
             this.unitOfWorkManager = unitOfWorkManager;
             _musicSystem = musicSystem;
+            this.musicRelatedViewModel = musicRelatedViewModel;
         }
 
 
@@ -171,7 +174,7 @@ namespace MatoMusic.Core
             var isSucc = await GetMusicInfos();
             if (!isSucc.IsSucess)
             {
-                //CommonHelper.ShowNoAuthorized();
+                CommonHelper.ShowNoAuthorized();
 
             }
             list = isSucc.Result;
@@ -499,7 +502,7 @@ namespace MatoMusic.Core
             //确定包含后与下一曲交换位置
             if (isSuccessCreate)
             {
-                var currnet = MusicRelatedViewModel.Current.CurrentMusic;
+                var currnet = musicRelatedViewModel.CurrentMusic;
                 var next = _musicSystem.GetNextMusic(currnet, false);
 
                 ReorderQueue(musicInfo, next);

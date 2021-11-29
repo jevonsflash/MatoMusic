@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Abp.Dependency;
 
-namespace MatoMusic.Core.MusicSystem.Interfaces
+namespace MatoMusic.Core.Interfaces
 {
-    public interface IMusicSystem
+    public interface IMusicSystem: ISingletonDependency
     {
         event EventHandler<bool> OnPlayFinished;
         event EventHandler OnRebuildMusicInfosFinished;

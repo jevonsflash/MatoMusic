@@ -7,10 +7,8 @@ using Android.App;
 using Android.Content;
 using Android.Media;
 using Android.OS;
-using MatoMusic.Core.MusicSystem;
-using MatoMusic.Core.MusicSystem.Interfaces;
+using MatoMusic.Core.Interfaces;
 using MatoMusic.Infrastructure.Helper;
-using Microsoft.Maui.Controls;
 
 namespace MatoMusic.Core
 {
@@ -30,9 +28,9 @@ namespace MatoMusic.Core
 
         }
     }
-    public partial class MusicSystem : IMusicSystem, ISingletonDependency
+    public partial class MusicSystem : IMusicSystem
     {
-        private readonly MusicInfoManager.MusicInfoManager _musicInfoManager;
+        private readonly IMusicInfoManager _musicInfoManager;
 
         public event EventHandler<bool> OnPlayFinished;
 
@@ -42,7 +40,7 @@ namespace MatoMusic.Core
 
         public event EventHandler<bool> OnPlayStatusChanged;
 
-        public MusicSystem(MusicInfoManager.MusicInfoManager musicInfoManager)
+        public MusicSystem(IMusicInfoManager musicInfoManager)
         {
 
             _musicInfoManager = musicInfoManager;

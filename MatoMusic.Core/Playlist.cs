@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MatoMusic.Core.MusicSystem
+namespace MatoMusic.Core
 {
     public class Playlist : FullAuditedEntity<long>
     {

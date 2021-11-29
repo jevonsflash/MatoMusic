@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFrameworks>net6.0;net6.0-android;net6.0-ios;net6.0-maccatalyst</TargetFrameworks>
@@ -20,6 +20,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Include="Interfaces\IMusicInfoManager.cs" />
 	  <None Include="Platforms\Android\MusicInfoManager\MusicInfoManager.cs" />
 	  <None Include="Platforms\iOS\MusicInfoManager\MusicInfoManager.cs" />
 	  <None Include="Platforms\iOS\MusicSystem\MusicSystem.cs" />

@@ -58,14 +58,15 @@
 	  <Folder Include="ViewModels\" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <ProjectReference Include="..\MatoMusic.EntityFramework\MatoMusic.EntityFramework.csproj" />
-	</ItemGroup>
-
 	<PropertyGroup Condition="$(TargetFramework.Contains('-windows'))">
 		<OutputType>WinExe</OutputType>
 		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
 	</PropertyGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\abp\6.5.0\src\MatoMusic.EntityFrameworkCore\MatoMusic.EntityFrameworkCore.csproj" />
+	  <ProjectReference Include="..\MatoMusic.Core\MatoMusic.Core.csproj" />
+	</ItemGroup>
 
 	<ItemGroup>
 	  <Reference Include="ChnCharInfo">

@@ -1,4 +1,7 @@
 ﻿using Abp.Modules;
+using Abp.Reflection.Extensions;
+using MatoMusic.Core.Localization;
+using MatoMusic.Core.Settings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +15,15 @@ namespace MatoMusic.Core
     {
         public MatoMusicCoreModule()
         {
-            IocManager.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly());
+            IocManager.RegisterAssemblyByConvention(typeof(MatoMusicCoreModule).GetAssembly());
 
+        }
+        public override void PreInitialize()
+        {
+           LocalizationConfigurer.Configure(Configuration.Localization);
+
+            Configuration.Settings.Providers.Add<CommonSettingProvider>();
+            base.PreInitialize();
         }
     }
 }

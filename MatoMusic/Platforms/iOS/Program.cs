@@ -1,6 +1,6 @@
 ﻿using UIKit;
 
-namespace MatoMusic
+namespace MatoMusic { 
     public class Program
     {
         // This is the main entry point of the application.

@@ -1,6 +1,7 @@
 ﻿using Abp.Modules;
+using Abp.Reflection.Extensions;
 using MatoMusic.Core;
-using MatoMusic.EntityFramework;
+using MatoMusic.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,13 +11,12 @@ using System.Threading.Tasks;
 
 namespace MatoMusic
 {
-    [DependsOn(typeof(MatoMusicDataModule), typeof(MatoMusicCoreModule))]
+    [DependsOn(typeof(MatoMusicEntityFrameworkCoreModule), typeof(MatoMusicCoreModule))]
     public class MatoMusicModule : AbpModule
     {
         public MatoMusicModule()
         {
-            IocManager.RegisterAssemblyByConvention(Assembly.GetExecutingAssembly());
-
+            IocManager.RegisterAssemblyByConvention(typeof(MatoMusicModule).GetAssembly());
         }
     }
 }

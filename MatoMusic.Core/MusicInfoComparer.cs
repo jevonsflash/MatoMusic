@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MatoMusic.Core.MusicSystem
+namespace MatoMusic.Core
 {
     public class MusicInfoComparer : IEqualityComparer<MusicInfo>
     {
@@ -15,7 +15,7 @@ namespace MatoMusic.Core.MusicSystem
 
         public int GetHashCode(MusicInfo obj)
         {
-            return (int)obj.Id;
+            return obj.Id;
         }
     }
 }

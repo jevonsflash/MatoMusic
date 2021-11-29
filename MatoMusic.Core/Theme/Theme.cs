@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MatoMusic.Core.Theme
 {
-    internal class Theme : FullAuditedEntity<long>
+    public class Theme : FullAuditedEntity<long>
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public override long Id { get; set; }

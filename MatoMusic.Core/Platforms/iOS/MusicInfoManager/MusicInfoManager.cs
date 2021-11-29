@@ -12,11 +12,13 @@ using Abp.Domain.Uow;
 using Abp.EntityFrameworkCore.Repositories;
 using Abp.Dependency;
 using Microsoft.Maui.Controls;
-
+using MatoMusic.Core.Interfaces;
+using MatoMusic.Core.Models;
+using MatoMusic.Core.ViewModel;
 
 namespace MatoMusic.Core
 {
-    public partial class MusicInfoManager : ISingletonDependency
+    public partial class MusicInfoManager :IMusicInfoManager
     {
 
 
@@ -26,13 +28,15 @@ namespace MatoMusic.Core
         private readonly IRepository<Playlist, long> playlistRepository;
         private readonly IUnitOfWorkManager unitOfWorkManager;
         private readonly IMusicSystem _musicSystem;
+        private readonly MusicRelatedViewModel musicRelatedViewModel;
         List<MusicInfo> _musicInfos;
 
         public MusicInfoManager(IRepository<Queue, long> queueRepository,
             IRepository<PlaylistItem, long> playlistItemRepository,
             IRepository<Playlist, long> playlistRepository,
             IUnitOfWorkManager unitOfWorkManager,
-            IMusicSystem musicSystem
+            IMusicSystem musicSystem,
+            MusicRelatedViewModel musicRelatedViewModel
             )
         {
             this.queueRepository = queueRepository;
@@ -40,6 +44,7 @@ namespace MatoMusic.Core
             this.playlistRepository = playlistRepository;
             this.unitOfWorkManager = unitOfWorkManager;
             _musicSystem = musicSystem;
+            this.musicRelatedViewModel = musicRelatedViewModel;
         }
 
         private MPMediaQuery _mediaQuery;
@@ -409,7 +414,7 @@ namespace MatoMusic.Core
             //确定包含后与下一曲交换位置
             if (isSuccessCreate)
             {
-                var currnet = MusicRelatedViewModel.Current.CurrentMusic;
+                var currnet = musicRelatedViewModel.CurrentMusic;
                 var next = _musicSystem.GetNextMusic(currnet, false);
 
                 ReorderQueue(musicInfo, next);
@@ -839,13 +844,14 @@ namespace MatoMusic.Core
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        private string GetAlbumArtSource(MPMediaItem item)
+        private ImageSource GetAlbumArtSource(MPMediaItem item)
         {
             var _MPMediaItemArtwork = item.Artwork;
             if (_MPMediaItemArtwork != null)
             {
                 var _UIImage = _MPMediaItemArtwork.ImageWithSize(new CoreGraphics.CGSize(200, 200));
                 var result = ImageSource.FromStream(() => _UIImage.AsPNG().AsStream());
+                return result;
             }
             else
             {

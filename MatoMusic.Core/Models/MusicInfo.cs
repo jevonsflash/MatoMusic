@@ -5,8 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MatoMusic.Infrastructure.Common;
+using Microsoft.Maui.Controls;
 
-namespace MatoMusic.Core.MusicSystem
+namespace MatoMusic.Core
 {
     public class MusicInfo : ObservableObject, IBasicInfo, IClueObject
     {
@@ -94,7 +95,7 @@ namespace MatoMusic.Core.MusicSystem
         }
 
         public string GroupHeader { get; set; }
-        public string AlbumArt { get; set; }
+        public ImageSource AlbumArt { get; set; }
         public string AlbumArtPath { get; set; }
         public ulong Duration { get; set; }
         public string Genre { get; set; }

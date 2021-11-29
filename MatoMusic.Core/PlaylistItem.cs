@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MatoMusic.Core.MusicSystem
+namespace MatoMusic.Core
 {
     public class PlaylistItem : FullAuditedEntity<long>
     {
@@ -25,13 +25,13 @@ namespace MatoMusic.Core.MusicSystem
         public int PlaylistId { get; set; }
         [ForeignKey("PlaylistId")]
 
-/* 项目“MatoMusic.Core (net6.0-windows10.0.19041)”的未合并的更改
-在此之前:
-        public Playlist.Playlist Playlist { get; set; }
-在此之后:
+        /* 项目“MatoMusic.Core (net6.0-windows10.0.19041)”的未合并的更改
+        在此之前:
+                public Playlist.Playlist Playlist { get; set; }
+        在此之后:
+                public Playlist Playlist { get; set; }
+        */
         public Playlist Playlist { get; set; }
-*/
-        public MusicSystem.Playlist Playlist { get; set; }
         public string MusicTitle { get; set; }
 
         public int MusicInfoId { get; set; }

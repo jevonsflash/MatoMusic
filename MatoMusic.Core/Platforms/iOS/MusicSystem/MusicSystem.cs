@@ -7,15 +7,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using MatoMusic.Infrastructure.Helper;
 using Abp.Dependency;
-using MatoMusic.Core.MusicSystem.Interfaces;
-
+using MatoMusic.Core.Interfaces;
 
 namespace MatoMusic.Core
 {
-    public partial class MusicSystem : IMusicSystem, ISingletonDependency
+    public partial class MusicSystem : IMusicSystem
     {
 
-        private readonly MusicInfoManager. _musicInfoManager;
+        private readonly IMusicInfoManager _musicInfoManager;
 
         public event EventHandler<bool> OnPlayFinished;
 
@@ -27,7 +26,7 @@ namespace MatoMusic.Core
 
         private NSError nserror = new NSError();
 
-        public MusicSystem(MusicInfoManager musicInfoManager)
+        public MusicSystem(IMusicInfoManager musicInfoManager)
         {
 
             _musicInfoManager = musicInfoManager;

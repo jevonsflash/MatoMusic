@@ -1,8 +1,11 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Linq;
 using MatoMusic.Infrastructure.Common;
+using Microsoft.Maui.Controls;
 
-namespace MatoMusic.Core.MusicSystem
+namespace MatoMusic.Core
 {
     public abstract class MusicCollectionInfo : ObservableObject, IBasicInfo
     {
@@ -67,7 +70,7 @@ namespace MatoMusic.Core.MusicSystem
             get;
             set;
         }
-        public string AlbumArt { get; set; }
+        public ImageSource AlbumArt { get; set; }
         public string AlbumArtPath { get; set; }
 
         public int Count => Musics.Count();
