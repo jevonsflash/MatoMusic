@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MatoMusic.Infrastructure", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MatoMusic.EntityFrameworkCore", "src\MatoMusic.EntityFrameworkCore\MatoMusic.EntityFrameworkCore.csproj", "{99B8682E-313D-4B96-80D5-E6FC8ACA1C50}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MatoMusic.Core", "src\MatoMusic.Core\MatoMusic.Core.csproj", "{88588253-02C0-4815-B462-11EAF6C2E77F}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MatoMusic", "src\MatoMusic\MatoMusic.csproj", "{68529DDF-93E7-4706-AD1F-D9016F6FB079}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{DEC27654-EE97-4C68-963B-151F98947C70}"
@@ -34,6 +32,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{95F94C48-8
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AbpFramework_V6.6", "AbpFramework_V6.6", "{678CE0E5-DB38-4D0D-8B85-34F9D9AACFB9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatoMusic.Core", "src\MatoMusic.Core\MatoMusic.Core.csproj", "{ECFE93EA-DF08-44E4-8695-90F8C3BFB5D2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,10 +48,6 @@ Global
 		{99B8682E-313D-4B96-80D5-E6FC8ACA1C50}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{99B8682E-313D-4B96-80D5-E6FC8ACA1C50}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{99B8682E-313D-4B96-80D5-E6FC8ACA1C50}.Release|Any CPU.Build.0 = Release|Any CPU
-		{88588253-02C0-4815-B462-11EAF6C2E77F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{88588253-02C0-4815-B462-11EAF6C2E77F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{88588253-02C0-4815-B462-11EAF6C2E77F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{88588253-02C0-4815-B462-11EAF6C2E77F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{68529DDF-93E7-4706-AD1F-D9016F6FB079}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{68529DDF-93E7-4706-AD1F-D9016F6FB079}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{68529DDF-93E7-4706-AD1F-D9016F6FB079}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
@@ -82,6 +78,10 @@ Global
 		{4A8CA074-6A52-4AA7-A169-83B76B1E66DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4A8CA074-6A52-4AA7-A169-83B76B1E66DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4A8CA074-6A52-4AA7-A169-83B76B1E66DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ECFE93EA-DF08-44E4-8695-90F8C3BFB5D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ECFE93EA-DF08-44E4-8695-90F8C3BFB5D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ECFE93EA-DF08-44E4-8695-90F8C3BFB5D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ECFE93EA-DF08-44E4-8695-90F8C3BFB5D2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
