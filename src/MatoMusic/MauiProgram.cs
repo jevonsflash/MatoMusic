@@ -2,6 +2,7 @@
 using Microsoft.Maui.Hosting;
 using Microsoft.Maui.Controls.Compatibility;
 using Microsoft.Maui.Controls.Hosting;
+using MatoMusic.Core;
 
 namespace MatoMusic
 {
@@ -15,8 +16,8 @@ namespace MatoMusic
 				.ConfigureFonts(fonts =>
 				{
 					fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-				});
-
+				})
+				.UseMatoMusic<MatoMusicModule>();
 			return builder.Build();
 		}
 	}

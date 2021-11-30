@@ -15,7 +15,6 @@ namespace MatoMusic.Core
     {
         public MatoMusicCoreModule()
         {
-            IocManager.RegisterAssemblyByConvention(typeof(MatoMusicCoreModule).GetAssembly());
 
         }
         public override void PreInitialize()
@@ -24,6 +23,11 @@ namespace MatoMusic.Core
 
             Configuration.Settings.Providers.Add<CommonSettingProvider>();
             base.PreInitialize();
+        }
+
+        public override void Initialize()
+        {
+            IocManager.RegisterAssemblyByConvention(typeof(MatoMusicCoreModule).GetAssembly());
         }
     }
 }

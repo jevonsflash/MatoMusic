@@ -34,7 +34,7 @@ namespace MatoMusic.Core
             }
         }
 
-        public int Id { get; set; }
+        public long Id { get; set; }
         public string OnlineId { get; set; }
         public string Title
         {

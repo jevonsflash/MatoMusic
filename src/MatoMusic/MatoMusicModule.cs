@@ -16,6 +16,10 @@ namespace MatoMusic
     {
         public MatoMusicModule()
         {
+        }
+
+        public override void Initialize()
+        {
             IocManager.RegisterAssemblyByConvention(typeof(MatoMusicModule).GetAssembly());
         }
     }

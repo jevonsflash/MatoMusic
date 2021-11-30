@@ -14,8 +14,12 @@ using MatoMusic.Infrastructure.Helper;
 
 namespace MatoMusic.Core.ViewModel
 {
-    public class MusicRelatedViewModel : ObservableObject, ISingletonDependency
+    public class MusicRelatedViewModel : ViewModelBase, ISingletonDependency
     {
+
+        private readonly IMusicInfoManager musicInfoManager;
+        private readonly IMusicSystem musicSystem;
+
 
         private bool _isInited = false;
 
@@ -38,10 +42,9 @@ namespace MatoMusic.Core.ViewModel
             public const string IsShuffle = "IsShuffle";
         }
 
-        public MusicRelatedViewModel(IMusicInfoManager musicInfoManager, 
-            
-            IMusicSystem musicSystem,
-            ISettingManager settingManager
+        public MusicRelatedViewModel(
+            IMusicInfoManager musicInfoManager, 
+            IMusicSystem musicSystem
             )
         {
             Device.StartTimer(new TimeSpan(0, 0, 0, 0, 100), DoUpdate);
@@ -57,7 +60,6 @@ namespace MatoMusic.Core.ViewModel
             musicSystem.RebuildMusicInfos(MusicSystem_OnRebuildMusicInfosFinished);
             this.musicInfoManager = musicInfoManager;
             this.musicSystem = musicSystem;
-            this.settingManager = settingManager;
         }
 
         private void MusicSystem_OnRebuildMusicInfosFinished()
@@ -153,13 +155,13 @@ namespace MatoMusic.Core.ViewModel
                 InitPreviewAndNextMusic();
                 OnMusicChanged?.Invoke(this, EventArgs.Empty);
                 this.Duration = GetPlatformSpecificTime(musicSystem.Duration);
-                this.settingManager.ChangeSettingForApplication(CommonSettingNames.BreakPointMusicIndex, Musics.IndexOf(CurrentMusic).ToString());
+                this.SettingManager.ChangeSettingForApplication(CommonSettingNames.BreakPointMusicIndex, Musics.IndexOf(CurrentMusic).ToString());
                 RaiseCanPlayExecuteChanged();
             }
 
             else if (e.PropertyName == Properties.IsShuffle)
             {
-                this.settingManager.ChangeSettingForApplication(CommonSettingNames.IsShuffle, this.IsShuffle.ToString());
+                this.SettingManager.ChangeSettingForApplication(CommonSettingNames.IsShuffle, this.IsShuffle.ToString());
                 if (IsShuffle)
                 {
                     await musicSystem.UpdateShuffleMap();
@@ -173,7 +175,7 @@ namespace MatoMusic.Core.ViewModel
 
             else if (e.PropertyName == Properties.IsRepeatOne)
             {
-                this.settingManager.ChangeSettingForApplication(CommonSettingNames.IsRepeatOne, this.IsRepeatOne.ToString());
+                this.SettingManager.ChangeSettingForApplication(CommonSettingNames.IsRepeatOne, this.IsRepeatOne.ToString());
                 musicSystem.SetRepeatOneStatus(this.IsRepeatOne);
             }
         }
@@ -384,7 +386,7 @@ namespace MatoMusic.Core.ViewModel
 
         public void InitCurrentMusic()
         {           
-            var musicIndex = int.Parse(this.settingManager.GetSettingValue(CommonSettingNames.BreakPointMusicIndex));
+            var musicIndex = int.Parse(this.SettingManager.GetSettingValue(CommonSettingNames.BreakPointMusicIndex));
             if (Musics.Count > 0)
             {
                 if (musicIndex >= 0 && musicIndex <= Musics.Count - 1)
@@ -503,7 +505,7 @@ namespace MatoMusic.Core.ViewModel
             {
                 if (!IsInitFinished)
                 {
-                    this._isShuffle =bool.Parse(this.settingManager.GetSettingValue(CommonSettingNames.IsShuffle));
+                    this._isShuffle =bool.Parse(this.SettingManager.GetSettingValue(CommonSettingNames.IsShuffle));
                     IsInitFinished = true;
                 }
 
@@ -524,9 +526,6 @@ namespace MatoMusic.Core.ViewModel
         /// 是否单曲循环
         /// </summary>
         private bool _isRepeatOne;
-        private readonly IMusicInfoManager musicInfoManager;
-        private readonly IMusicSystem musicSystem;
-        private readonly ISettingManager settingManager;
 
         public bool IsRepeatOne
         {
@@ -534,7 +533,7 @@ namespace MatoMusic.Core.ViewModel
             {
                 if (!IsInitFinished)
                 {
-                    this._isRepeatOne = bool.Parse(this.settingManager.GetSettingValue(CommonSettingNames.IsRepeatOne));
+                    this._isRepeatOne = bool.Parse(this.SettingManager.GetSettingValue(CommonSettingNames.IsRepeatOne));
                     IsInitFinished = true;
                 }
                 return _isRepeatOne;

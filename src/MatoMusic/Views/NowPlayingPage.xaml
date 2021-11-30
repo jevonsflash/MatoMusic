@@ -1,0 +1,300 @@
+﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MatoMusic.NowPlayingPage"
+             BackgroundColor="{DynamicResource SecondaryColor}">
+
+    <ContentPage.Content>
+        <Grid RowSpacing="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="42" />
+                <RowDefinition Height="28" />
+                <RowDefinition Height="108" />
+                <RowDefinition Height="38" />
+            </Grid.RowDefinitions>
+            <Grid Grid.RowSpan="5">
+                <Image HeightRequest="800" 
+                                       Scale="1.2"
+                                   x:Name="BackgroundAlbumArtImage"
+                                   Aspect="AspectFill"
+                                   Source="{Binding  CurrentMusicRelatedViewModel.CurrentMusic.AlbumArt}">
+                </Image>
+            </Grid>
+            <Grid Grid.Row="0"
+                      IsVisible="{Binding CurrentMusicRelatedViewModel.Canplay}">
+                <Grid IsVisible="{Binding IsLrcPanel ,Converter={StaticResource True2FalseConverter}}" 
+                          Margin="0,94,0,0">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*">
+                            </ColumnDefinition>
+                            <ColumnDefinition Width="10*">
+                            </ColumnDefinition>
+                            <ColumnDefinition Width="1*">
+                            </ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid Grid.Column="1">
+                            <Image HorizontalOptions="Fill"
+                                               x:Name="PreAlbumArt"
+                                                   HeightRequest="260"
+                                                   WidthRequest="260"
+                                                   VerticalOptions="Fill"
+                                       TranslationX="-320"
+                                       Source="{Binding CurrentMusicRelatedViewModel.PreviewMusic.AlbumArt,Converter={StaticResource AlbumArtConverter}}">
+                            </Image>
+
+                            <Image 
+                                    HeightRequest="260"
+                                    WidthRequest="260"
+                                       HorizontalOptions="Fill"
+                                       VerticalOptions="Fill"
+                                       Source="{Binding CurrentMusicRelatedViewModel.CurrentMusic.AlbumArt,Converter={StaticResource AlbumArtConverter}}">
+                            </Image>
+
+                            <Image HorizontalOptions="Fill"
+                                               x:Name="NextAlbumArt"
+                                                   HeightRequest="260"
+                                                   WidthRequest="260"
+                                           
+                                       VerticalOptions="Fill"
+                                       TranslationX="320"
+                                       Source="{Binding CurrentMusicRelatedViewModel.NextMusic.AlbumArt,Converter={StaticResource AlbumArtConverter}}">
+                            </Image>
+                        </Grid>
+                    </Grid>
+                    <Button Command="{Binding SwitchPannelCommand}"></Button>
+                </Grid>
+                <Grid IsVisible="{Binding IsLrcPanel}">
+                    <!--<view:LyricView CurrentMusicInfo="{Binding CurrentMusicRelatedViewModel.CurrentMusic}"
+                                        IsVisible="{Binding IsLrcPanel}"
+                                        PropertyChanged="BindableObject_OnPropertyChanged"
+                                    OnClosed="LyricView_OnOnClosed"
+                                    ElapsedTime="{Binding CurrentMusicRelatedViewModel.CurrentTime}"></view:LyricView>-->
+                    <Grid 
+                            HeightRequest="32" 
+                            Margin="{StaticResource DefaultContentVerticalPadding}"
+                            VerticalOptions="StartAndExpand" >
+                        <BoxView 
+                                BackgroundColor="Transparent"                  
+                                x:Name="ButtonLayout">
+                        </BoxView>
+                    </Grid>
+                    <Grid  Grid.Row="0" 
+                                  Margin="{StaticResource DefaultContentVerticalPadding}"
+                                  VerticalOptions="StartAndExpand"
+                                  HorizontalOptions="CenterAndExpand">
+                        <Button Command="{Binding SwitchPannelCommand}"
+                                    HeightRequest="32"
+                                    Margin="0"
+                                    Text="关闭歌词"></Button>
+                    </Grid>
+                </Grid>
+            </Grid>
+            <Grid Margin="{StaticResource DefaultContentVerticalPadding}"
+                  Grid.Row="0"
+                  x:Name="EmptyAlertLayout"
+                  IsVisible="{Binding CurrentMusicRelatedViewModel.Canplay,Converter={StaticResource True2FalseConverter}}"
+                  HorizontalOptions="Center"
+                  VerticalOptions="Center">
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <Label Text="目前您的队列是空的，您可以："
+                       FontSize="{StaticResource BodyFontSize}">
+                </Label>
+                <StackLayout 
+                    Grid.Row="1"
+                    Orientation="Horizontal" 
+                    HorizontalOptions="CenterAndExpand"
+                    VerticalOptions="CenterAndExpand">
+                    <Label x:Name="PlayAllLabel" 
+                           VerticalOptions="Center"
+                           FontSize="{StaticResource BodyFontSize}"  
+                           FontFamily="FontAwesome">
+                    </Label>
+                    <Button          HorizontalOptions="Center"
+                                     VerticalOptions="Center"
+                                     Command="{Binding PlayAllCommand}"
+                                     Text="随机播放全部" 
+                                     FontSize="{StaticResource BodyFontSize}">
+                    </Button>
+
+                </StackLayout>
+                <Label Text="或" 
+                       Grid.Row="2"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       FontSize="{StaticResource BodyFontSize}">
+                </Label>
+                <StackLayout Grid.Row="3"  
+                             Orientation="Horizontal" 
+                             HorizontalOptions="CenterAndExpand"                    
+                             VerticalOptions="CenterAndExpand">
+
+                    <Label x:Name="AddSongLabel2" 
+                           VerticalOptions="Center"
+                           FontSize="{StaticResource BodyFontSize}"  
+                           FontFamily="FontAwesome">
+                    </Label>
+                    <Button          HorizontalOptions="Center"
+                                     VerticalOptions="Center"
+                                     Clicked="GoLibrary_OnClicked"
+                                     Text="" 
+                                     FontSize="{StaticResource BodyFontSize}">
+                    </Button>
+
+                </StackLayout>
+            </Grid>
+
+            <!--模式控制区域-->
+            <Grid 
+                      Grid.Row="1"
+                      x:Name="ModeControlLayout"
+                      Margin="{StaticResource DefaultContentPadding}"
+                      BindingContext="{Binding CurrentMusicRelatedViewModel}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Button Command="{Binding FavouriteCommand}"
+                            x:Name="FavouriteButton"
+                            TextColor="{Binding CurrentMusic.IsFavourite,Converter={StaticResource Bool2StringConverter},ConverterParameter=Red|Gray}"
+                            FontFamily="FontAwesome"
+
+                        Grid.Column="0" 
+                        HorizontalOptions="Center" />
+                <StackLayout Grid.Column="1" HorizontalOptions="Center">
+                    <Label Text="{Binding CurrentMusic.Title}" 
+                               HorizontalOptions="FillAndExpand" 
+                               HorizontalTextAlignment="Center" 
+                               FontSize="{StaticResource BodyFontSize}" 
+                               TextColor="White" />
+                    <Label Margin="0,-5,0,0" 
+                               Text="{Binding CurrentMusic.Artist}" 
+                           LineBreakMode="TailTruncation"
+                               HorizontalOptions="FillAndExpand" 
+                               HorizontalTextAlignment="Center" 
+                               FontSize="{StaticResource BodyFontSize}" 
+                               TextColor="{DynamicResource PhoneChromeBrush}" />
+                </StackLayout>
+                <Button 
+                        x:Name="MoreButton"
+                        FontFamily="FontAwesome"
+                            Clicked="MoreButton_OnClicked"
+                           Grid.Column="2" 
+                           HorizontalOptions="Center" />
+            </Grid>
+
+            <!--进度控制区域-->
+            <Grid Grid.Row="2"
+                      Margin="{StaticResource DefaultContentPadding}"
+                        
+                      x:Name="ProgressControlLayout"
+                      BindingContext="{Binding CurrentMusicRelatedViewModel}">
+
+                <StackLayout Margin="0,0,0,0" Orientation="Horizontal">
+                    <Label Text="{Binding CurrentTime,Converter={StaticResource SecondsToTimeSpanConverter}}" 
+                               TextColor="{DynamicResource PhoneChromeBrush}" 
+                               FontSize="{StaticResource TinyFontSize}" 
+                               HorizontalOptions="StartAndExpand" />
+                    <Label  Text="{Binding Duration,Converter={StaticResource SecondsToTimeSpanConverter}}" 
+                                TextColor="{DynamicResource PhoneChromeBrush}" 
+                                FontSize="{StaticResource TinyFontSize}" 
+                                HorizontalOptions="End" />
+                </StackLayout>
+                <Slider                       
+                        HeightRequest="4"
+                        Maximum="{Binding Duration,Converter={StaticResource SliderMaxValueConverter}}"
+                            Minimum="0.0"
+                            IsEnabled="{Binding Canplay}"
+                            ValueChanged="OnValueChanged"
+                            Value="{Binding CurrentTime,Mode=TwoWay} ">
+                </Slider>
+            </Grid>
+            <!--播放控制按钮-->
+            <Grid
+                    Margin="{StaticResource DefaultContentPadding}"
+                    Grid.Row="3"
+                    BindingContext="{Binding CurrentMusicRelatedViewModel}"
+                    x:Name="PlayControlLayout">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Button VerticalOptions="Center"
+                            HorizontalOptions="StartAndExpand"
+                            Grid.Column="0"
+                            Command="{Binding ShuffleCommand}" 
+                            FontFamily="FontAwesome"
+                            FontSize="{StaticResource BodyFontSize}"
+                            TextColor="{Binding IsShuffle,Converter={StaticResource Bool2StringConverter},ConverterParameter=White|Gray}"
+                            Text=""/>
+                <Grid Grid.Column="1"  HorizontalOptions="Center">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="48"></ColumnDefinition>
+                        <ColumnDefinition Width="108"></ColumnDefinition>
+                        <ColumnDefinition Width="48"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Button 
+                            VerticalOptions="Center" 
+                            Grid.Column="0"
+                            Margin="0,10"
+                            WidthRequest="48"
+                            Command="{Binding PreCommand}" 
+                            FontFamily="FontAwesome"
+                            FontSize="{StaticResource BodyFontSize}"
+                            Text=""
+                            />
+                    <Button 
+                            VerticalOptions="Center"  
+                            Grid.Column="1"
+                            HeightRequest="108"
+                            WidthRequest="108"
+                            Margin="0"
+                            Command="{Binding PlayCommand}" 
+                            FontFamily="FontAwesome"
+                            FontSize="{StaticResource StandOutBodyFontSize}"
+                            Text="{Binding IsPlaying,Converter={StaticResource Bool2StringConverter},ConverterParameter=|} "/>
+
+                    <Button VerticalOptions="Center" 
+                                Margin="0,10"
+                                Grid.Column="2"
+                            WidthRequest="48"
+                            Command="{Binding NextCommand}" 
+                                FontFamily="FontAwesome"
+                            FontSize="{StaticResource BodyFontSize}"
+                                Text=""/>
+                </Grid>
+                <Button VerticalOptions="Center" 
+                            HorizontalOptions="EndAndExpand"
+                            Grid.Column="2"
+                            Command="{Binding RepeatOneCommand}" 
+                            FontFamily="FontAwesome"
+                            FontSize="{StaticResource BodyFontSize}"
+                            TextColor="{Binding IsRepeatOne,Converter={StaticResource Bool2StringConverter},ConverterParameter=White|Gray}"
+                            Text="" />
+            </Grid>
+
+
+            <!--队列按钮-->
+            <Grid Grid.Row="4"
+                      x:Name="QueueControlLayout">
+                <Button VerticalOptions="CenterAndExpand" 
+                        HorizontalOptions="CenterAndExpand"
+                        Clicked="Button_OnClicked" 
+                        FontFamily="FontAwesome"
+                        WidthRequest="300"
+                        FontSize="{StaticResource BodyFontSize}"
+                        Text="" />
+            </Grid>
+
+        </Grid>
+    </ContentPage.Content>
+
+</ContentPage>

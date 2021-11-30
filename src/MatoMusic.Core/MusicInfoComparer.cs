@@ -15,7 +15,7 @@ namespace MatoMusic.Core
 
         public int GetHashCode(MusicInfo obj)
         {
-            return obj.Id;
+            return (int)obj.Id;
         }
     }
 }

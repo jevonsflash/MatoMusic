@@ -7,7 +7,7 @@ using Abp.Dependency;
 
 namespace MatoMusic.Core.Interfaces
 {
-    public interface IMusicSystem: ISingletonDependency
+    public interface IMusicSystem
     {
         event EventHandler<bool> OnPlayFinished;
         event EventHandler OnRebuildMusicInfosFinished;

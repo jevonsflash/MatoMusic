@@ -14,7 +14,7 @@ namespace MatoMusic.Core
         {
 
         }
-        public PlaylistItem(int playlistId, string musicTitle, int rank)
+        public PlaylistItem(long playlistId, string musicTitle, int rank)
         {
             PlaylistId = playlistId;
             MusicTitle = musicTitle;

@@ -1,8 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net6.0-android;net6.0-ios;net6.0-maccatalyst</TargetFrameworks>
-		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows')) and '$(MSBuildRuntimeType)' == 'Full'">$(TargetFrameworks);net6.0-windows10.0.19041</TargetFrameworks>
+		<TargetFrameworks>net6.0-windows10.0.19041</TargetFrameworks>
 		<OutputType>Exe</OutputType>
 		<RootNamespace>MatoMusic</RootNamespace>
 		<UseMaui>true</UseMaui>
@@ -48,18 +47,17 @@
 		<PackageReference Include="Microsoft.Graphics.Win2D" Version="1.0.0.29-preview3" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="ViewModels\" />
-	</ItemGroup>
-
 	<PropertyGroup Condition="$(TargetFramework.Contains('-windows'))">
 		<OutputType>WinExe</OutputType>
 		<RuntimeIdentifier>win-x64</RuntimeIdentifier>
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <PackageReference Include="CommunityToolkit.Maui" Version="1.0.0-pre3" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <ProjectReference Include="..\..\abp\Abp.AutoMapper\Abp.AutoMapper.csproj" />
-	  <ProjectReference Include="..\..\abp\Abp.Castle.Log4Net\Abp.Castle.Log4Net.csproj" />
 	  <ProjectReference Include="..\..\abp\Abp\Abp.csproj" />
 	  <ProjectReference Include="..\MatoMusic.Core\MatoMusic.Core.csproj" />
 	  <ProjectReference Include="..\MatoMusic.EntityFrameworkCore\MatoMusic.EntityFrameworkCore.csproj" />
@@ -78,6 +76,39 @@
 	  <None Update="log4net.Production.config">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Controls\MenuCell.xaml.cs">
+	    <DependentUpon>MenuCell.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\MusicFunctionPage.xaml.cs">
+	    <DependentUpon>MusicFunctionPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\PlaylistChoosePage.xaml.cs">
+	    <DependentUpon>PlaylistChoosePage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\NowPlayingPage.xaml.cs">
+	    <DependentUpon>NowPlayingPage.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="Controls\MenuCell.xaml">
+	    <SubType>Designer</SubType>
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\MusicFunctionPage.xaml">
+	    <SubType>Designer</SubType>
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\PlaylistChoosePage.xaml">
+	    <SubType>Designer</SubType>
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\NowPlayingPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	</ItemGroup>
 	
 </Project>

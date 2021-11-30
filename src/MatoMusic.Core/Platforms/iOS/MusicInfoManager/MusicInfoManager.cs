@@ -517,7 +517,7 @@ namespace MatoMusic.Core
         /// <param name="musicInfo">musicInfo对象</param>
         /// <param name="playlistId"></param>
         /// <returns></returns>
-        public async Task<bool> CreatePlaylistEntry(MusicInfo musicInfo, int playlistId)
+        public async Task<bool> CreatePlaylistEntry(MusicInfo musicInfo, long playlistId)
         {
             var entry = new PlaylistItem(playlistId, musicInfo.Title, 0);
             var result = await playlistItemRepository.InsertAndGetIdAsync(entry) > 0;
@@ -537,7 +537,7 @@ namespace MatoMusic.Core
         /// <param name="musics"></param>
         /// <param name="playlistId"></param>
         /// <returns></returns>
-        public async Task<bool> CreatePlaylistEntrys(List<MusicInfo> musics, int playlistId)
+        public async Task<bool> CreatePlaylistEntrys(List<MusicInfo> musics, long playlistId)
         {
             var entrys = musics.Select(c => new PlaylistItem(playlistId, c.Title, 0));
             await playlistItemRepository.GetDbContext().AddRangeAsync(entrys);
@@ -559,7 +559,7 @@ namespace MatoMusic.Core
         /// <param name="musicCollectionInfo"></param>
         /// <param name="playlistId"></param>
         /// <returns></returns>
-        public async Task<bool> CreatePlaylistEntrys(MusicCollectionInfo musicCollectionInfo, int playlistId)
+        public async Task<bool> CreatePlaylistEntrys(MusicCollectionInfo musicCollectionInfo, long playlistId)
         {
             var result = await CreatePlaylistEntrys(musicCollectionInfo.Musics.ToList(), playlistId);
             return result;
@@ -572,7 +572,7 @@ namespace MatoMusic.Core
         /// <param name="musicTitle"></param>
         /// <param name="playlistId"></param>
         /// <returns></returns>
-        public async Task<bool> DeletePlaylistEntry(string musicTitle, int playlistId)
+        public async Task<bool> DeletePlaylistEntry(string musicTitle, long playlistId)
         {
             var entry = await playlistItemRepository.FirstOrDefaultAsync(c => c.PlaylistId == playlistId && c.MusicTitle == musicTitle);
             if (entry != null)
@@ -592,7 +592,7 @@ namespace MatoMusic.Core
         /// <param name="musicInfo">musicInfo对象</param>
         /// <param name="playlistId"></param>
         /// <returns></returns>
-        public async Task<bool> DeletePlaylistEntry(MusicInfo musicInfo, int playlistId)
+        public async Task<bool> DeletePlaylistEntry(MusicInfo musicInfo, long playlistId)
         {
             var result = await DeletePlaylistEntry(musicInfo.Title, playlistId);
             if (result)
@@ -654,7 +654,7 @@ namespace MatoMusic.Core
         /// </summary>
         /// <param name="playlistId"></param>
         /// <returns></returns>
-        public async Task<List<MusicInfo>> GetPlaylistEntry(int playlistId)
+        public async Task<List<MusicInfo>> GetPlaylistEntry(long playlistId)
         {
             var currentPlaylistEntrie = await playlistItemRepository.GetAllListAsync(c => c.PlaylistId == playlistId);
             List<MusicInfo> musicInfos;
@@ -693,7 +693,7 @@ namespace MatoMusic.Core
         /// <param name="musicTitle">music标题</param>
         /// <param name="playlistId"></param>
         /// <returns></returns>
-        public async Task<bool> GetIsPlaylistContains(string musicTitle, int playlistId)
+        public async Task<bool> GetIsPlaylistContains(string musicTitle, long playlistId)
         {
             var result = await playlistItemRepository.FirstOrDefaultAsync(c => c.MusicTitle == musicTitle && c.PlaylistId == playlistId);
             return result is not null;
@@ -706,7 +706,7 @@ namespace MatoMusic.Core
         /// <param name="musicInfo">musicInfo对象</param>
         /// <param name="playlistId"></param>
         /// <returns></returns>
-        public async Task<bool> GetIsPlaylistContains(MusicInfo musicInfo, int playlistId)
+        public async Task<bool> GetIsPlaylistContains(MusicInfo musicInfo, long playlistId)
         {
             return await GetIsPlaylistContains(musicInfo.Title, playlistId);
         }
@@ -739,7 +739,7 @@ namespace MatoMusic.Core
         /// <param name="oldMusicInfo"></param>
         /// <param name="newMusicInfo"></param>
         /// <param name="playlistId"></param>
-        public void ReorderPlaylist(MusicInfo oldMusicInfo, MusicInfo newMusicInfo, int playlistId)
+        public void ReorderPlaylist(MusicInfo oldMusicInfo, MusicInfo newMusicInfo, long playlistId)
         {
         }
         /// <summary>

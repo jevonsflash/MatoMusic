@@ -11,6 +11,7 @@ namespace MatoMusic.Core.Models
         [AutoMapFrom(typeof(Playlist))]
     */
     [AutoMapFrom(typeof(Playlist))]
+    [AutoMapTo(typeof(Playlist))]
     public class PlaylistInfo : MusicCollectionInfo
     {
         public bool IsHidden { get; set; }

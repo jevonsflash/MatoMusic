@@ -10,7 +10,7 @@ namespace MatoMusic.Core
     public abstract class MusicCollectionInfo : ObservableObject, IBasicInfo
     {
 
-        public int Id
+        public long Id
         {
             get;
             set;

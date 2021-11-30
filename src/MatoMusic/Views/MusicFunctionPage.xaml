@@ -1,0 +1,60 @@
+﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:matoc="clr-namespace:MatoMusic;assembly=MatoMusic"
+             x:Class="MatoMusic.MusicFunctionPage"
+             BackgroundColor="{DynamicResource SecondaryColor}">
+    
+    <Grid VerticalOptions="Center"  
+          Padding="20,10" 
+          HorizontalOptions="FillAndExpand"  
+          BackgroundColor="{DynamicResource PhoneContrastBackgroundBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto">
+            </RowDefinition>
+            <RowDefinition>
+            </RowDefinition>
+        </Grid.RowDefinitions>
+
+        <!--TitlePanel 包含应用程序的名称和页标题-->
+        <Grid Grid.Row="0"
+              Padding="{StaticResource DefaultContentPadding}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="48"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Label Text="{Binding MusicInfo.Title}"
+                   FontSize="{StaticResource StandOutBodyFontSize}"
+                   TextColor="{DynamicResource PhoneContrastForegroundBrush}"
+                   LineBreakMode="NoWrap" />
+            <Grid Grid.Column="1"
+                  IsVisible="False"
+                  x:Name="FavouritLayout">
+
+                <Button Command="{Binding FavouriteCommand}"  
+                        FontFamily="FontAwesome"
+                        Margin="0"
+                        FontSize="{StaticResource StandOutBodyFontSize}"
+                        TextColor="{Binding MusicInfo.IsFavourite,Converter={StaticResource Bool2StringConverter},ConverterParameter=Red|Gray}"
+                        Text=""></Button>
+            </Grid>
+        </Grid>
+        <StackLayout Grid.Row="1"
+                     VerticalOptions="FillAndExpand">
+            <ListView ItemsSource="{Binding  MainMenuCellInfos}"
+                                       ItemSelected="ListView_OnItemSelected"
+                                       SelectedItem="{Binding CurrentMenuCellInfo,Mode=TwoWay}"
+                                       RowHeight="58">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <matoc:MenuCell ContentText="{Binding Title}"
+                                           IsEnabled="{Binding Enable}"
+                                           IconText="{Binding Icon}"></matoc:MenuCell>
+
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </Grid>
+
+
+</ContentPage>
