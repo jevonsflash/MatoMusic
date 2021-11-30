@@ -14,27 +14,19 @@ namespace MatoMusic.EntityFrameworkCore
     {
         public MatoMusicDbContext CreateDbContext(string[] args)
         {
-            //Debugger.Launch();
-            //var sqliteFilename = "mato.db";
-            //string documentsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), sqliteFilename);
-            //var builder = new DbContextOptionsBuilder<MatoMusicDbContext>();
-            //var hostFolder = Path.Combine(Environment.CurrentDirectory, "bin", "Debug", "net6.0");
+            var sqliteFilename = "mato.db";
+            string documentsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), sqliteFilename);
+            var builder = new DbContextOptionsBuilder<MatoMusicDbContext>();
+            var hostFolder = Path.Combine(Environment.CurrentDirectory, "bin", "Debug", "net6.0");
 
-            //Debug.WriteLine("+++++++++" + hostFolder);
-            //var configuration = AppConfigurations.Get(hostFolder);
-            //Debug.WriteLine(configuration.GetConnectionString(MatoMusicConsts.ConnectionStringName));
-            //DbContextOptionsConfigurer.Configure(
-            //    builder,
-            //    configuration.GetConnectionString(MatoMusicConsts.ConnectionStringName)
-            //);
+            var configuration = AppConfigurations.Get(hostFolder);
+            DbContextOptionsConfigurer.Configure(
+                builder,
+                configuration.GetConnectionString(MatoMusicConsts.ConnectionStringName)
+            );
 
-            //return new MatoMusicDbContext(builder.Options);
-            var connectionString = @"Data Source=mato.db";
-            var contextOptions = new DbContextOptionsBuilder<MatoMusicDbContext>()
-                .UseSqlite(connectionString)
-                .Options;
+            return new MatoMusicDbContext(builder.Options);
 
-            return new MatoMusicDbContext(contextOptions);
         }
     }
 }
