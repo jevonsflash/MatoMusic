@@ -56,7 +56,7 @@ namespace MatoMusic.Core.ViewModel
             this.FavouriteCommand = new Command(FavouriteAction,CanPlayExcute );
             this.PropertyChanged += DetailPageViewModel_PropertyChanged;
             musicSystem = DependencyService.Get<IMusicSystem>();
-
+            musicSystem.MusicInfoManager = musicInfoManager;
             musicSystem.OnPlayFinished += MusicSystem_OnMusicChanged;
             musicSystem.RebuildMusicInfos(MusicSystem_OnRebuildMusicInfosFinished);
             this.musicInfoManager = musicInfoManager;

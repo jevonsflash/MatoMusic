@@ -36,13 +36,6 @@ namespace MatoMusic.Infrastructure.Helper
             return arr;
         }
 
-        public static void GoNavigate(string v, object[] vs)
-        {
-        }
 
-        public static void GoPage(string v)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

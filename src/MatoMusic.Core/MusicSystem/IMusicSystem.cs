@@ -13,6 +13,7 @@ namespace MatoMusic.Core
         event EventHandler OnRebuildMusicInfosFinished;
         event EventHandler<double> OnProgressChanged;
         event EventHandler<bool> OnPlayStatusChanged;
+        public IMusicInfoManager MusicInfoManager { get; set; }
 
         int[] ShuffleMap { get; }
         List<MusicInfo> MusicInfos { get; }

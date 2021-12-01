@@ -1,9 +1,13 @@
 ﻿using Abp.Modules;
 using Abp.Reflection.Extensions;
+using MatoMusic.Core.Configuration;
 using MatoMusic.Core.Localization;
 using MatoMusic.Core.Settings;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -13,8 +17,11 @@ namespace MatoMusic.Core
 {
     public class MatoMusicCoreModule : AbpModule
     {
+        private readonly string development;
+
         public MatoMusicCoreModule()
         {
+            development = EnvironmentName.Development;
 
         }
         public override void PreInitialize()
@@ -22,6 +29,12 @@ namespace MatoMusic.Core
            LocalizationConfigurer.Configure(Configuration.Localization);
 
             Configuration.Settings.Providers.Add<CommonSettingProvider>();
+
+            string documentsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), MatoMusicConsts.LocalizationSourceName);
+
+            var configuration = AppConfigurations.Get(documentsPath, development);
+            Configuration.DefaultNameOrConnectionString = configuration.GetConnectionString(MatoMusicConsts.ConnectionStringName);
+
             base.PreInitialize();
         }
 

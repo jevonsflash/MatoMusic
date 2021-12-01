@@ -13,7 +13,7 @@ namespace MatoMusic.Core
     public partial class MusicSystem : IMusicSystem
     {
 
-        private readonly IMusicInfoManager _musicInfoManager;
+        public IMusicInfoManager MusicInfoManager { get; set; }
 
         public event EventHandler<bool> OnPlayFinished;
 
@@ -25,10 +25,14 @@ namespace MatoMusic.Core
 
         private NSError nserror = new NSError();
 
+        public MusicSystem()
+        {
+
+        }
         public MusicSystem(IMusicInfoManager musicInfoManager)
         {
 
-            _musicInfoManager = musicInfoManager;
+            MusicInfoManager = musicInfoManager;
         }
 
 
@@ -73,7 +77,7 @@ namespace MatoMusic.Core
 
         public async void RebuildMusicInfos()
         {
-            var task01 = _musicInfoManager.GetQueueEntry();
+            var task01 = MusicInfoManager.GetQueueEntry();
             musicInfos = await task01;
             Task.WaitAll(task01);
             //this.UpdateShuffleMap();
@@ -83,7 +87,7 @@ namespace MatoMusic.Core
 
         public async void RebuildMusicInfos(Action callback)
         {
-            var task01 = _musicInfoManager.GetQueueEntry();
+            var task01 = MusicInfoManager.GetQueueEntry();
             musicInfos = await task01;
             Task.WaitAll(task01);
             //this.UpdateShuffleMap();

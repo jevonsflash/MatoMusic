@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Threading.Tasks;
-using Acr.UserDialogs;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using MatoMusic.Core;
 using MatoMusic.Core.ViewModel;
 using Microsoft.Maui.Controls;
-using MatoMusic.Infrastructure.Helper;
 using Abp.Dependency;
 using MatoMusic;
+using MatoMusic.Core.Helper;
 
 namespace ProjectMato.ViewModel;
 
@@ -34,8 +33,8 @@ public class QueuePageViewModel : ViewModelBase, ISingletonDependency
         this.PatchupCommand = new Command(PatchupAction,CanDoAll );
         this.PropertyChanged += QueuePageViewModel_PropertyChanged;
         musicSystem = DependencyService.Get<IMusicSystem>();
+        musicSystem.MusicInfoManager = musicInfoManager;
         musicSystem.RebuildMusicInfos(MusicSystem_OnRebuildMusicInfosFinished);
-        UserDialogs.Instance.ShowLoading();
         this.musicInfoManager = musicInfoManager;
         this.musicRelatedViewModel = musicRelatedViewModel;
         this.musicRelatedViewModel.OnMusicChanged += MusicRelatedViewModel_OnMusicChanged;
@@ -135,7 +134,6 @@ public class QueuePageViewModel : ViewModelBase, ISingletonDependency
         Device.BeginInvokeOnMainThread(() =>
         {
             InitMusics();
-            UserDialogs.Instance.HideLoading();
             foreach (var c in Musics)
             {
                 if (c.IsPlaying)
@@ -258,7 +256,6 @@ public class QueuePageViewModel : ViewModelBase, ISingletonDependency
     }
     private async void PlayAllAction(object obj)
     {
-        UserDialogs.Instance.ShowLoading();
 
         musicSystem.RebuildMusicInfos(MusicSystem_OnRebuildMusicInfosFinished);
 
@@ -290,7 +287,6 @@ public class QueuePageViewModel : ViewModelBase, ISingletonDependency
         {
             CommonHelper.ShowMsg("失败");
         }
-        UserDialogs.Instance.HideLoading();
 
     }
 

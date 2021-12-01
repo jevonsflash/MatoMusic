@@ -19,6 +19,16 @@ namespace MatoMusic.Core.Helper
         {
             Application.Current.MainPage.DisplayAlert("需要权限", "MatoPlayer需要您媒体库的权限，劳烦至「设置」「隐私权」「媒体与AppleMusic」 打开权限,谢谢", "好");
         }
+
+        public static void GoNavigate(string v, object[] vs)
+        {
+        }
+
+        public static void GoPage(string v)
+        {
+        }
     }
+
+
 
 }

@@ -11,20 +11,28 @@ using Windows.Storage;
 
 namespace MatoMusic.Core
 {
-    public class MusicSystem : IMusicSystem
+    public partial class MusicSystem : IMusicSystem
     {
+        public IMusicInfoManager MusicInfoManager { get; set; }
+
         public event EventHandler<bool> OnPlayFinished;
 
         public event EventHandler OnRebuildMusicInfosFinished;
+        
         public event EventHandler<double> OnProgressChanged;
+        
         public event EventHandler<bool> OnPlayStatusChanged;
-
-        private IMusicInfoManager MusicInfoManager => DependencyService.Get<IMusicInfoManager>();
 
         public MusicSystem()
         {
 
+        }
+        
+        public MusicSystem(IMusicInfoManager musicInfoManager)
+        {
+
             InitializeAudioListener();
+            this.MusicInfoManager = musicInfoManager;
         }
 
         private void InitializeAudioListener()

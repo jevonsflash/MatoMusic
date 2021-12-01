@@ -2,7 +2,7 @@
 using Abp.Extensions;
 using Microsoft.Extensions.Configuration;
 
-namespace MatoMusic.Configuration
+namespace MatoMusic.Core.Configuration
 {
     public static class AppConfigurations
     {
@@ -32,7 +32,7 @@ namespace MatoMusic.Configuration
             {
                 builder = builder.AddJsonFile($"appsettings.{environmentName}.json", optional: true);
             }
-            
+
             builder = builder.AddEnvironmentVariables();
 
             return builder.Build();

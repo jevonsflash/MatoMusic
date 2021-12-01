@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MatoMusic.Core;
+using MatoMusic.Core.Helper;
 using MatoMusic.Core.Models;
 using MatoMusic.Core.ViewModel;
 using MatoMusic.Infrastructure.Common;
-using MatoMusic.Infrastructure.Helper;
 using Microsoft.Maui.Controls;
 
 namespace MatoMusic.ViewModels

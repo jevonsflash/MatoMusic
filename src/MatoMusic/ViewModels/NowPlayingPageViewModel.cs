@@ -19,6 +19,8 @@ namespace MatoMusic.ViewModels
             PlayAllCommand = new Command(PlayAllAction, c => true);
             IsLrcPanel = false;
             musicSystem = DependencyService.Get<IMusicSystem>();
+            musicSystem.MusicInfoManager = musicInfoManager;
+
             this.musicInfoManager = musicInfoManager;
             this.musicRelatedViewModel = musicRelatedViewModel;
         }

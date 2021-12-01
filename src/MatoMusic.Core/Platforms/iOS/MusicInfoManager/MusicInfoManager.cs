@@ -25,14 +25,12 @@ namespace MatoMusic.Core
         private readonly IRepository<Playlist, long> playlistRepository;
         private readonly IUnitOfWorkManager unitOfWorkManager;
         private readonly IMusicSystem _musicSystem;
-        private readonly MusicRelatedViewModel musicRelatedViewModel;
         List<MusicInfo> _musicInfos;
 
         public MusicInfoManager(IRepository<Queue, long> queueRepository,
             IRepository<PlaylistItem, long> playlistItemRepository,
             IRepository<Playlist, long> playlistRepository,
-            IUnitOfWorkManager unitOfWorkManager,
-            MusicRelatedViewModel musicRelatedViewModel
+            IUnitOfWorkManager unitOfWorkManager
             )
         {
             this.queueRepository = queueRepository;
@@ -40,7 +38,8 @@ namespace MatoMusic.Core
             this.playlistRepository = playlistRepository;
             this.unitOfWorkManager = unitOfWorkManager;
             _musicSystem = DependencyService.Get<IMusicSystem>();
-            this.musicRelatedViewModel = musicRelatedViewModel;
+            _musicSystem.MusicInfoManager = this;
+
         }
 
         private MPMediaQuery _mediaQuery;
@@ -394,7 +393,7 @@ namespace MatoMusic.Core
         /// </summary>
         /// <param name="musicInfo">musicInfo对象</param>
         /// <returns></returns>
-        public partial async Task<bool> InsertToNextQueueEntry(MusicInfo musicInfo)
+        public partial async Task<bool> InsertToNextQueueEntry(MusicInfo musicInfo, MusicInfo currentMusic)
         {
             var result = false;
             var isSuccessCreate = false;
@@ -410,7 +409,7 @@ namespace MatoMusic.Core
             //确定包含后与下一曲交换位置
             if (isSuccessCreate)
             {
-                var currnet = musicRelatedViewModel.CurrentMusic;
+                var currnet = currentMusic;
                 var next = _musicSystem.GetNextMusic(currnet, false);
 
                 ReorderQueue(musicInfo, next);

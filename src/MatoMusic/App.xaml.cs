@@ -19,8 +19,8 @@ namespace MatoMusic
         public App(AbpBootstrapper abpBootstrapper)
         {
             _abpBootstrapper = abpBootstrapper;
-
             InitializeComponent();
+            _abpBootstrapper.Initialize();
             var mainPage = _abpBootstrapper.IocManager.Resolve<NowPlayingPage>();
             MainPage = mainPage;
         }

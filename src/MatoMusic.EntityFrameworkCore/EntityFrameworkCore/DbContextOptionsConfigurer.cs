@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Data.Common;
+using Microsoft.EntityFrameworkCore;
 
 namespace MatoMusic.EntityFrameworkCore
 {
@@ -11,6 +12,11 @@ namespace MatoMusic.EntityFrameworkCore
         {
             /* This is the single point to configure DbContextOptions for MatoMusicDbContext */
             dbContextOptions.UseSqlite(connectionString);
+        }
+
+        public static void Configure(DbContextOptionsBuilder<MatoMusicDbContext> builder, DbConnection connection)
+        {
+            builder.UseSqlite(connection);
         }
     }
 }

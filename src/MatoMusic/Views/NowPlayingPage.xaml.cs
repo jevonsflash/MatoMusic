@@ -6,13 +6,12 @@ using System.Threading.Tasks;
 using Abp.Configuration;
 using Abp.Dependency;
 using MatoMusic.Core;
+using MatoMusic.Core.Helper;
 using MatoMusic.Core.Models;
 using MatoMusic.Core.Settings;
 using MatoMusic.Core.ViewModel;
-using MatoMusic.Infrastructure.Helper;
 using MatoMusic.ViewModels;
 using Microsoft.Maui.Controls;
-using Microsoft.Maui.Essentials;
 
 namespace MatoMusic
 {

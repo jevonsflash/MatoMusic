@@ -43,7 +43,7 @@ namespace MatoMusic.Core
         Task<List<MusicInfo>> GetQueueEntry();
         Task<bool> InsertToEndQueueEntry(MusicInfo musicInfo);
         Task<bool> InsertToEndQueueEntrys(List<MusicInfo> musicInfos);
-        Task<bool> InsertToNextQueueEntry(MusicInfo musicInfo);
+        Task<bool> InsertToNextQueueEntry(MusicInfo musicInfo, MusicInfo currentMusic);
         void ReorderMyFavourite(MusicInfo oldMusicInfo, MusicInfo newMusicInfo);
         void ReorderPlaylist(MusicInfo oldMusicInfo, MusicInfo newMusicInfo, long playlistId);
         void ReorderQueue(MusicInfo oldMusicInfo, MusicInfo newMusicInfo);

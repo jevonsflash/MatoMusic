@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Abp.Dependency;
 using MatoMusic.Core.Models;
 using MatoMusic.Infrastructure;
 
 namespace MatoMusic.Core
 {
-    public  partial class MusicInfoManager : IMusicInfoManager
+    public  partial class MusicInfoManager : IMusicInfoManager, ISingletonDependency
     {
         public  partial Task ClearQueue();
 
@@ -112,7 +113,7 @@ namespace MatoMusic.Core
         public partial Task<bool> InsertToEndQueueEntrys(List<MusicInfo> musicInfos);
         
 
-        public partial Task<bool> InsertToNextQueueEntry(MusicInfo musicInfo);
+        public partial Task<bool> InsertToNextQueueEntry(MusicInfo musicInfo, MusicInfo currentMusic);
         
 
         public partial void ReorderMyFavourite(MusicInfo oldMusicInfo, MusicInfo newMusicInfo);
