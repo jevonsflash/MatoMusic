@@ -4,13 +4,12 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
-using Acr.UserDialogs;
 using MatoMusic.Core;
 using Abp.Dependency;
 using Microsoft.Maui.Controls;
 using MatoMusic.Core.Models;
-using MatoMusic.Infrastructure.Helper;
 using MatoMusic.Core.ViewModel;
+using MatoMusic.Core.Helper;
 
 namespace ProjectMato.ViewModel
 {
@@ -18,8 +17,6 @@ namespace ProjectMato.ViewModel
     {
         public PlaylistPageViewModel(IMusicInfoManager musicInfoManager, MusicRelatedViewModel musicRelatedViewModel)
         {
-            UserDialogs.Instance.ShowLoading();
-
             this.DeleteCommand = new Command(DeleteAction, c => true);
             Init();
             this.musicInfoManager = musicInfoManager;
@@ -160,8 +157,6 @@ namespace ProjectMato.ViewModel
         {
             Playlists = new ObservableCollection<PlaylistInfo>(await InitPlaylist());
             Playlists.CollectionChanged += Playlists_CollectionChanged;
-            UserDialogs.Instance.HideLoading();
-
         }
 
         private async Task<List<PlaylistInfo>> InitPlaylist()

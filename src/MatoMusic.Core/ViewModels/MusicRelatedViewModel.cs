@@ -9,7 +9,7 @@ using Abp.Dependency;
 using Microsoft.Maui.Essentials;
 using Abp.Configuration;
 using MatoMusic.Core.Settings;
-using MatoMusic.Infrastructure.Helper;
+using MatoMusic.Core.Helper;
 
 namespace MatoMusic.Core.ViewModel
 {

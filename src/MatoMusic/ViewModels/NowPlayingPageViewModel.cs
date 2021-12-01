@@ -1,9 +1,8 @@
 ﻿using System;
 using Abp.Dependency;
-using Acr.UserDialogs;
 using MatoMusic.Core;
+using MatoMusic.Core.Helper;
 using MatoMusic.Core.ViewModel;
-using MatoMusic.Infrastructure.Helper;
 using Microsoft.Maui.Controls;
 
 namespace MatoMusic.ViewModels
@@ -54,7 +53,6 @@ namespace MatoMusic.ViewModels
         {
             Device.BeginInvokeOnMainThread(() =>
             {
-                UserDialogs.Instance.HideLoading();
 
             });
 
@@ -62,7 +60,6 @@ namespace MatoMusic.ViewModels
 
         private async void PlayAllAction(object obj)
         {
-            UserDialogs.Instance.ShowLoading();
             musicSystem.RebuildMusicInfos(MusicSystem_OnRebuildMusicInfosFinished);
 
             var isSucc = await musicInfoManager.GetMusicInfos();
@@ -92,8 +89,6 @@ namespace MatoMusic.ViewModels
             {
                 CommonHelper.ShowMsg("失败");
             }
-            UserDialogs.Instance.HideLoading();
-
         }
 
         public Command SwitchPannelCommand { get; set; }

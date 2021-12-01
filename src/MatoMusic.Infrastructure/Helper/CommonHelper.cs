@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Acr.UserDialogs;
 
 namespace MatoMusic.Infrastructure.Helper
 {
@@ -35,16 +34,6 @@ namespace MatoMusic.Infrastructure.Helper
                 Debug.WriteLine(k + " ");
             }
             return arr;
-        }
-        public static void ShowMsg(string msg)
-        {
-            UserDialogs.Instance.Alert(msg);
-
-        }
-
-        public static void ShowNoAuthorized()
-        {
-            UserDialogs.Instance.Alert("MatoPlayer需要您媒体库的权限，劳烦至「设置」「隐私权」「媒体与AppleMusic」 打开权限,谢谢", "需要权限");
         }
 
         public static void GoNavigate(string v, object[] vs)
