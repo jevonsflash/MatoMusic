@@ -15,7 +15,7 @@ namespace MatoMusic.Core
         {
 
         }
-        public Queue(string musicTitle, int rank, int musicInfoId)
+        public Queue(string musicTitle, int rank, long musicInfoId)
         {
             MusicTitle = musicTitle;
             Rank = rank;
@@ -25,7 +25,7 @@ namespace MatoMusic.Core
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public override long Id { get; set; }
 
-        public int MusicInfoId { get; set; }
+        public long MusicInfoId { get; set; }
 
         public int Rank { get; set; }
 

@@ -7,7 +7,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using MatoMusic.Infrastructure.Helper;
 using Abp.Dependency;
-using MatoMusic.Core.Interfaces;
 
 namespace MatoMusic.Core
 {

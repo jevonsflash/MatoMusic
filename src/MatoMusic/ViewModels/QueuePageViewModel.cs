@@ -11,7 +11,6 @@ using MatoMusic.Core.ViewModel;
 using Microsoft.Maui.Controls;
 using MatoMusic.Infrastructure.Helper;
 using Abp.Dependency;
-using MatoMusic.Core.Interfaces;
 using MatoMusic;
 
 namespace ProjectMato.ViewModel;
@@ -24,7 +23,8 @@ public class QueuePageViewModel : ViewModelBase, ISingletonDependency
     private readonly IMusicSystem musicSystem;
     private readonly MusicRelatedViewModel musicRelatedViewModel;
 
-    public QueuePageViewModel(IMusicInfoManager musicInfoManager, IMusicSystem musicSystem, MusicRelatedViewModel musicRelatedViewModel)
+    public QueuePageViewModel(IMusicInfoManager musicInfoManager
+        , MusicRelatedViewModel musicRelatedViewModel)
     {
         this.DeleteCommand = new Command(DeleteAction,c => true);
         this.CleanQueueCommand = new Command(CleanQueueAction,CanDoAll );
@@ -33,10 +33,10 @@ public class QueuePageViewModel : ViewModelBase, ISingletonDependency
         this.PlayAllCommand = new Command(PlayAllAction,c => true );
         this.PatchupCommand = new Command(PatchupAction,CanDoAll );
         this.PropertyChanged += QueuePageViewModel_PropertyChanged;
+        musicSystem = DependencyService.Get<IMusicSystem>();
         musicSystem.RebuildMusicInfos(MusicSystem_OnRebuildMusicInfosFinished);
         UserDialogs.Instance.ShowLoading();
         this.musicInfoManager = musicInfoManager;
-        this.musicSystem = musicSystem;
         this.musicRelatedViewModel = musicRelatedViewModel;
         this.musicRelatedViewModel.OnMusicChanged += MusicRelatedViewModel_OnMusicChanged;
 

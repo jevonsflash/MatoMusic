@@ -2,7 +2,6 @@
 using Abp.Dependency;
 using Acr.UserDialogs;
 using MatoMusic.Core;
-using MatoMusic.Core.Interfaces;
 using MatoMusic.Core.ViewModel;
 using MatoMusic.Infrastructure.Helper;
 using Microsoft.Maui.Controls;
@@ -11,16 +10,16 @@ namespace MatoMusic.ViewModels
 {
     public class NowPlayingPageViewModel : ViewModelBase, ISingletonDependency
     {
-        private readonly IMusicSystem musicSystem;
+        private readonly IMusicSystem musicSystem ;
         private readonly IMusicInfoManager musicInfoManager;
         private readonly MusicRelatedViewModel musicRelatedViewModel;
 
-        public NowPlayingPageViewModel(IMusicSystem musicSystem, IMusicInfoManager musicInfoManager, MusicRelatedViewModel musicRelatedViewModel)
+        public NowPlayingPageViewModel(IMusicInfoManager musicInfoManager, MusicRelatedViewModel musicRelatedViewModel)
         {
             SwitchPannelCommand = new Command(SwitchPannelAction, c => true);
             PlayAllCommand = new Command(PlayAllAction, c => true);
             IsLrcPanel = false;
-            this.musicSystem = musicSystem;
+            musicSystem = DependencyService.Get<IMusicSystem>();
             this.musicInfoManager = musicInfoManager;
             this.musicRelatedViewModel = musicRelatedViewModel;
         }

@@ -1,23 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text.RegularExpressions;
-using MediaPlayer;
-using Microsoft.International.Converters.PinYinConverter;
 using System.Threading.Tasks;
-using System.Collections.ObjectModel;
-using MatoMusic.Infrastructure;
 using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
 using Abp.EntityFrameworkCore.Repositories;
-using Abp.Dependency;
-using Microsoft.Maui.Controls;
 using MatoMusic.Core.Models;
 using MatoMusic.Core.ViewModel;
+using MatoMusic.Infrastructure;
+using Microsoft.International.Converters.PinYinConverter;
+using Microsoft.Maui.Controls;
+using Windows.Storage;
+using Windows.Storage.FileProperties;
+using Windows.Storage.Streams;
 
 namespace MatoMusic.Core
 {
-    public partial class MusicInfoManager : IMusicInfoManager, ISingletonDependency
+    public partial class MusicInfoManager : IMusicInfoManager
     {
         private const int MyFavouriteIndex = 1;
         private readonly IRepository<Queue, long> queueRepository;
@@ -26,14 +27,15 @@ namespace MatoMusic.Core
         private readonly IUnitOfWorkManager unitOfWorkManager;
         private readonly IMusicSystem _musicSystem;
         private readonly MusicRelatedViewModel musicRelatedViewModel;
+
         List<MusicInfo> _musicInfos;
+
 
         public MusicInfoManager(IRepository<Queue, long> queueRepository,
             IRepository<PlaylistItem, long> playlistItemRepository,
             IRepository<Playlist, long> playlistRepository,
             IUnitOfWorkManager unitOfWorkManager,
-            MusicRelatedViewModel musicRelatedViewModel
-            )
+            MusicRelatedViewModel musicRelatedViewModel)
         {
             this.queueRepository = queueRepository;
             this.playlistItemRepository = playlistItemRepository;
@@ -43,19 +45,109 @@ namespace MatoMusic.Core
             this.musicRelatedViewModel = musicRelatedViewModel;
         }
 
-        private MPMediaQuery _mediaQuery;
 
-        public MPMediaQuery MediaQuery
+        private async Task<List<MusicInfo>> SetMusicListAsync(StorageFolder musicFolder = null)
         {
-            get
+
+            var localSongs = new List<MusicInfo>();
+            List<StorageFile> songfiles = new List<StorageFile>();
+            if (musicFolder == null)
             {
-                if (_mediaQuery == null)
-                {
-                    _mediaQuery = new MPMediaQuery();
-                }
-                return _mediaQuery;
+                musicFolder = KnownFolders.MusicLibrary;
+            }
+
+            await GetLocalSongsAysnc(songfiles, musicFolder);
+            localSongs = await PopulateSongListAsync(songfiles);
+
+            return localSongs;
+
+        }
+        /// <summary>
+        /// 该方法用于扫描某个文件夹下的歌曲文件
+        /// </summary>
+        /// <param name="songs">歌曲集合</param>
+        /// <param name="parent">要扫描的文件夹</param>
+        private async Task GetLocalSongsAysnc(List<StorageFile> songFiles, StorageFolder parent)
+        {
+
+            var aa = parent.GetFilesAsync();
+            foreach (var item in await parent.GetFilesAsync())
+            {
+                if (item.FileType == ".mp3")
+                    songFiles.Add(item);
+            }
+            foreach (var folder in await parent.GetFoldersAsync())
+            {
+                await GetLocalSongsAysnc(songFiles, folder);
             }
         }
+        /// <summary>
+        /// 该方法用于将songFiles里的文件转变为songs里的ViewModel
+        /// </summary>
+        /// <param name="localSongs">可显示的歌曲</param>
+        /// <param name="songFiles">歌曲文件列表</param>
+        /// <returns></returns>
+        private async Task<List<MusicInfo>> PopulateSongListAsync(List<StorageFile> songFiles)
+        {
+
+            var localSongs = new List<MusicInfo>();
+            int Id = 1;
+
+            foreach (var file in songFiles)
+            {
+                // 1. 获取文件信息
+                MusicProperties musicProperty = await file.Properties.GetMusicPropertiesAsync();
+                if (string.IsNullOrEmpty(musicProperty.Title))
+                    continue;
+
+                StorageItemThumbnail currentThumb = await file.GetThumbnailAsync(ThumbnailMode.MusicView, 60, ThumbnailOptions.UseCurrentScale);
+
+                // 2.将文件信息转换为数据模型
+                MusicInfo song = new MusicInfo();
+
+                string coverUri = "ms-appx:///Assets/Default/Default.jpg";
+
+                song.Id = Id;
+                song.Url = file.Path;
+                song.Title = musicProperty.Title;
+                song.GroupHeader = GetGroupHeader(song.Title);
+                if (!string.IsNullOrEmpty(musicProperty.Artist))
+                    song.Artist = musicProperty.Artist;
+                else
+                    song.Artist = "未知歌手";
+                if (!string.IsNullOrEmpty(musicProperty.Album))
+                    song.AlbumTitle = musicProperty.Album;
+                else
+                    song.AlbumTitle = "未知唱片";
+                song.Duration = (ulong)musicProperty.Duration.TotalSeconds;
+
+
+                //3. 添加至UI集合中
+
+                var task01 = SaveImagesAsync(file, song);
+                var result = await task01;
+                var task02 = task01.ContinueWith((e) =>
+                  {
+                      if (result.IsSucess)
+                      {
+                          song.AlbumArtPath = result.Result;
+                      }
+                      else
+                      {
+                          song.AlbumArtPath = coverUri;
+
+                      }
+                  });
+
+                Task.WaitAll(task01, task02);
+                song.IsInitFinished = true;
+                localSongs.Add(song);
+                Id++;
+
+            }
+            return localSongs;
+        }
+
         /// <summary>
         /// 获取分组包装好的MusicInfo集合
         /// </summary>
@@ -67,11 +159,11 @@ namespace MatoMusic.Core
             var isSucc = await GetMusicInfos();
             if (!isSucc.IsSucess)
             {
+                return result;
                 //CommonHelper.ShowNoAuthorized();
 
             }
             list = isSucc.Result;
-
             list.ForEach(c =>
             {
                 result.Add(c, c.GroupHeader);
@@ -136,24 +228,8 @@ namespace MatoMusic.Core
 
         private bool MediaLibraryAuthorization()
         {
-            var result = false;
-            var status = MPMediaLibrary.AuthorizationStatus;
-            switch (status)
-            {
-                case MPMediaLibraryAuthorizationStatus.Authorized:
-                    result = true;
-                    break;
-                case MPMediaLibraryAuthorizationStatus.NotDetermined:
-                    MPMediaLibrary.RequestAuthorization((c) =>
-                    {
-                        result = c == MPMediaLibraryAuthorizationStatus.Authorized;
-                    });
-                    break;
-                case MPMediaLibraryAuthorizationStatus.Denied:
-                case MPMediaLibraryAuthorizationStatus.Restricted:
-                    result = false;
-                    break;
-            }
+            var result = true;
+            //权限验证
             return result;
         }
 
@@ -164,34 +240,11 @@ namespace MatoMusic.Core
         public partial async Task<InfoResult<List<MusicInfo>>> GetMusicInfos()
         {
             List<MusicInfo> musicInfos;
-
             var result = false;
             if (MediaLibraryAuthorization())
             {
-                musicInfos = await Task.Run(() =>
-                {
-                    var Infos = (from item in MediaQuery.Items
-                                 where item.MediaType == MPMediaType.Music
-                                 select new MusicInfo()
-                                 {
-                                     Id = (int)item.PersistentID,
-                                     Title = item.Title,
-                                     Url = item.AssetURL.ToString(),
-                                     Duration = Convert.ToUInt64(item.PlaybackDuration),
-
-                                     AlbumTitle = item.AlbumTitle,
-                                     Artist = item.Artist,
-                                     AlbumArt = GetAlbumArtSource(item),
-                                     GroupHeader = GetGroupHeader(item.Title),
-                                     IsFavourite = GetIsMyFavouriteContains(item.Title).Result,
-                                     IsInitFinished = true
-
-                                 }).ToList();
-                    return Infos;
-                });
-
+                musicInfos = await SetMusicListAsync();
                 result = true;
-
             }
             else
             {
@@ -210,43 +263,36 @@ namespace MatoMusic.Core
         public partial async Task<InfoResult<List<AlbumInfo>>> GetAlbumInfos()
         {
             List<AlbumInfo> albumInfo;
-
             var result = false;
-
             if (MediaLibraryAuthorization())
             {
 
-                albumInfo = await Task.Run(() =>
-                {
 
-                    var info = (from item in MediaQuery.Items
-                                where item.MediaType == MPMediaType.Music
-                                group item by item.AlbumTitle
-                          into c
-                                select new AlbumInfo()
-                                {
-                                    Title = c.Key,
-                                    GroupHeader = GetGroupHeader(c.Key),
+                albumInfo = (from item in await SetMusicListAsync()
 
-                                    AlbumArt = GetAlbumArtSource(c.FirstOrDefault()),
-                                    Musics = new ObservableCollection<MusicInfo>(c.Select(d => new MusicInfo()
-                                    {
-                                        Id = (int)d.PersistentID,
-                                        Title = d.Title,
-                                        Url = d.AssetURL.ToString(),
-                                        Duration = Convert.ToUInt64(d.PlaybackDuration),
-                                        AlbumTitle = d.AlbumTitle,
-                                        Artist = d.Artist,
-                                        AlbumArt = GetAlbumArtSource(d),
-                                        IsFavourite = GetIsMyFavouriteContains(d.Title).Result,
-                                        IsInitFinished = true
+                             group item by item.AlbumTitle
+                    into c
+                             select new AlbumInfo()
+                             {
+                                 Title = c.Key,
+                                 GroupHeader = GetGroupHeader(c.Key),
+                                 Artist = c.FirstOrDefault().Artist,
+                                 AlbumArtPath = c.FirstOrDefault().AlbumArtPath,
+                                 Musics = new ObservableCollection<MusicInfo>(c.Select(d => new MusicInfo()
+                                 {
+                                     Id = d.Id,
+                                     Title = d.Title,
+                                     Duration = d.Duration,
+                                     Url = d.Url,
+                                     AlbumTitle = d.AlbumTitle,
+                                     Artist = d.Artist,
+                                     AlbumArtPath = d.AlbumArtPath,
+                                     IsFavourite = GetIsMyFavouriteContains(d.Title).Result,
+                                     IsInitFinished = true
 
-                                    }))
+                                 }))
 
-                                }).ToList();
-                    return info;
-                });
-
+                             }).ToList();
                 result = true;
 
             }
@@ -270,36 +316,31 @@ namespace MatoMusic.Core
             var result = false;
             if (MediaLibraryAuthorization())
             {
-                artistInfo = await Task.Run(() =>
-                {
 
 
-                    var Info = (from item in MediaQuery.Items
-                                where item.MediaType == MPMediaType.Music
-                                group item by item.Artist
-                        into c
-                                select new ArtistInfo()
-                                {
-                                    Title = c.Key,
-                                    GroupHeader = GetGroupHeader(c.Key),
-                                    Musics = new ObservableCollection<MusicInfo>(c.Select(d => new MusicInfo()
-                                    {
-                                        Id = (int)d.PersistentID,
-                                        Title = d.Title,
-                                        Duration = Convert.ToUInt64(d.PlaybackDuration),
-                                        Url = d.AssetURL.ToString(),
-                                        AlbumTitle = d.AlbumTitle,
-                                        Artist = d.Artist,
-                                        AlbumArt = GetAlbumArtSource(d),
-                                        IsFavourite = GetIsMyFavouriteContains(d.Title).Result,
-                                        IsInitFinished = true
+                artistInfo = (from item in await SetMusicListAsync()
+                              group item by item.Artist
+                    into c
+                              select new ArtistInfo()
+                              {
+                                  Title = c.Key,
+                                  AlbumArtPath = c.FirstOrDefault().AlbumArtPath,
+                                  GroupHeader = GetGroupHeader(c.Key),
+                                  Musics = new ObservableCollection<MusicInfo>(c.Select(d => new MusicInfo()
+                                  {
+                                      Id = d.Id,
+                                      Title = d.Title,
+                                      Duration = d.Duration,
+                                      Url = d.Url,
+                                      AlbumTitle = d.AlbumTitle,
+                                      Artist = d.Artist,
+                                      AlbumArtPath = d.AlbumArtPath,
+                                      IsFavourite = GetIsMyFavouriteContains(d.Title).Result,
+                                      IsInitFinished = true
 
-                                    }))
+                                  }))
 
-                                }).ToList();
-                    return Info;
-                });
-
+                              }).ToList();
                 result = true;
 
             }
@@ -309,8 +350,6 @@ namespace MatoMusic.Core
                 result = false;
             }
             return new InfoResult<List<ArtistInfo>>(result, artistInfo);
-
-
         }
 
         /// <summary>
@@ -801,6 +840,7 @@ namespace MatoMusic.Core
             return await DeletePlaylist(playlist.Id);
 
         }
+
         /// <summary>
         /// 获取一个字符串的标题头
         /// </summary>
@@ -835,24 +875,82 @@ namespace MatoMusic.Core
 
         }
 
-        /// <summary>
-        /// 获取专辑封面Source
-        /// </summary>
-        /// <param name="item"></param>
-        /// <returns></returns>
-        private ImageSource GetAlbumArtSource(MPMediaItem item)
+
+        private async Task<InfoResult<string>> SaveImagesAsync(StorageFile file, MusicInfo mediafile)
         {
-            var _MPMediaItemArtwork = item.Artwork;
-            if (_MPMediaItemArtwork != null)
+            var FileName = string.Empty;
+            var albumArt = AlbumArtFileExists(mediafile, out FileName);
+            if (!albumArt)
             {
-                var _UIImage = _MPMediaItemArtwork.ImageWithSize(new CoreGraphics.CGSize(200, 200));
-                var result = ImageSource.FromStream(() => _UIImage.AsPNG().AsStream());
-                return result;
+                var albumartFolder = ApplicationData.Current.LocalCacheFolder;
+
+                return new InfoResult<string>(true, albumartFolder.Path + FileName);
             }
-            else
+
+            try
             {
-                return null;
+                using (StorageItemThumbnail thumbnail = await file.GetThumbnailAsync(ThumbnailMode.MusicView, 300, ThumbnailOptions.UseCurrentScale))
+                {
+                    if (thumbnail == null)
+                    {
+                        return new InfoResult<string>(false);
+                    }
+
+                    switch (thumbnail.Type)
+                    {
+                        case ThumbnailType.Image:
+                            var albumart = await ApplicationData.Current.LocalCacheFolder.CreateFileAsync(FileName, CreationCollisionOption.FailIfExists);
+                            IBuffer buf;
+                            Windows.Storage.Streams.Buffer inputBuffer = new Windows.Storage.Streams.Buffer(1024);
+                            using (IRandomAccessStream albumstream = await albumart.OpenAsync(FileAccessMode.ReadWrite))
+                            {
+                                while ((buf = await thumbnail.ReadAsync(inputBuffer, inputBuffer.Capacity, InputStreamOptions.None)).Length > 0)
+                                {
+                                    await albumstream.WriteAsync(buf);
+                                }
+
+                                return new InfoResult<string>(true, albumart.Path);
+                            }
+
+                        //case ThumbnailType.Icon:
+                        //    using (TagLib.File tagFile = TagLib.File.Create(new SimpleFileAbstraction(file), TagLib.ReadStyle.Average))
+                        //    {
+                        //        if (tagFile.Tag.Pictures.Length >= 1)
+                        //        {
+                        //            var image = await ApplicationData.Current.LocalCacheFolder.CreateFileAsync(@"AlbumArts\" + albumArt.FileName + ".jpg", CreationCollisionOption.FailIfExists);
+
+                        //            using (var albumstream = await image.OpenStreamForWriteAsync())
+                        //            {
+                        //                await albumstream.WriteAsync(tagFile.Tag.Pictures[0].Data.Data, 0, tagFile.Tag.Pictures[0].Data.Data.Length);
+                        //            }
+                        //            return true;
+                        //        }
+                        //    }
+                        //  break;
+                        default:
+                            break;
+                    }
+                }
             }
+            catch (Exception ex)
+            {
+
+            }
+
+            return new InfoResult<string>(false);
+        }
+        private bool AlbumArtFileExists(MusicInfo file, out string FilePath)
+        {
+            var albumartFolder = ApplicationData.Current.LocalCacheFolder;
+            var md5Path = (file.AlbumTitle + file.Artist).ToLower();
+            var path = @"\AlbumArts\" + md5Path + ".jpg";
+            FilePath = path;
+            if (!System.IO.File.Exists(albumartFolder.Path + path))
+            {
+                //var albumart = await albumartFolder.CreateFileAsync(@"AlbumArts\" + md5Path + ".jpg", CreationCollisionOption.FailIfExists).AsTask().ConfigureAwait(false);
+                return true;
+            }
+            return false;
         }
 
 

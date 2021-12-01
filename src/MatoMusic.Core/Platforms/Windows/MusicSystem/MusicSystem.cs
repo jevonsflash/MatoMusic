@@ -2,47 +2,34 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Abp.Dependency;
-using Android.App;
-using Android.Content;
-using Android.Media;
-using Android.OS;
+using MatoMusic.Core;
 using MatoMusic.Infrastructure.Helper;
+using Microsoft.Maui.Controls;
+using Windows.Media.Core;
+using Windows.Media.Playback;
+using Windows.Storage;
 
 namespace MatoMusic.Core
 {
-    public class CompleteListener : Service, MediaPlayer.IOnCompletionListener
+    public class MusicSystem : IMusicSystem
     {
-        public event EventHandler<MediaPlayer> OnComplete;
-
-        public void OnCompletion(MediaPlayer mp)
-        {
-            OnComplete?.Invoke(this, mp);
-
-        }
-
-        public override IBinder OnBind(Intent intent)
-        {
-            return null;
-
-        }
-    }
-    public partial class MusicSystem : IMusicSystem
-    {
-        private readonly IMusicInfoManager _musicInfoManager;
-
         public event EventHandler<bool> OnPlayFinished;
 
         public event EventHandler OnRebuildMusicInfosFinished;
-
         public event EventHandler<double> OnProgressChanged;
-
         public event EventHandler<bool> OnPlayStatusChanged;
 
-        public MusicSystem(IMusicInfoManager musicInfoManager)
+        private IMusicInfoManager MusicInfoManager => DependencyService.Get<IMusicInfoManager>();
+
+        public MusicSystem()
         {
 
-            _musicInfoManager = musicInfoManager;
+            InitializeAudioListener();
+        }
+
+        private void InitializeAudioListener()
+        {
+
         }
 
 
@@ -73,9 +60,9 @@ namespace MatoMusic.Core
                 {
 
                     _currentPlayer = new MediaPlayer();
-                    var cl = new CompleteListener();
-                    _currentPlayer.SetOnCompletionListener(cl);
-                    cl.OnComplete += Cl_OnComplete;
+
+
+
                 }
                 return _currentPlayer;
             }
@@ -83,11 +70,7 @@ namespace MatoMusic.Core
 
         private void Cl_OnComplete(object sender, MediaPlayer e)
         {
-            if (!CurrentPlayer.Looping && e.Duration > 0.0)
-            {
-                OnPlayFinished?.Invoke(null, true);
-
-            }
+            OnPlayFinished?.Invoke(null, true);
         }
 
         private List<MusicInfo> musicInfos;
@@ -106,34 +89,47 @@ namespace MatoMusic.Core
 
         public async void RebuildMusicInfos()
         {
-            var task01 = _musicInfoManager.GetQueueEntry();
-            musicInfos = await task01;
-            Task.WaitAll(task01);
-            //this.UpdateShuffleMap();
+            musicInfos = await MusicInfoManager.GetQueueEntry();
             OnRebuildMusicInfosFinished?.Invoke(this, EventArgs.Empty);
-
         }
 
         public async void RebuildMusicInfos(Action callback)
         {
-            var task01 = _musicInfoManager.GetQueueEntry();
-            musicInfos = await task01;
-            Task.WaitAll(task01);
-            //this.UpdateShuffleMap();
+            musicInfos = await MusicInfoManager.GetQueueEntry();
             callback?.Invoke();
         }
-
         public int LastIndex { get { return MusicInfos.FindLastIndex(c => true); } }
 
 
-        public double Duration { get { return CurrentPlayer.Duration; } }
+        public double Duration { get { return CurrentPlayer.PlaybackSession.NaturalDuration.TotalSeconds; } }
 
 
-        public double CurrentTime { get { return CurrentPlayer.CurrentPosition; } }
+        public double CurrentTime { get { return CurrentPlayer.PlaybackSession.Position.TotalSeconds; } }
 
 
-        public bool IsPlaying { get { return CurrentPlayer.IsPlaying; } }
+        public bool IsPlaying { get { return GetIsPlaying(CurrentPlayer.PlaybackSession.PlaybackState); } }
 
+
+        private bool GetIsPlaying(MediaPlaybackState status)
+        {
+            var result = false;
+            switch (status)
+            {
+                case MediaPlaybackState.None:
+                case MediaPlaybackState.Opening:
+                case MediaPlaybackState.Buffering:
+                case MediaPlaybackState.Paused:
+                    result = false;
+                    break;
+                case MediaPlaybackState.Playing:
+                    result = true;
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(status), status, null);
+            }
+            return result;
+        }
 
         public bool IsInitFinished { get { return true; } }
 
@@ -141,17 +137,13 @@ namespace MatoMusic.Core
         public void SeekTo(double position)
 
         {
-            CurrentPlayer.SeekTo((int)position * 1000);
+            CurrentPlayer.Position = new TimeSpan(0, 0, 0, (int)position);
 
         }
 
         public MusicInfo GetNextMusic(MusicInfo current, bool isShuffle)
         {
             MusicInfo currentMusicInfo = null;
-            if (current == null)
-            {
-                return null;
-            }
             var index = GetMusicIndex(current);
 
             if (!isShuffle)
@@ -170,7 +162,7 @@ namespace MatoMusic.Core
                 index = GetShuffleMusicIndex(index, 1);
             }
 
-            if (MusicInfos.Count != 0 && index != -1)
+            if (MusicInfos.Count != 0)
             {
                 currentMusicInfo = MusicInfos[index];
             }
@@ -180,11 +172,6 @@ namespace MatoMusic.Core
         public MusicInfo GetPreMusic(MusicInfo current, bool isShuffle)
         {
             MusicInfo currentMusicInfo = null;
-
-            if (current == null)
-            {
-                return null;
-            }
             var index = GetMusicIndex(current);
             if (!isShuffle)
             {
@@ -202,7 +189,7 @@ namespace MatoMusic.Core
                 index = GetShuffleMusicIndex(index, -1);
             }
 
-            if (MusicInfos.Count != 0 && index != -1)
+            if (MusicInfos.Count != 0)
             {
                 currentMusicInfo = MusicInfos[index];
             }
@@ -222,36 +209,52 @@ namespace MatoMusic.Core
             return result;
         }
 
-        public void InitPlayer(MusicInfo musicInfo)
+        public async void InitPlayer(MusicInfo musicInfo)
         {
-            CurrentPlayer.Reset();
-            CurrentPlayer.SetDataSource(musicInfo.Url);
+            CurrentPlayer.CurrentStateChanged -= CurrentPlayer_CurrentStateChanged;
 
-            CurrentPlayer.Prepare();
+            CurrentPlayer.Dispose();
+            CurrentPlayer = new MediaPlayer();
+
+            var results = StorageFile.GetFileFromPathAsync(musicInfo.Url);
+
+            StorageFile file = await results;
+            while (results.Status != Windows.Foundation.AsyncStatus.Completed)
+            {
+
+            }
+            CurrentPlayer.Source =
+                MediaSource.CreateFromStream(await file.OpenAsync(FileAccessMode.Read), file.ContentType);
+            CurrentPlayer.CurrentStateChanged += CurrentPlayer_CurrentStateChanged; ;
+
+
+        }
+
+        private void CurrentPlayer_CurrentStateChanged(MediaPlayer sender, object args)
+        {
+
         }
 
         public void Play(MusicInfo currentMusic)
         {
             if (currentMusic != null)
             {
-                CurrentPlayer?.Start();
+                CurrentPlayer?.Play();
             }
         }
 
         public void Stop()
         {
-            if (CurrentPlayer.IsPlaying)
+            if (GetIsPlaying(CurrentPlayer.PlaybackSession.PlaybackState))
             {
-                CurrentPlayer.SeekTo(0);
-                CurrentPlayer.Pause();
-
+                CurrentPlayer.Dispose();
             }
         }
 
         public void PauseOrResume()
         {
 
-            var status = CurrentPlayer.IsPlaying;
+            var status = GetIsPlaying(CurrentPlayer.PlaybackSession.PlaybackState);
             PauseOrResume(status);
         }
 
@@ -261,12 +264,11 @@ namespace MatoMusic.Core
             if (status)
             {
                 CurrentPlayer.Pause();
-                OnPlayStatusChanged?.Invoke(this, false);
+
             }
             else
             {
-                CurrentPlayer.Start();
-                OnPlayStatusChanged?.Invoke(this, true);
+                CurrentPlayer.Play();
             }
 
         }
@@ -292,24 +294,15 @@ namespace MatoMusic.Core
             {
                 newItemIndex = 0;
             }
-            var shuffleMapCount = shuffleMap.Count();
-
-            var musicInfosCount = MusicInfos.Count();
-
-            if (shuffleMapCount != musicInfosCount)
-            {
-                shuffleMap = CommonHelper.GetRandomArry(0, LastIndex);
-                shuffleMapCount = shuffleMap.Count();
-            }
-
-            if (shuffleMapCount > 0 && newItemIndex < shuffleMapCount)
+            try
             {
                 var resultContent = ShuffleMap[newItemIndex];
                 return resultContent;
+
             }
-            else
+            catch (Exception e)
             {
-                return -1;
+                return ShuffleMap[0];
             }
         }
 
@@ -326,8 +319,9 @@ namespace MatoMusic.Core
         {
             if (CurrentPlayer != null)
             {
-                CurrentPlayer.Looping = isRepeatOne;
+                CurrentPlayer.IsLoopingEnabled = isRepeatOne;
             }
         }
+
     }
 }

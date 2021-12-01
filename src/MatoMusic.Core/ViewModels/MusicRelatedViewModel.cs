@@ -5,7 +5,6 @@ using System.Linq;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.Maui.Controls;
-using MatoMusic.Core.Interfaces;
 using Abp.Dependency;
 using Microsoft.Maui.Essentials;
 using Abp.Configuration;
@@ -43,8 +42,8 @@ namespace MatoMusic.Core.ViewModel
         }
 
         public MusicRelatedViewModel(
-            IMusicInfoManager musicInfoManager, 
-            IMusicSystem musicSystem
+            IMusicInfoManager musicInfoManager
+            
             )
         {
             Device.StartTimer(new TimeSpan(0, 0, 0, 0, 100), DoUpdate);
@@ -56,10 +55,11 @@ namespace MatoMusic.Core.ViewModel
             this.ShuffleCommand = new Command(ShuffleAction,CanPlayExcute );
             this.FavouriteCommand = new Command(FavouriteAction,CanPlayExcute );
             this.PropertyChanged += DetailPageViewModel_PropertyChanged;
+            musicSystem = DependencyService.Get<IMusicSystem>();
+
             musicSystem.OnPlayFinished += MusicSystem_OnMusicChanged;
             musicSystem.RebuildMusicInfos(MusicSystem_OnRebuildMusicInfosFinished);
             this.musicInfoManager = musicInfoManager;
-            this.musicSystem = musicSystem;
         }
 
         private void MusicSystem_OnRebuildMusicInfosFinished()

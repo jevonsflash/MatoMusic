@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Abp.Dependency;
 
-namespace MatoMusic.Core.Interfaces
+namespace MatoMusic.Core
 {
     public interface IMusicSystem
     {

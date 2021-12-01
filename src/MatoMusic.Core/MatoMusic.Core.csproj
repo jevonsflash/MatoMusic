@@ -1,7 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net6.0</TargetFrameworks>
+		<TargetFrameworks>net6.0-android;net6.0-ios</TargetFrameworks>
+		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows')) and '$(MSBuildRuntimeType)' == 'Full'">$(TargetFrameworks);net6.0-windows10.0.19041</TargetFrameworks>
 		<UseMaui>true</UseMaui>
 		<SingleProject>true</SingleProject>
 
@@ -11,16 +12,6 @@
 		<SupportedOSPlatformVersion Condition="$(TargetFramework.Contains('-windows'))">10.0.17763.0</SupportedOSPlatformVersion>
 		<TargetPlatformMinVersion Condition="$(TargetFramework.Contains('-windows'))">10.0.17763.0</TargetPlatformMinVersion>
 	</PropertyGroup>
-
-	<ItemGroup>
-	  <Compile Remove="MusicInfoManager\MusicInfoManager.cs" />
-	  <Compile Remove="MusicSystem\MusicSystem.cs" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <None Include="MusicInfoManager\MusicInfoManager.cs" />
-	  <None Include="MusicSystem\MusicSystem.cs" />
-	</ItemGroup>
 
 	<ItemGroup>
 	  <PackageReference Include="Castle.Windsor.MsDependencyInjection" Version="3.4.0" />
