@@ -5,8 +5,11 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Abp.Configuration;
 using Abp.Dependency;
+using Abp.Localization;
+using MatoMusic.Common;
 using MatoMusic.Core;
 using MatoMusic.Core.Helper;
+using MatoMusic.Core.Localization;
 using MatoMusic.Core.Models;
 using MatoMusic.Core.Settings;
 using MatoMusic.Core.ViewModel;
@@ -22,8 +25,11 @@ namespace MatoMusic
         private MusicFunctionPage _musicFunctionPage;
         private PlaylistChoosePage _playlistChoosePage;
         private readonly ISettingManager settingManager;
+        private readonly ILocalizationManager localizationManager;
 
-        public NowPlayingPage(NowPlayingPageViewModel nowPlayingPageViewModel, ISettingManager settingManager
+        private INavigation PopupNavigation => Application.Current.MainPage.Navigation;
+
+        public NowPlayingPage(NowPlayingPageViewModel nowPlayingPageViewModel, ISettingManager settingManager, ILocalizationManager localizationManager
 )
         {
             InitializeComponent();
@@ -32,6 +38,7 @@ namespace MatoMusic
             this.Appearing += NowPlayingPage_Appearing;
             this.BindingContext = nowPlayingPageViewModel;
             this.settingManager = settingManager;
+            this.localizationManager = localizationManager;
         }
 
         private void NowPlayingPage_Appearing(object sender, EventArgs e)
@@ -131,70 +138,70 @@ namespace MatoMusic
 
 
             };
-            //_musicFunctionPage = new MusicFunctionPage(musicInfo, mainMenuCellInfos);
-            //_musicFunctionPage.OnFinished += MusicFunctionPage_OnFinished;
+            _musicFunctionPage = new MusicFunctionPage(musicInfo, mainMenuCellInfos);
+            _musicFunctionPage.OnFinished += MusicFunctionPage_OnFinished;
 
-            //PopupNavigation.PushAsync(_musicFunctionPage);
+            PopupNavigation.PushAsync(_musicFunctionPage);
 
         }
 
-        //private async void MusicFunctionPage_OnFinished(object sender, MusicFunctionEventArgs e)
-        //{
-        //    if (e.MusicInfo == null)
-        //    {
-        //        return;
-        //    }
-        //    await PopupNavigation.PopAllAsync();
-        //    if (e.MenuCellInfo.Code == "AddToPlaylist")
-        //    {
-        //        _playlistChoosePage = new PlaylistChoosePage();
-        //        _playlistChoosePage.OnFinished += (o, c) =>
-        //        {
-        //            if (c != null)
-        //            {
-        //                var result = MusicInfoManager.CreatePlaylistEntry(e.MusicInfo as MusicInfo, c.PlaylistId);
-        //                if (result)
-        //                {
-        //                    CommonHelper.ShowMsg(string.Format("{0}{1}", TranslateExtension.Translate("Msg_HasAdded"), c.Name));
-        //                }
-        //                else
-        //                {
-        //                    CommonHelper.ShowMsg(TranslateExtension.Translate("Msg_AddFaild"));
-        //                }
-        //            }
-        //            PopupNavigation.PopAsync();
-        //        };
-        //        await PopupNavigation.PushAsync(_playlistChoosePage);
+        private async void MusicFunctionPage_OnFinished(object sender, MusicFunctionEventArgs e)
+        {
+            if (e.MusicInfo == null)
+            {
+                return;
+            }
+            await PopupNavigation.PopToRootAsync();
+            if (e.MenuCellInfo.Code == "AddToPlaylist")
+            {
+                _playlistChoosePage = new PlaylistChoosePage();
+                _playlistChoosePage.OnFinished += async (o, c) =>
+                {
+                    if (c != null)
+                    {
+                        var result = await MusicInfoManager.CreatePlaylistEntry(e.MusicInfo as MusicInfo, c.Id);
+                        if (result)
+                        {
+                            CommonHelper.ShowMsg(string.Format("{0}{1}", localizationManager.GetString(MatoMusicConsts.LocalizationSourceName, "Msg_HasAdded"), c.Title));
+                        }
+                        else
+                        {
+                            CommonHelper.ShowMsg(localizationManager.GetString(MatoMusicConsts.LocalizationSourceName, "Msg_AddFaild"));
+                        }
+                    }
+                   await PopupNavigation.PopAsync();
+                };
+                await PopupNavigation.PushAsync(_playlistChoosePage);
 
-        //    }
+            }
 
-        //    else if (e.MenuCellInfo.Code == "GoAlbumPage")
-        //    {
-        //        List<AlbumInfo> list;
-        //        var isSucc = await MusicInfoManager.GetAlbumInfos();
-        //        if (!isSucc.IsSucess)
-        //        {
-        //            CommonHelper.ShowNoAuthorized();
-        //        }
-        //        list = isSucc.Result;
-        //        var albumInfo = list.Find(c => c.Title == (e.MusicInfo as MusicInfo).AlbumTitle);
-        //        CommonHelper.GoNavigate("MusicCollectionPage", new object[] { albumInfo });
-        //    }
-        //    else if (e.MenuCellInfo.Code == "GoArtistPage")
-        //    {
-        //        List<ArtistInfo> list;
-        //        var isSucc = await MusicInfoManager.GetArtistInfos();
-        //        if (!isSucc.IsSucess)
-        //        {
-        //            CommonHelper.ShowNoAuthorized();
+            else if (e.MenuCellInfo.Code == "GoAlbumPage")
+            {
+                List<AlbumInfo> list;
+                var isSucc = await MusicInfoManager.GetAlbumInfos();
+                if (!isSucc.IsSucess)
+                {
+                    CommonHelper.ShowNoAuthorized();
+                }
+                list = isSucc.Result;
+                var albumInfo = list.Find(c => c.Title == (e.MusicInfo as MusicInfo).AlbumTitle);
+                CommonHelper.GoNavigate("MusicCollectionPage", new object[] { albumInfo });
+            }
+            else if (e.MenuCellInfo.Code == "GoArtistPage")
+            {
+                List<ArtistInfo> list;
+                var isSucc = await MusicInfoManager.GetArtistInfos();
+                if (!isSucc.IsSucess)
+                {
+                    CommonHelper.ShowNoAuthorized();
 
-        //        }
-        //        list = isSucc.Result;
-        //        var artistInfo = list.Find(c => c.Title == (e.MusicInfo as MusicInfo).Artist);
-        //        CommonHelper.GoNavigate("MusicCollectionPage", new object[] { artistInfo });
-        //    }
+                }
+                list = isSucc.Result;
+                var artistInfo = list.Find(c => c.Title == (e.MusicInfo as MusicInfo).Artist);
+                CommonHelper.GoNavigate("MusicCollectionPage", new object[] { artistInfo });
+            }
 
-        //}
+        }
 
         private void LyricView_OnOnClosed(object sender, EventArgs e)
         {
@@ -210,21 +217,10 @@ namespace MatoMusic
 
         private void BindableObject_OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            //if (e.PropertyName == "IsVisible")
-            //{
-            //    var aa = (sender as LyricView).IsVisible;
-            //    Debug.WriteLine(aa);
-            //}
+            if (e.PropertyName == "IsVisible")
+            {
+            }
         }
 
-        //private void PreAlbumArt_OnFinish(object sender, CachedImageEvents.FinishEventArgs e)
-        //{
-        //    InitPreAlbumArtEdgeThickness();
-        //}
-
-        //private void NextAlbumArt_OnFinish(object sender, CachedImageEvents.FinishEventArgs e)
-        //{
-        //    InitNextAlbumArtEdgeThickness();
-        //}
     }
 }

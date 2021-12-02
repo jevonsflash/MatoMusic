@@ -1,0 +1,91 @@
+﻿<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MatoMusic.MusicMiniView"
+            >
+
+    <Grid HeightRequest="62"
+          BackgroundColor="{DynamicResource PhoneContrastBackgroundBrush}">
+        <Grid.GestureRecognizers>
+            <TapGestureRecognizer Tapped="TapGestureRecognizer_OnTapped"></TapGestureRecognizer>
+        </Grid.GestureRecognizers>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="62">
+            </ColumnDefinition>
+            <ColumnDefinition Width="1*">
+            </ColumnDefinition>
+            <ColumnDefinition Width="100">
+            </ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0"
+              BackgroundColor="#5E000000">
+            <Image x:Name="AlbumArtImage"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   HeightRequest="62"
+                   Source="{Binding CurrentMusic.AlbumArt ,Converter={StaticResource AlbumArtConverter}}">
+
+            </Image>
+        </Grid>
+        <Grid Grid.Column="1">
+            <Grid.GestureRecognizers>
+                <TapGestureRecognizer Tapped="TapGestureRecognizer_OnTapped"></TapGestureRecognizer>
+            </Grid.GestureRecognizers>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*">
+                </RowDefinition>
+                <RowDefinition Height="1*">
+                </RowDefinition>
+                <RowDefinition Height="1*">
+                </RowDefinition>
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0"
+                   HorizontalTextAlignment="Center"
+                   FontSize="{StaticResource TinyFontSize}"
+                   VerticalTextAlignment="Center"
+                   Text="正在播放"
+                   LineBreakMode="TailTruncation"
+                   TextColor="{DynamicResource PhoneForegroundBrush }">
+            </Label>
+            <Label Grid.Row="1"
+                   HorizontalTextAlignment="Center"
+                   VerticalTextAlignment="Center"
+                   Text="{Binding CurrentMusic.Title}"
+                   LineBreakMode="TailTruncation"
+                   TextColor="{DynamicResource PhoneForegroundBrush }">
+            </Label>
+            <Label Grid.Row="2"
+                   HorizontalTextAlignment="Center"
+                   VerticalTextAlignment="Center"
+                   FontSize="{StaticResource TinyFontSize}"                 
+                   Text="{Binding CurrentMusic.Artist}"
+                   LineBreakMode="TailTruncation"
+                   TextColor="{DynamicResource PhoneForegroundBrush}">
+            </Label>
+        </Grid>
+        <Grid Grid.Column="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Button Command="{Binding PlayCommand}"
+                    TextColor="{DynamicResource PhoneContrastForegroundBrush}"
+                    FontFamily="FontAwesome"
+                    Margin="0"
+                    FontSize="{StaticResource BodyFontSize}"
+                    Text="{Binding IsPlaying,Converter={StaticResource Bool2StringConverter},ConverterParameter=|} ">
+
+            </Button>
+            <Button Command="{Binding NextCommand}"
+                    Grid.Column="1"
+                    Margin="0"
+                    
+                    TextColor="{DynamicResource PhoneContrastForegroundBrush}"
+                    FontFamily="FontAwesome"
+                    FontSize="{StaticResource BodyFontSize}"
+                    Text="">
+
+            </Button>
+        </Grid>
+    </Grid>
+
+</ContentView>

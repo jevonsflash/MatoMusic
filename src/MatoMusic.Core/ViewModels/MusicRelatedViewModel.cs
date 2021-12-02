@@ -29,6 +29,8 @@ namespace MatoMusic.Core.ViewModel
 
         public bool IsInitFinished = false;
 
+        public Action RebuildMusicInfosHandler;
+        
         public event EventHandler OnMusicChanged;
         public static class Properties
         {
@@ -65,6 +67,17 @@ namespace MatoMusic.Core.ViewModel
            await musicSystem.RebuildMusicInfos(MusicSystem_OnRebuildMusicInfosFinished);
         }
 
+        public async Task RebuildMusicInfos()
+        {
+            await this.musicSystem.RebuildMusicInfos();
+        }
+
+        public async Task RebuildMusicInfos(Action callback)
+        {
+            await RebuildMusicInfos();
+            callback?.Invoke();
+        }
+
         private void MusicSystem_OnRebuildMusicInfosFinished()
         {
             //当队列初始化完成时初始化当前曲目
@@ -75,6 +88,7 @@ namespace MatoMusic.Core.ViewModel
             musicSystem.SetRepeatOneStatus(IsRepeatOne);
             musicSystem.OnPlayStatusChanged += MusicSystem_OnPlayStatusChanged;
             this._isInited = true;
+            RebuildMusicInfosHandler?.Invoke();
         }
 
         private void MusicSystem_OnPlayStatusChanged(object sender, bool e)

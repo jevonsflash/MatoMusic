@@ -85,8 +85,26 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Controls\EmptyContentView.xaml.cs">
+	    <DependentUpon>EmptyContentView.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Controls\MusicGroupHeaderView.xaml.cs">
+	    <DependentUpon>MusicGroupHeaderView.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Controls\MusicMiniView.xaml.cs">
+	    <DependentUpon>MusicMiniView.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Controls\PlayingMotionView.xaml.cs">
+	    <DependentUpon>PlayingMotionView.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Controls\MenuCell.xaml.cs">
 	    <DependentUpon>MenuCell.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\LibraryPage.xaml.cs">
+	    <DependentUpon>LibraryPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\QueuePage.xaml.cs">
+	    <DependentUpon>QueuePage.xaml</DependentUpon>
 	  </Compile>
 	  <Compile Update="Views\MusicFunctionPage.xaml.cs">
 	    <DependentUpon>MusicFunctionPage.xaml</DependentUpon>
@@ -100,7 +118,31 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="Controls\EmptyContentView.xaml">
+	    <SubType>Designer</SubType>
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Controls\MusicGroupHeaderView.xaml">
+	    <SubType>Designer</SubType>
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Controls\MusicMiniView.xaml">
+	    <SubType>Designer</SubType>
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Controls\PlayingMotionView.xaml">
+	    <SubType>Designer</SubType>
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Controls\MenuCell.xaml">
+	    <SubType>Designer</SubType>
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\LibraryPage.xaml">
+	    <SubType>Designer</SubType>
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\QueuePage.xaml">
 	    <SubType>Designer</SubType>
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

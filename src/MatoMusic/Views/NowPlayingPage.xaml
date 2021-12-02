@@ -9,7 +9,7 @@
                 <RowDefinition Height="*" />
                 <RowDefinition Height="42" />
                 <RowDefinition Height="28" />
-                <RowDefinition Height="108" />
+                <RowDefinition Height="128" />
                 <RowDefinition Height="38" />
             </Grid.RowDefinitions>
             <Grid Grid.RowSpan="5">
@@ -161,6 +161,7 @@
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
+                
                 <Button Command="{Binding FavouriteCommand}"
                             x:Name="FavouriteButton"
                             TextColor="{Binding CurrentMusic.IsFavourite,Converter={StaticResource Bool2StringConverter},ConverterParameter=Red|Gray}"
@@ -235,17 +236,16 @@
                             FontSize="{StaticResource BodyFontSize}"
                             TextColor="{Binding IsShuffle,Converter={StaticResource Bool2StringConverter},ConverterParameter=White|Gray}"
                             Text=""/>
-                <Grid Grid.Column="1"  HorizontalOptions="Center">
+                <Grid Grid.Column="1"  HorizontalOptions="Center" WidthRequest="216">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="48"></ColumnDefinition>
-                        <ColumnDefinition Width="108"></ColumnDefinition>
-                        <ColumnDefinition Width="48"></ColumnDefinition>
+                        <ColumnDefinition Width="1*"></ColumnDefinition>
+                        <ColumnDefinition Width="2*"></ColumnDefinition>
+                        <ColumnDefinition Width="1*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Button 
                             VerticalOptions="Center" 
                             Grid.Column="0"
                             Margin="0,10"
-                            WidthRequest="48"
                             Command="{Binding PreCommand}" 
                             FontFamily="FontAwesome"
                             FontSize="{StaticResource BodyFontSize}"
@@ -254,8 +254,6 @@
                     <Button 
                             VerticalOptions="Center"  
                             Grid.Column="1"
-                            HeightRequest="108"
-                            WidthRequest="108"
                             Margin="0"
                             Command="{Binding PlayCommand}" 
                             FontFamily="FontAwesome"
@@ -265,7 +263,6 @@
                     <Button VerticalOptions="Center" 
                                 Margin="0,10"
                                 Grid.Column="2"
-                            WidthRequest="48"
                             Command="{Binding NextCommand}" 
                                 FontFamily="FontAwesome"
                             FontSize="{StaticResource BodyFontSize}"

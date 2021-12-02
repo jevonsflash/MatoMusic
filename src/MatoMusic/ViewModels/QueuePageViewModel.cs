@@ -19,7 +19,6 @@ public class QueuePageViewModel : ViewModelBase, ISingletonDependency
     private PlaylistChoosePage _playlistChoosePage;
 
     private readonly IMusicInfoManager musicInfoManager;
-    private readonly IMusicSystem musicSystem;
     private readonly MusicRelatedViewModel musicRelatedViewModel;
 
     public QueuePageViewModel(IMusicInfoManager musicInfoManager
@@ -32,13 +31,10 @@ public class QueuePageViewModel : ViewModelBase, ISingletonDependency
         this.PlayAllCommand = new Command(PlayAllAction, c => true);
         this.PatchupCommand = new Command(PatchupAction, CanDoAll);
         this.PropertyChanged += QueuePageViewModel_PropertyChanged;
-        musicSystem = DependencyService.Get<IMusicSystem>();
-        musicSystem.MusicInfoManager = musicInfoManager;
-        musicSystem.RebuildMusicInfos(MusicSystem_OnRebuildMusicInfosFinished);
         this.musicInfoManager = musicInfoManager;
         this.musicRelatedViewModel = musicRelatedViewModel;
         this.musicRelatedViewModel.OnMusicChanged += MusicRelatedViewModel_OnMusicChanged;
-
+        this.musicRelatedViewModel.RebuildMusicInfosHandler = MusicSystem_OnRebuildMusicInfosFinished;
     }
 
     private void MusicRelatedViewModel_OnMusicChanged(object sender, EventArgs e)
@@ -166,7 +162,7 @@ public class QueuePageViewModel : ViewModelBase, ISingletonDependency
         CommonHelper.ShowMsg(L("Msg_QueueCleaned"));
     }
 
-    private void Musics_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+    private async void Musics_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
     {
         if (e.Action == NotifyCollectionChangedAction.Move)
         {
@@ -176,13 +172,13 @@ public class QueuePageViewModel : ViewModelBase, ISingletonDependency
         }
         else if (e.Action == NotifyCollectionChangedAction.Remove)
         {
-            musicInfoManager.DeleteMusicInfoFormQueueEntry(e.OldItems[0] as MusicInfo);
+            await musicInfoManager.DeleteMusicInfoFormQueueEntry(e.OldItems[0] as MusicInfo);
         }
         else if (e.Action == NotifyCollectionChangedAction.Reset)
         {
-            musicInfoManager.ClearQueue();
+            await musicInfoManager.ClearQueue();
         }
-        musicSystem.RebuildMusicInfos();
+        await musicRelatedViewModel.RebuildMusicInfos();
 
         RaiseAllExecuteChanged();
 
@@ -251,13 +247,13 @@ public class QueuePageViewModel : ViewModelBase, ISingletonDependency
 
     private async void InitMusics()
     {
-        Musics = new ObservableCollection<MusicInfo>(musicSystem.MusicInfos);
+        Musics = new ObservableCollection<MusicInfo>(musicRelatedViewModel.Musics);
         this.Musics.CollectionChanged += Musics_CollectionChanged;
     }
     private async void PlayAllAction(object obj)
     {
 
-        await musicSystem.RebuildMusicInfos(MusicSystem_OnRebuildMusicInfosFinished);
+        await musicRelatedViewModel.RebuildMusicInfos(MusicSystem_OnRebuildMusicInfosFinished);
 
         var isSucc = await musicInfoManager.GetMusicInfos();
         if (!isSucc.IsSucess)

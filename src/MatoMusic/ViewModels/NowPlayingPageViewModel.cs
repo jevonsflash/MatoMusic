@@ -9,7 +9,6 @@ namespace MatoMusic.ViewModels
 {
     public class NowPlayingPageViewModel : ViewModelBase, ISingletonDependency
     {
-        private readonly IMusicSystem musicSystem ;
         private readonly IMusicInfoManager musicInfoManager;
         private readonly MusicRelatedViewModel musicRelatedViewModel;
 
@@ -18,9 +17,6 @@ namespace MatoMusic.ViewModels
             SwitchPannelCommand = new Command(SwitchPannelAction, c => true);
             PlayAllCommand = new Command(PlayAllAction, c => true);
             IsLrcPanel = false;
-            musicSystem = DependencyService.Get<IMusicSystem>();
-            musicSystem.MusicInfoManager = musicInfoManager;
-
             this.musicInfoManager = musicInfoManager;
             this.musicRelatedViewModel = musicRelatedViewModel;
         }
@@ -62,7 +58,7 @@ namespace MatoMusic.ViewModels
 
         private async void PlayAllAction(object obj)
         {
-            await musicSystem.RebuildMusicInfos(MusicSystem_OnRebuildMusicInfosFinished);
+            await musicRelatedViewModel.RebuildMusicInfos(MusicSystem_OnRebuildMusicInfosFinished);
 
             var isSucc = await musicInfoManager.GetMusicInfos();
             if (!isSucc.IsSucess)
