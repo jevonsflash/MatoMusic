@@ -11,13 +11,13 @@ using MatoMusic.Core.Models;
 using MatoMusic.Core.ViewModel;
 using MatoMusic.Core.Helper;
 
-namespace ProjectMato.ViewModel
+namespace MatoMusic.ViewModels
 {
     public class PlaylistPageViewModel : ViewModelBase, ISingletonDependency
     {
         public PlaylistPageViewModel(IMusicInfoManager musicInfoManager, MusicRelatedViewModel musicRelatedViewModel)
         {
-            this.DeleteCommand = new Command(DeleteAction, c => true);
+            DeleteCommand = new Command(DeleteAction, c => true);
             Init();
             this.musicInfoManager = musicInfoManager;
             this.musicRelatedViewModel = musicRelatedViewModel;

@@ -3,7 +3,7 @@
              x:Class="MatoMusic.MusicGroupHeaderView"
             >
 
-    <Grid x:Name="Layout" 
+    <Grid
           BackgroundColor="Transparent"
           Padding="10,12">
         <Grid.ColumnDefinitions>

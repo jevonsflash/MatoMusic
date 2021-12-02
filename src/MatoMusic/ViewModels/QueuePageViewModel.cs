@@ -12,7 +12,7 @@ using Abp.Dependency;
 using MatoMusic;
 using MatoMusic.Core.Helper;
 
-namespace ProjectMato.ViewModel;
+namespace MatoMusic.ViewModels;
 
 public class QueuePageViewModel : ViewModelBase, ISingletonDependency
 {
@@ -21,16 +21,19 @@ public class QueuePageViewModel : ViewModelBase, ISingletonDependency
     private readonly IMusicInfoManager musicInfoManager;
     private readonly MusicRelatedViewModel musicRelatedViewModel;
 
+    private INavigation PopupNavigation => Application.Current.MainPage.Navigation;
+
+
     public QueuePageViewModel(IMusicInfoManager musicInfoManager
         , MusicRelatedViewModel musicRelatedViewModel)
     {
-        this.DeleteCommand = new Command(DeleteAction, c => true);
-        this.CleanQueueCommand = new Command(CleanQueueAction, CanDoAll);
-        this.PlayCommand = new Command(PlayAction, CanDoAll);
-        this.FlyBackCommand = new Command(FlyBackAction, CanDoAll);
-        this.PlayAllCommand = new Command(PlayAllAction, c => true);
-        this.PatchupCommand = new Command(PatchupAction, CanDoAll);
-        this.PropertyChanged += QueuePageViewModel_PropertyChanged;
+        DeleteCommand = new Command(DeleteAction, c => true);
+        CleanQueueCommand = new Command(CleanQueueAction, CanDoAll);
+        PlayCommand = new Command(PlayAction, CanDoAll);
+        FlyBackCommand = new Command(FlyBackAction, CanDoAll);
+        PlayAllCommand = new Command(PlayAllAction, c => true);
+        PatchupCommand = new Command(PatchupAction, CanDoAll);
+        PropertyChanged += QueuePageViewModel_PropertyChanged;
         this.musicInfoManager = musicInfoManager;
         this.musicRelatedViewModel = musicRelatedViewModel;
         this.musicRelatedViewModel.OnMusicChanged += MusicRelatedViewModel_OnMusicChanged;
@@ -62,12 +65,12 @@ public class QueuePageViewModel : ViewModelBase, ISingletonDependency
     private void FlyBackAction(object obj)
     {
         var playingMusicId = musicRelatedViewModel.CurrentMusic.Id;
-        this.CurrentMusic = this.Musics.FirstOrDefault(c => c.Id == playingMusicId);
+        CurrentMusic = Musics.FirstOrDefault(c => c.Id == playingMusicId);
     }
 
     private async void PatchupAction(object obj)
     {
-        if (this.Musics != null && this.Musics.Count > 0)
+        if (Musics != null && Musics.Count > 0)
         {
 
             _playlistChoosePage = new PlaylistChoosePage();
@@ -76,7 +79,7 @@ public class QueuePageViewModel : ViewModelBase, ISingletonDependency
                 if (c != null)
                 {
 
-                    var result = await musicInfoManager.CreatePlaylistEntrys(this.Musics.ToList(), c.Id);
+                    var result = await musicInfoManager.CreatePlaylistEntrys(Musics.ToList(), c.Id);
                     if (result)
                     {
                         CommonHelper.ShowMsg(string.Format("{0}{1}", L("Msg_HasAdded"), c.Title));
@@ -86,16 +89,16 @@ public class QueuePageViewModel : ViewModelBase, ISingletonDependency
                         CommonHelper.ShowMsg(L("Msg_AddFaild"));
                     }
                 }
-                //PopupNavigation.PopAsync();
+                await PopupNavigation.PopAsync();
             };
 
-            //await PopupNavigation.PushAsync(_playlistChoosePage);
+            await PopupNavigation.PushAsync(_playlistChoosePage);
         }
     }
 
     private async void QueuePageViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName == nameof(this.Musics) && Musics != null)
+        if (e.PropertyName == nameof(Musics) && Musics != null)
         {
             RaiseAllExecuteChanged();
         }
@@ -105,7 +108,7 @@ public class QueuePageViewModel : ViewModelBase, ISingletonDependency
             if (musicRelatedViewModel.Canplay)
             {
                 var playingMusicId = musicRelatedViewModel.CurrentMusic.Id;
-                if (this.CurrentMusic.Id != playingMusicId)
+                if (CurrentMusic.Id != playingMusicId)
                 {
                     musicRelatedViewModel.ChangeMusic(CurrentMusic);
                 }
@@ -116,7 +119,7 @@ public class QueuePageViewModel : ViewModelBase, ISingletonDependency
 
             }
             await Task.Delay(300);
-            this.CurrentMusic = null;
+            CurrentMusic = null;
         }
     }
 
@@ -142,7 +145,7 @@ public class QueuePageViewModel : ViewModelBase, ISingletonDependency
             {
                 var playingMusicId = musicRelatedViewModel.CurrentMusic.Id;
 
-                this.CurrentMusic = this.Musics.FirstOrDefault(c => c.Id == playingMusicId);
+                CurrentMusic = Musics.FirstOrDefault(c => c.Id == playingMusicId);
                 if (CurrentMusic != null)
                 {
                     CurrentMusic.IsPlaying = true;
@@ -156,7 +159,7 @@ public class QueuePageViewModel : ViewModelBase, ISingletonDependency
 
     private void CleanQueueAction(object obj)
     {
-        this.Musics.Clear();
+        Musics.Clear();
         RaiseAllExecuteChanged();
 
         CommonHelper.ShowMsg(L("Msg_QueueCleaned"));
@@ -240,15 +243,15 @@ public class QueuePageViewModel : ViewModelBase, ISingletonDependency
 
     private bool CanDoAll(object obj)
     {
-        var result = this.Musics.Count > 0;
+        var result = Musics.Count > 0;
         return result;
 
     }
 
-    private async void InitMusics()
+    private void InitMusics()
     {
         Musics = new ObservableCollection<MusicInfo>(musicRelatedViewModel.Musics);
-        this.Musics.CollectionChanged += Musics_CollectionChanged;
+        Musics.CollectionChanged += Musics_CollectionChanged;
     }
     private async void PlayAllAction(object obj)
     {
@@ -263,7 +266,7 @@ public class QueuePageViewModel : ViewModelBase, ISingletonDependency
         }
         var musicInfos = isSucc.Result;
         Musics = new ObservableCollection<MusicInfo>(musicInfos);
-        this.Musics.CollectionChanged += Musics_CollectionChanged;
+        Musics.CollectionChanged += Musics_CollectionChanged;
         var result = await musicInfoManager.CreateQueueEntrys(musicInfos);
         if (result)
         {
@@ -292,7 +295,7 @@ public class QueuePageViewModel : ViewModelBase, ISingletonDependency
         CleanQueueCommand.ChangeCanExecute();
         PatchupCommand.ChangeCanExecute();
         FlyBackCommand.ChangeCanExecute();
-        this.IsEmpty = !CanDoAll(null);
+        IsEmpty = !CanDoAll(null);
     }
 
     public Command FlyBackCommand { get; set; }
