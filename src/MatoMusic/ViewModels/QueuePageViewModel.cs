@@ -25,12 +25,12 @@ public class QueuePageViewModel : ViewModelBase, ISingletonDependency
     public QueuePageViewModel(IMusicInfoManager musicInfoManager
         , MusicRelatedViewModel musicRelatedViewModel)
     {
-        this.DeleteCommand = new Command(DeleteAction,c => true);
-        this.CleanQueueCommand = new Command(CleanQueueAction,CanDoAll );
-        this.PlayCommand = new Command(PlayAction,CanDoAll );
-        this.FlyBackCommand = new Command(FlyBackAction,CanDoAll);
-        this.PlayAllCommand = new Command(PlayAllAction,c => true );
-        this.PatchupCommand = new Command(PatchupAction,CanDoAll );
+        this.DeleteCommand = new Command(DeleteAction, c => true);
+        this.CleanQueueCommand = new Command(CleanQueueAction, CanDoAll);
+        this.PlayCommand = new Command(PlayAction, CanDoAll);
+        this.FlyBackCommand = new Command(FlyBackAction, CanDoAll);
+        this.PlayAllCommand = new Command(PlayAllAction, c => true);
+        this.PatchupCommand = new Command(PatchupAction, CanDoAll);
         this.PropertyChanged += QueuePageViewModel_PropertyChanged;
         musicSystem = DependencyService.Get<IMusicSystem>();
         musicSystem.MusicInfoManager = musicInfoManager;
@@ -151,9 +151,9 @@ public class QueuePageViewModel : ViewModelBase, ISingletonDependency
                 {
                     CurrentMusic.IsPlaying = true;
                 }
-                    //ImageService.Instance.InvalidateMemoryCache();
+                //ImageService.Instance.InvalidateMemoryCache();
 
-                }
+            }
         });
 
     }
@@ -227,7 +227,7 @@ public class QueuePageViewModel : ViewModelBase, ISingletonDependency
         }
     }
 
-   
+
 
     private bool _isEmpty;
 
@@ -257,7 +257,7 @@ public class QueuePageViewModel : ViewModelBase, ISingletonDependency
     private async void PlayAllAction(object obj)
     {
 
-        musicSystem.RebuildMusicInfos(MusicSystem_OnRebuildMusicInfosFinished);
+        await musicSystem.RebuildMusicInfos(MusicSystem_OnRebuildMusicInfosFinished);
 
         var isSucc = await musicInfoManager.GetMusicInfos();
         if (!isSucc.IsSucess)
@@ -268,7 +268,7 @@ public class QueuePageViewModel : ViewModelBase, ISingletonDependency
         var musicInfos = isSucc.Result;
         Musics = new ObservableCollection<MusicInfo>(musicInfos);
         this.Musics.CollectionChanged += Musics_CollectionChanged;
-        var result =await musicInfoManager.CreateQueueEntrys(musicInfos);
+        var result = await musicInfoManager.CreateQueueEntrys(musicInfos);
         if (result)
         {
             var currentMusic = await musicInfoManager.GetQueueEntry();

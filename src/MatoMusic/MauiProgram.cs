@@ -16,6 +16,7 @@ namespace MatoMusic
 				.ConfigureFonts(fonts =>
 				{
 					fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
+					fonts.AddFont("FontAwesome.ttf", "FontAwesome");
 				})
 				.UseMatoMusic<MatoMusicModule>();
 			return builder.Build();

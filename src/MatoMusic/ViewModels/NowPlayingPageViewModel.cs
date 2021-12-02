@@ -62,7 +62,7 @@ namespace MatoMusic.ViewModels
 
         private async void PlayAllAction(object obj)
         {
-            musicSystem.RebuildMusicInfos(MusicSystem_OnRebuildMusicInfosFinished);
+            await musicSystem.RebuildMusicInfos(MusicSystem_OnRebuildMusicInfosFinished);
 
             var isSucc = await musicInfoManager.GetMusicInfos();
             if (!isSucc.IsSucess)

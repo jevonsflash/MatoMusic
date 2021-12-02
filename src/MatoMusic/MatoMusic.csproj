@@ -54,6 +54,14 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\Fonts\FontAwesome.ttf" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="..\..\.editorconfig" Link=".editorconfig" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <PackageReference Include="CommunityToolkit.Maui" Version="1.0.0-pre3" />
 	</ItemGroup>
 

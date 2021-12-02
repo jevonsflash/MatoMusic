@@ -43,23 +43,26 @@ namespace MatoMusic.Core.ViewModel
 
         public MusicRelatedViewModel(
             IMusicInfoManager musicInfoManager
-            
             )
         {
             Device.StartTimer(new TimeSpan(0, 0, 0, 0, 100), DoUpdate);
 
             this.PlayCommand = new Command(PlayAction, CanPlayExcute);
-            this.PreCommand = new Command(PreAction,CanPlayExcute );
-            this.NextCommand = new Command(NextAction,CanPlayExcute);
-            this.RepeatOneCommand = new Command(RepeatOneAction,CanPlayExcute );
-            this.ShuffleCommand = new Command(ShuffleAction,CanPlayExcute );
-            this.FavouriteCommand = new Command(FavouriteAction,CanPlayExcute );
+            this.PreCommand = new Command(PreAction, CanPlayExcute);
+            this.NextCommand = new Command(NextAction, CanPlayExcute);
+            this.RepeatOneCommand = new Command(RepeatOneAction, CanPlayExcute);
+            this.ShuffleCommand = new Command(ShuffleAction, CanPlayExcute);
+            this.FavouriteCommand = new Command(FavouriteAction, CanPlayExcute);
             this.PropertyChanged += DetailPageViewModel_PropertyChanged;
             musicSystem = DependencyService.Get<IMusicSystem>();
             musicSystem.MusicInfoManager = musicInfoManager;
             musicSystem.OnPlayFinished += MusicSystem_OnMusicChanged;
-            musicSystem.RebuildMusicInfos(MusicSystem_OnRebuildMusicInfosFinished);
             this.musicInfoManager = musicInfoManager;
+        }
+
+        public async Task init()
+        {
+           await musicSystem.RebuildMusicInfos(MusicSystem_OnRebuildMusicInfosFinished);
         }
 
         private void MusicSystem_OnRebuildMusicInfosFinished()

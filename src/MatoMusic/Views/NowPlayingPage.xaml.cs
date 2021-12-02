@@ -38,10 +38,6 @@ namespace MatoMusic
         {
             var isHideQueueButton = settingManager.GetSettingValueForApplication<bool>(CommonSettingNames.IsHideQueueButton);
             this.QueueControlLayout.IsVisible = !isHideQueueButton;
-            var viewModel = BindingContext as NowPlayingPageViewModel;
-            if (viewModel != null)
-                viewModel.CurrentMusicRelatedViewModel.InitPreviewAndNextMusic();
-
         }
 
 

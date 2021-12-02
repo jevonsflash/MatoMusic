@@ -15,7 +15,7 @@ namespace MatoMusic.EntityFrameworkCore.Seed
     {
         public static void SeedHostDb(IIocResolver iocResolver)
         {
-            WithDbContext<MatoMusicDbContext>(iocResolver, SeedHostDb);
+            Helper.WithDbContextHelper.WithDbContext<MatoMusicDbContext>(iocResolver, SeedHostDb);
         }
 
         public static void SeedHostDb(MatoMusicDbContext context)
@@ -26,20 +26,5 @@ namespace MatoMusic.EntityFrameworkCore.Seed
             new InitialDbBuilder(context).Create();
         }
 
-        private static void WithDbContext<TDbContext>(IIocResolver iocResolver, Action<TDbContext> contextAction)
-            where TDbContext : DbContext
-        {
-            using (var uowManager = iocResolver.ResolveAsDisposable<IUnitOfWorkManager>())
-            {
-                using (var uow = uowManager.Object.Begin(TransactionScopeOption.Suppress))
-                {
-                    var context = uowManager.Object.Current.GetDbContext<TDbContext>();
-
-                    contextAction(context);
-
-                    uow.Complete();
-                }
-            }
-        }
     }
 }

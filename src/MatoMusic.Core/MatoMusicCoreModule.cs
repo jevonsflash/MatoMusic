@@ -3,6 +3,7 @@ using Abp.Reflection.Extensions;
 using MatoMusic.Core.Configuration;
 using MatoMusic.Core.Localization;
 using MatoMusic.Core.Settings;
+using MatoMusic.Core.ViewModel;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using System;
@@ -26,7 +27,7 @@ namespace MatoMusic.Core
         }
         public override void PreInitialize()
         {
-           LocalizationConfigurer.Configure(Configuration.Localization);
+            LocalizationConfigurer.Configure(Configuration.Localization);
 
             Configuration.Settings.Providers.Add<CommonSettingProvider>();
 
@@ -41,6 +42,13 @@ namespace MatoMusic.Core
         public override void Initialize()
         {
             IocManager.RegisterAssemblyByConvention(typeof(MatoMusicCoreModule).GetAssembly());
+        }
+
+        public override async void PostInitialize()
+        {
+            var musicRelatedViewModel = IocManager.Resolve<MusicRelatedViewModel>();
+            await musicRelatedViewModel.init();
+            base.PostInitialize();
         }
     }
 }

@@ -68,8 +68,6 @@ namespace MatoMusic.Core
         /// <param name="parent">要扫描的文件夹</param>
         private async Task GetLocalSongsAysnc(List<StorageFile> songFiles, StorageFolder parent)
         {
-
-            var aa = parent.GetFilesAsync();
             foreach (var item in await parent.GetFilesAsync())
             {
                 if (item.FileType == ".mp3")
@@ -94,21 +92,25 @@ namespace MatoMusic.Core
 
             foreach (var file in songFiles)
             {
+                MusicInfo song = new MusicInfo();
+
                 // 1. 获取文件信息
                 MusicProperties musicProperty = await file.Properties.GetMusicPropertiesAsync();
-                if (string.IsNullOrEmpty(musicProperty.Title))
-                    continue;
+                if (!string.IsNullOrEmpty(musicProperty.Title))
+                    song.Title = musicProperty.Title;
+                else
+                {
+                    song.Title = file.DisplayName;
+                }
 
                 StorageItemThumbnail currentThumb = await file.GetThumbnailAsync(ThumbnailMode.MusicView, 60, ThumbnailOptions.UseCurrentScale);
 
                 // 2.将文件信息转换为数据模型
-                MusicInfo song = new MusicInfo();
 
                 string coverUri = "ms-appx:///Assets/Default/Default.jpg";
 
                 song.Id = Id;
                 song.Url = file.Path;
-                song.Title = musicProperty.Title;
                 song.GroupHeader = GetGroupHeader(song.Title);
                 if (!string.IsNullOrEmpty(musicProperty.Artist))
                     song.Artist = musicProperty.Artist;
@@ -386,7 +388,10 @@ namespace MatoMusic.Core
         public partial async Task<bool> CreateQueueEntrys(List<MusicInfo> musicInfos)
         {
             var entrys = musicInfos.Select(c => new Queue(c.Title, 0, c.Id));
-            await queueRepository.GetDbContext().AddRangeAsync(entrys);
+            foreach (var entry in entrys)
+            {
+                await queueRepository.InsertAsync(entry);
+            }
             return true;
         }
 
@@ -423,8 +428,8 @@ namespace MatoMusic.Core
                 on musicInfo.Id equals queue.MusicInfoId
                 orderby queue.Id
                 select musicInfo;
-            return result.ToList();
-
+            var musicInfoList = result.ToList();
+            return musicInfoList;
         }
 
         /// <summary>

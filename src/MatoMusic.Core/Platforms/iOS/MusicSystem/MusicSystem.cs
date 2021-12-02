@@ -69,28 +69,22 @@ namespace MatoMusic.Core
             {
                 if (musicInfos == null || musicInfos.Count == 0)
                 {
-                    RebuildMusicInfos();
+                    musicInfos = new List<MusicInfo>();
                 }
                 return musicInfos;
             }
         }
 
-        public async void RebuildMusicInfos()
+        public async Task RebuildMusicInfos()
         {
-            var task01 = MusicInfoManager.GetQueueEntry();
-            musicInfos = await task01;
-            Task.WaitAll(task01);
-            //this.UpdateShuffleMap();
+            musicInfos = await MusicInfoManager.GetQueueEntry();
             OnRebuildMusicInfosFinished?.Invoke(this, EventArgs.Empty);
 
         }
 
-        public async void RebuildMusicInfos(Action callback)
+        public async Task RebuildMusicInfos(Action callback)
         {
-            var task01 = MusicInfoManager.GetQueueEntry();
-            musicInfos = await task01;
-            Task.WaitAll(task01);
-            //this.UpdateShuffleMap();
+            await RebuildMusicInfos();
             callback?.Invoke();
         }
 

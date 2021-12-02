@@ -22,8 +22,8 @@ namespace MatoMusic.Core
         double CurrentTime { get; }
         bool IsPlaying { get; }
         bool IsInitFinished { get; }
-        void RebuildMusicInfos();
-        void RebuildMusicInfos(Action callback);
+        Task RebuildMusicInfos();
+        Task RebuildMusicInfos(Action callback);
         void SeekTo(double position);
         MusicInfo GetNextMusic(MusicInfo current, bool isShuffle);
         MusicInfo GetPreMusic(MusicInfo current, bool isShuffle);

@@ -17,6 +17,7 @@
 	  <None Remove="appsettings.json" />
 	  <None Remove="log4net.config" />
 	  <None Remove="log4net.Production.config" />
+	  <None Remove="mato.db" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -29,6 +30,7 @@
 	  <EmbeddedResource Include="log4net.Production.config">
 	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 	  </EmbeddedResource>
+	  <EmbeddedResource Include="mato.db" />
 	</ItemGroup>
 
 	<ItemGroup>

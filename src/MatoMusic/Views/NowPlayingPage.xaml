@@ -73,7 +73,7 @@
                                     ElapsedTime="{Binding CurrentMusicRelatedViewModel.CurrentTime}"></view:LyricView>-->
                     <Grid 
                             HeightRequest="32" 
-                            Margin="{StaticResource DefaultContentVerticalPadding}"
+                            Margin="{StaticResource DefaultContentPadding}"
                             VerticalOptions="StartAndExpand" >
                         <BoxView 
                                 BackgroundColor="Transparent"                  
@@ -81,7 +81,7 @@
                         </BoxView>
                     </Grid>
                     <Grid  Grid.Row="0" 
-                                  Margin="{StaticResource DefaultContentVerticalPadding}"
+                                  Margin="{StaticResource DefaultContentPadding}"
                                   VerticalOptions="StartAndExpand"
                                   HorizontalOptions="CenterAndExpand">
                         <Button Command="{Binding SwitchPannelCommand}"
@@ -91,7 +91,7 @@
                     </Grid>
                 </Grid>
             </Grid>
-            <Grid Margin="{StaticResource DefaultContentVerticalPadding}"
+            <Grid Margin="{StaticResource DefaultContentPadding}"
                   Grid.Row="0"
                   x:Name="EmptyAlertLayout"
                   IsVisible="{Binding CurrentMusicRelatedViewModel.Canplay,Converter={StaticResource True2FalseConverter}}"

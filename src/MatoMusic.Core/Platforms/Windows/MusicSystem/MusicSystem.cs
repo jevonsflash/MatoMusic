@@ -18,16 +18,16 @@ namespace MatoMusic.Core
         public event EventHandler<bool> OnPlayFinished;
 
         public event EventHandler OnRebuildMusicInfosFinished;
-        
+
         public event EventHandler<double> OnProgressChanged;
-        
+
         public event EventHandler<bool> OnPlayStatusChanged;
 
         public MusicSystem()
         {
 
         }
-        
+
         public MusicSystem(IMusicInfoManager musicInfoManager)
         {
 
@@ -89,21 +89,21 @@ namespace MatoMusic.Core
             {
                 if (musicInfos == null || musicInfos.Count == 0)
                 {
-                    RebuildMusicInfos();
+                    musicInfos = new List<MusicInfo>();
                 }
                 return musicInfos;
             }
         }
 
-        public async void RebuildMusicInfos()
+        public async Task RebuildMusicInfos()
         {
             musicInfos = await MusicInfoManager.GetQueueEntry();
             OnRebuildMusicInfosFinished?.Invoke(this, EventArgs.Empty);
         }
 
-        public async void RebuildMusicInfos(Action callback)
+        public async Task RebuildMusicInfos(Action callback)
         {
-            musicInfos = await MusicInfoManager.GetQueueEntry();
+            await RebuildMusicInfos();
             callback?.Invoke();
         }
         public int LastIndex { get { return MusicInfos.FindLastIndex(c => true); } }

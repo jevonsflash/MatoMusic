@@ -15,7 +15,17 @@ namespace MatoMusic.Core.Settings
         {
             return new[]
                    {
-                       new SettingDefinition(CommonSettingNames.DatabaseVersion, "127.0.0.1", L("SmtpHost"), scopes: SettingScopes.All),
+                       new SettingDefinition(CommonSettingNames.DatabaseVersion, "1999-01-01", L("数据库版本"), scopes: SettingScopes.All),
+                       new SettingDefinition(CommonSettingNames.IsSleepModeOn, "false", L("睡眠模式开关"), scopes: SettingScopes.All),
+                       new SettingDefinition(CommonSettingNames.IsAutoLrc, "true", L("是否自动歌词"), scopes: SettingScopes.All),
+                       new SettingDefinition(CommonSettingNames.IsAutoOffset, "false", L("是否自动滚动"), scopes: SettingScopes.All),
+                       new SettingDefinition(CommonSettingNames.IsStopWhenTerminate, "false", L("离开后关闭"), scopes: SettingScopes.All),
+                       new SettingDefinition(CommonSettingNames.TimingOffValue, "1200", L("倒计时"), scopes: SettingScopes.All),
+                       new SettingDefinition(CommonSettingNames.BreakPointMusicIndex, "0", L("歌曲上次播放位置"), scopes: SettingScopes.All),
+                       new SettingDefinition(CommonSettingNames.IsRepeat, "false", L("是否循环"), scopes: SettingScopes.All),
+                       new SettingDefinition(CommonSettingNames.IsRepeatOne, "false", L("是否单曲循环"), scopes: SettingScopes.All),
+                       new SettingDefinition(CommonSettingNames.IsShuffle, "false", L("是否随机播放"), scopes: SettingScopes.All),
+                       new SettingDefinition(CommonSettingNames.IsHideQueueButton, "false", L("是否隐藏正在播放页面底端的队列按钮"), scopes: SettingScopes.All),
                    };
         }
 

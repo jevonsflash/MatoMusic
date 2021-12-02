@@ -26,13 +26,15 @@ namespace MatoMusic.Core
         {
             var logCfgName = "log4net.config";
             var appCfgName = "appsettings.json";
+            var dbName = "mato.db";
 
             string documentsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), MatoMusicConsts.LocalizationSourceName, logCfgName);
             string documentsPath2 = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), MatoMusicConsts.LocalizationSourceName, appCfgName);
+            string dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), MatoMusicConsts.LocalizationSourceName, dbName);
 
             InitConfig(logCfgName, documentsPath);
             InitConfig(appCfgName, documentsPath2);
-
+            //InitDataBase(dbName, dbPath);
             var _bootstrapper = AbpBootstrapper.Create<TStartupModule>(options =>
             {
                 options.IocManager = new IocManager();
@@ -47,6 +49,10 @@ namespace MatoMusic.Core
 
         private static void InitConfig(string logCfgName, string documentsPath)
         {
+            if (DirFileHelper.IsExistFile(documentsPath))
+            {
+                return;
+            }
             var assembly = IntrospectionExtensions.GetTypeInfo(typeof(MatoMusicBuilderExtensions)).Assembly;
 
             Stream stream = assembly.GetManifestResourceStream($"MatoMusic.Core.{logCfgName}");
@@ -58,8 +64,11 @@ namespace MatoMusic.Core
             DirFileHelper.CreateFile(documentsPath, text);
         }
 
-        private static void InitDataBase(string documentsPath)
+        private static void InitDataBase(string dbName, string documentsPath)
         {
+            var assembly = IntrospectionExtensions.GetTypeInfo(typeof(MatoMusicBuilderExtensions)).Assembly;
+            Stream stream = assembly.GetManifestResourceStream($"MatoMusic.Core.{dbName}");
+            StreamHelper.WriteStream(stream, documentsPath);
         }
     }
 

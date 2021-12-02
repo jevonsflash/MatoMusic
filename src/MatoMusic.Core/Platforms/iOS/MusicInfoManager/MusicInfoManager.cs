@@ -384,7 +384,8 @@ namespace MatoMusic.Core
                 on musicInfo.Id equals queue.MusicInfoId
                 orderby queue.Id
                 select musicInfo;
-            return result.ToList();
+            var musicInfoList = result.ToList();
+            return musicInfoList;
 
         }
 
