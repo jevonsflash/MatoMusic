@@ -1,6 +1,6 @@
 ﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:matoc="clr-namespace:MatoMusic;assembly=MatoMusic"
+             xmlns:controls="clr-namespace:MatoMusic;assembly=MatoMusic"
              x:Class="MatoMusic.MusicFunctionPage"
              BackgroundColor="{DynamicResource SecondaryColor}">
     
@@ -46,9 +46,9 @@
                                        RowHeight="58">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <matoc:MenuCell ContentText="{Binding Title}"
+                        <controls:MenuCell ContentText="{Binding Title}"
                                            IsEnabled="{Binding Enable}"
-                                           IconText="{Binding Icon}"></matoc:MenuCell>
+                                           IconText="{Binding Icon}"></controls:MenuCell>
 
                     </DataTemplate>
                 </ListView.ItemTemplate>

@@ -11,21 +11,18 @@ using Microsoft.Maui.Controls;
 using Abp.Dependency;
 using MatoMusic;
 using MatoMusic.Core.Helper;
+using MatoMusic.Services;
 
 namespace MatoMusic.ViewModels;
 
-public class QueuePageViewModel : ViewModelBase, ISingletonDependency
+public class QueuePageViewModel : MusicRelatedViewModel
 {
     private PlaylistChoosePage _playlistChoosePage;
-
-    private readonly IMusicInfoManager musicInfoManager;
-    private readonly MusicRelatedViewModel musicRelatedViewModel;
-
-    private INavigation PopupNavigation => Application.Current.MainPage.Navigation;
+    private readonly NavigationService navigationService;
 
 
-    public QueuePageViewModel(IMusicInfoManager musicInfoManager
-        , MusicRelatedViewModel musicRelatedViewModel)
+    public QueuePageViewModel(IMusicInfoManager musicInfoManager,
+            NavigationService navigationService) : base(musicInfoManager)
     {
         DeleteCommand = new Command(DeleteAction, c => true);
         CleanQueueCommand = new Command(CleanQueueAction, CanDoAll);
@@ -34,10 +31,9 @@ public class QueuePageViewModel : ViewModelBase, ISingletonDependency
         PlayAllCommand = new Command(PlayAllAction, c => true);
         PatchupCommand = new Command(PatchupAction, CanDoAll);
         PropertyChanged += QueuePageViewModel_PropertyChanged;
-        this.musicInfoManager = musicInfoManager;
-        this.musicRelatedViewModel = musicRelatedViewModel;
-        this.musicRelatedViewModel.OnMusicChanged += MusicRelatedViewModel_OnMusicChanged;
-        this.musicRelatedViewModel.RebuildMusicInfosHandler = MusicSystem_OnRebuildMusicInfosFinished;
+        this.navigationService = navigationService;
+        this.OnMusicChanged += MusicRelatedViewModel_OnMusicChanged;
+        this.RebuildMusicInfosHandler = MusicSystem_OnRebuildMusicInfosFinished;
     }
 
     private void MusicRelatedViewModel_OnMusicChanged(object sender, EventArgs e)
@@ -50,9 +46,9 @@ public class QueuePageViewModel : ViewModelBase, ISingletonDependency
                 break;
             }
         }
-        if (musicRelatedViewModel.Canplay)
+        if (Canplay)
         {
-            var playingMusicId = musicRelatedViewModel.CurrentMusic.Id;
+            var playingMusicId = CurrentMusic.Id;
 
             var currentMusicInfo = Musics.FirstOrDefault(c => c.Id == playingMusicId);
             if (currentMusicInfo != null)
@@ -64,7 +60,7 @@ public class QueuePageViewModel : ViewModelBase, ISingletonDependency
 
     private void FlyBackAction(object obj)
     {
-        var playingMusicId = musicRelatedViewModel.CurrentMusic.Id;
+        var playingMusicId = CurrentMusic.Id;
         CurrentMusic = Musics.FirstOrDefault(c => c.Id == playingMusicId);
     }
 
@@ -89,10 +85,10 @@ public class QueuePageViewModel : ViewModelBase, ISingletonDependency
                         CommonHelper.ShowMsg(L("Msg_AddFaild"));
                     }
                 }
-                await PopupNavigation.PopAsync();
+                await navigationService.PopAsync();
             };
 
-            await PopupNavigation.PushAsync(_playlistChoosePage);
+            await navigationService.PushAsync(_playlistChoosePage);
         }
     }
 
@@ -105,17 +101,17 @@ public class QueuePageViewModel : ViewModelBase, ISingletonDependency
 
         else if (e.PropertyName == nameof(CurrentMusic) && CurrentMusic != null)
         {
-            if (musicRelatedViewModel.Canplay)
+            if (Canplay)
             {
-                var playingMusicId = musicRelatedViewModel.CurrentMusic.Id;
+                var playingMusicId = CurrentMusic.Id;
                 if (CurrentMusic.Id != playingMusicId)
                 {
-                    musicRelatedViewModel.ChangeMusic(CurrentMusic);
+                    ChangeMusic(CurrentMusic);
                 }
             }
             else
             {
-                musicRelatedViewModel.ChangeMusic(CurrentMusic);
+                ChangeMusic(CurrentMusic);
 
             }
             await Task.Delay(300);
@@ -141,9 +137,9 @@ public class QueuePageViewModel : ViewModelBase, ISingletonDependency
                     break;
                 }
             }
-            if (musicRelatedViewModel.Canplay)
+            if (Canplay)
             {
-                var playingMusicId = musicRelatedViewModel.CurrentMusic.Id;
+                var playingMusicId = CurrentMusic.Id;
 
                 CurrentMusic = Musics.FirstOrDefault(c => c.Id == playingMusicId);
                 if (CurrentMusic != null)
@@ -181,7 +177,7 @@ public class QueuePageViewModel : ViewModelBase, ISingletonDependency
         {
             await musicInfoManager.ClearQueue();
         }
-        await musicRelatedViewModel.RebuildMusicInfos();
+        await RebuildMusicInfos();
 
         RaiseAllExecuteChanged();
 
@@ -250,13 +246,13 @@ public class QueuePageViewModel : ViewModelBase, ISingletonDependency
 
     private void InitMusics()
     {
-        Musics = new ObservableCollection<MusicInfo>(musicRelatedViewModel.Musics);
+        Musics = new ObservableCollection<MusicInfo>(Musics);
         Musics.CollectionChanged += Musics_CollectionChanged;
     }
     private async void PlayAllAction(object obj)
     {
 
-        await musicRelatedViewModel.RebuildMusicInfos(MusicSystem_OnRebuildMusicInfosFinished);
+        await RebuildMusicInfos(MusicSystem_OnRebuildMusicInfosFinished);
 
         var isSucc = await musicInfoManager.GetMusicInfos();
         if (!isSucc.IsSucess)
@@ -275,8 +271,8 @@ public class QueuePageViewModel : ViewModelBase, ISingletonDependency
             {
                 Random r = new Random();
                 var randomIndex = r.Next(currentMusic.Count);
-                musicRelatedViewModel.IsShuffle = true;
-                musicRelatedViewModel.CurrentMusic = currentMusic[randomIndex];
+                IsShuffle = true;
+                CurrentMusic = currentMusic[randomIndex];
 
             }
             CommonHelper.ShowMsg("随机播放中");

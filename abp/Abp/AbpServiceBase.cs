@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.Diagnostics;
+using System.Globalization;
 using Abp.Configuration;
 using Abp.Domain.Uow;
 using Abp.Localization;
@@ -76,6 +77,7 @@ namespace Abp
             }
         }
         private ILocalizationSource _localizationSource;
+        private IObjectMapper objectMapper;
 
         /// <summary>
         /// Reference to the logger to write logs.
@@ -85,7 +87,15 @@ namespace Abp
         /// <summary>
         /// Reference to the object to object mapper.
         /// </summary>
-        public IObjectMapper ObjectMapper { get; set; }
+        public IObjectMapper ObjectMapper { 
+            get => objectMapper; 
+            set
+            {
+
+                Debug.WriteLine("+++++++++" + value);
+
+                objectMapper = value;
+            } }
 
         /// <summary>
         /// Constructor.
@@ -93,6 +103,8 @@ namespace Abp
         protected AbpServiceBase()
         {
             Logger = NullLogger.Instance;
+            Debug.WriteLine("+++++++++" + "ctor");
+
             ObjectMapper = NullObjectMapper.Instance;
             LocalizationManager = NullLocalizationManager.Instance;
         }

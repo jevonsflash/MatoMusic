@@ -1,7 +1,9 @@
-﻿using Abp.Modules;
+﻿using Abp.AutoMapper;
+using Abp.Modules;
 using Abp.Reflection.Extensions;
 using MatoMusic.Core.Configuration;
 using MatoMusic.Core.Localization;
+using MatoMusic.Core.Services;
 using MatoMusic.Core.Settings;
 using MatoMusic.Core.ViewModel;
 using Microsoft.Extensions.Configuration;
@@ -16,6 +18,8 @@ using System.Threading.Tasks;
 
 namespace MatoMusic.Core
 {
+    [DependsOn(
+       typeof(AbpAutoMapperModule))]
     public class MatoMusicCoreModule : AbpModule
     {
         private readonly string development;
@@ -46,9 +50,11 @@ namespace MatoMusic.Core
 
         public override async void PostInitialize()
         {
-            var musicRelatedViewModel = IocManager.Resolve<MusicRelatedViewModel>();
+            var musicRelatedViewModel = IocManager.Resolve<MusicRelatedService>();
             await musicRelatedViewModel.init();
             base.PostInitialize();
         }
+
+
     }
 }

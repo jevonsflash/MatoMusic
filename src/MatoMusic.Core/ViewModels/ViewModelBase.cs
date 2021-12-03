@@ -6,11 +6,13 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
+using Abp;
+using Abp.Dependency;
 using Abp.Domain.Services;
 
 namespace MatoMusic.Core.ViewModel
 {
-    public abstract class ViewModelBase : DomainService, INotifyPropertyChanged
+    public abstract class ViewModelBase : AbpServiceBase, ISingletonDependency, INotifyPropertyChanged
     {
         /// <summary>Occurs after a property value changes.</summary>
         public event PropertyChangedEventHandler PropertyChanged;

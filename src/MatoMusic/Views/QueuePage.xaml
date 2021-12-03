@@ -106,7 +106,7 @@
                     <BoxView HeightRequest="124"></BoxView>
                 </ListView.Footer>
             </ListView>
-            <Grid Margin="{StaticResource DefaultContentVerticalPadding}"
+            <Grid Margin="{StaticResource DefaultContentPadding}"
                   x:Name="EmptyAlertLayout"
                   IsVisible="{Binding IsEmpty}"
                   HorizontalOptions="Center"
@@ -167,7 +167,7 @@
 
 
         <controls:MusicMiniView  
-            BindingContext="{Binding CurrentMusicRelatedViewModel}"
+            BindingContext="{Binding}"
                 HeightRequest="64" 
               VerticalOptions="EndAndExpand"
                      x:Name="MiniViewLayout"></controls:MusicMiniView>

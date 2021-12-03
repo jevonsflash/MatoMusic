@@ -18,23 +18,32 @@ namespace MatoMusic
 
     public partial class LibraryPage : ContentPage, ITransientDependency
     {
+        private readonly NavigationService navigationService;
         private readonly ILocalizationManager localizationManager;
         private readonly MusicFunctionManager musicFunctionManager;
 
-        private INavigation PopupNavigation => Application.Current.MainPage.Navigation;
 
         public LibraryPage(LibraryPageViewModel libraryPageViewModel,
-            
+            NavigationService navigationService,
+
             ILocalizationManager localizationManager, MusicFunctionManager musicFunctionManager)
         {
+            this.navigationService = navigationService;
+            this.localizationManager = localizationManager;
+            this.musicFunctionManager = musicFunctionManager; 
             InitializeComponent();
-            Init();
             this.BindingContext = libraryPageViewModel;
 
-            this.localizationManager = localizationManager;
-            this.musicFunctionManager = musicFunctionManager;
+            Init();
+
         }
 
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
+            this.Init();
+           await (this.BindingContext as LibraryPageViewModel).init();
+        }
 
 
         private void ListView_OnItemSelected(object sender, SelectedItemChangedEventArgs e)
@@ -42,13 +51,13 @@ namespace MatoMusic
             if (e.SelectedItem is ArtistInfo)
             {
                 var artistInfo = e.SelectedItem as ArtistInfo;
-                CommonHelper.GoNavigate("MusicCollectionPage", new object[] { artistInfo });
+                navigationService.GoNavigate("MusicCollectionPage", new object[] { artistInfo });
 
             }
             else if (e.SelectedItem is AlbumInfo)
             {
                 var albumInfo = e.SelectedItem as AlbumInfo;
-                CommonHelper.GoNavigate("MusicCollectionPage", new object[] { albumInfo });
+                navigationService.GoNavigate("MusicCollectionPage", new object[] { albumInfo });
             }
                 (sender as ListView).SelectedItem = null;
         }
@@ -62,7 +71,7 @@ namespace MatoMusic
             }
         }
 
-        private void MusicMoreButton_OnClicked(object sender, EventArgs e)
+        private async void MusicMoreButton_OnClicked(object sender, EventArgs e)
         {
             var musicInfo = (sender as BindableObject).BindingContext;
             var _mainMenuCellInfos = new List<MenuCellInfo>()
@@ -88,7 +97,7 @@ namespace MatoMusic
             var _musicFunctionPage = new MusicFunctionPage(musicInfo as IBasicInfo, _mainMenuCellInfos);
             _musicFunctionPage.OnFinished += _musicFunctionPage_OnFinished;
 
-            PopupNavigation.PushAsync(_musicFunctionPage);
+          await  navigationService.PushAsync(_musicFunctionPage);
 
         }
 
@@ -97,7 +106,7 @@ namespace MatoMusic
             musicFunctionManager.OnMusicFunctionFinished(e);
         }
 
-        private void AlbumMoreButton_OnClicked(object sender, EventArgs e)
+        private async void AlbumMoreButton_OnClicked(object sender, EventArgs e)
         {
 
             var _mainMenuCellInfos = new List<MenuCellInfo>()
@@ -114,11 +123,11 @@ namespace MatoMusic
             var _musicFunctionPage = new MusicFunctionPage(musicInfo as IBasicInfo, _mainMenuCellInfos);
             _musicFunctionPage.OnFinished += _musicFunctionPage_OnFinished;
 
-            PopupNavigation.PushAsync(_musicFunctionPage);
+           await navigationService.PushAsync(_musicFunctionPage);
 
         }
 
-        private void ArtistMoreButton_OnClicked(object sender, EventArgs e)
+        private async void ArtistMoreButton_OnClicked(object sender, EventArgs e)
         {
             var _mainMenuCellInfos = new List<MenuCellInfo>()
             {
@@ -134,12 +143,12 @@ namespace MatoMusic
             var _musicFunctionPage = new MusicFunctionPage(musicInfo as IBasicInfo, _mainMenuCellInfos);
             _musicFunctionPage.OnFinished += _musicFunctionPage_OnFinished;
 
-            PopupNavigation.PushAsync(_musicFunctionPage);
+           await navigationService.PushAsync(_musicFunctionPage);
         }
 
         private void SearchButton_OnClicked(object sender, EventArgs e)
         {
-            CommonHelper.GoNavigate("SearchPage");
+            navigationService.GoNavigate("SearchPage");
         }
 
         private void MusicButton_OnClicked(object sender, EventArgs e)

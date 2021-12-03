@@ -21,8 +21,20 @@ namespace MatoMusic
             _abpBootstrapper = abpBootstrapper;
             InitializeComponent();
             _abpBootstrapper.Initialize();
-            var mainPage = _abpBootstrapper.IocManager.Resolve<NowPlayingPage>();
-            MainPage = mainPage;
+
+            this.Init();
+        }
+
+        private void Init()
+        {
+            var nowPlayingPage = _abpBootstrapper.IocManager.Resolve<NowPlayingPage>();
+            var queuePage = _abpBootstrapper.IocManager.Resolve<QueuePage>();
+            var libraryPage = _abpBootstrapper.IocManager.Resolve<LibraryPage>();
+            var playlistPage = _abpBootstrapper.IocManager.Resolve<PlaylistPage>();
+            this.NowPlayingPageShellContent.Content = nowPlayingPage;
+            this.QueuePageShellContent.Content = queuePage;
+            this.LibraryPageShellContent.Content = libraryPage;
+            this.PlaylistPageShellContent.Content = playlistPage;
         }
     }
 }

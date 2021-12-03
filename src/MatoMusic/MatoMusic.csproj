@@ -85,9 +85,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Controls\EmptyContentView.xaml.cs">
-	    <DependentUpon>EmptyContentView.xaml</DependentUpon>
-	  </Compile>
 	  <Compile Update="Controls\MusicGroupHeaderView.xaml.cs">
 	    <DependentUpon>MusicGroupHeaderView.xaml</DependentUpon>
 	  </Compile>
@@ -102,6 +99,9 @@
 	  </Compile>
 	  <Compile Update="Views\LibraryPage.xaml.cs">
 	    <DependentUpon>LibraryPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\PlaylistPage.xaml.cs">
+	    <DependentUpon>PlaylistPage.xaml</DependentUpon>
 	  </Compile>
 	  <Compile Update="Views\QueuePage.xaml.cs">
 	    <DependentUpon>QueuePage.xaml</DependentUpon>
@@ -118,10 +118,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Controls\EmptyContentView.xaml">
-	    <SubType>Designer</SubType>
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
 	  <MauiXaml Update="Controls\MusicGroupHeaderView.xaml">
 	    <SubType>Designer</SubType>
 	    <Generator>MSBuild:Compile</Generator>
@@ -139,6 +135,10 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\LibraryPage.xaml">
+	    <SubType>Designer</SubType>
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\PlaylistPage.xaml">
 	    <SubType>Designer</SubType>
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

@@ -7,21 +7,16 @@ using Microsoft.Maui.Controls;
 
 namespace MatoMusic.ViewModels
 {
-    public class NowPlayingPageViewModel : ViewModelBase, ISingletonDependency
+    public class NowPlayingPageViewModel : MusicRelatedViewModel
     {
-        private readonly IMusicInfoManager musicInfoManager;
-        private readonly MusicRelatedViewModel musicRelatedViewModel;
 
-        public NowPlayingPageViewModel(IMusicInfoManager musicInfoManager, MusicRelatedViewModel musicRelatedViewModel)
+        public NowPlayingPageViewModel(IMusicInfoManager musicInfoManager) : base(musicInfoManager)
         {
             SwitchPannelCommand = new Command(SwitchPannelAction, c => true);
             PlayAllCommand = new Command(PlayAllAction, c => true);
             IsLrcPanel = false;
-            this.musicInfoManager = musicInfoManager;
-            this.musicRelatedViewModel = musicRelatedViewModel;
         }
 
-        public MusicRelatedViewModel CurrentMusicRelatedViewModel => this.musicRelatedViewModel;
 
         private void SwitchPannelAction(object obj)
         {
@@ -58,7 +53,7 @@ namespace MatoMusic.ViewModels
 
         private async void PlayAllAction(object obj)
         {
-            await musicRelatedViewModel.RebuildMusicInfos(MusicSystem_OnRebuildMusicInfosFinished);
+            await RebuildMusicInfos(MusicSystem_OnRebuildMusicInfosFinished);
 
             var isSucc = await musicInfoManager.GetMusicInfos();
             if (!isSucc.IsSucess)
@@ -76,8 +71,8 @@ namespace MatoMusic.ViewModels
                 {
                     Random r = new Random();
                     var randomIndex = r.Next(currentMusic.Count);
-                    musicRelatedViewModel.IsShuffle = true;
-                    musicRelatedViewModel.CurrentMusic = currentMusic[randomIndex];
+                    IsShuffle = true;
+                    CurrentMusic = currentMusic[randomIndex];
 
                 }
                 CommonHelper.ShowMsg("随机播放中");

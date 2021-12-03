@@ -13,14 +13,12 @@ using MatoMusic.Core.Helper;
 
 namespace MatoMusic.ViewModels
 {
-    public class PlaylistPageViewModel : ViewModelBase, ISingletonDependency
+    public class PlaylistPageViewModel : MusicRelatedViewModel
     {
-        public PlaylistPageViewModel(IMusicInfoManager musicInfoManager, MusicRelatedViewModel musicRelatedViewModel)
+        public PlaylistPageViewModel(IMusicInfoManager musicInfoManager) : base(musicInfoManager)
         {
             DeleteCommand = new Command(DeleteAction, c => true);
             Init();
-            this.musicInfoManager = musicInfoManager;
-            this.musicRelatedViewModel = musicRelatedViewModel;
         }
 
         private async void Playlists_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -130,8 +128,6 @@ namespace MatoMusic.ViewModels
         }
 
         private ObservableCollection<PlaylistInfo> _playlists;
-        private readonly IMusicInfoManager musicInfoManager;
-        private readonly MusicRelatedViewModel musicRelatedViewModel;
 
         public ObservableCollection<PlaylistInfo> Playlists
         {

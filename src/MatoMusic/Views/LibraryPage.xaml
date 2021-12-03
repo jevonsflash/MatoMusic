@@ -7,7 +7,7 @@
 
     <ContentPage.Content>
         <Grid>
-            <Grid  Margin="{StaticResource DefaultContentVerticalPadding}"
+            <Grid  Margin="{StaticResource DefaultContentPadding}"
                    IsVisible="{Binding Canplay}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"></RowDefinition>
@@ -424,31 +424,12 @@
                             </StackLayout>
 
                         </Grid>
-                        <controls:EmptyContentView Grid.Row="1"
-                                                   HeightRequest="200"
-                    IsVisible="{Binding Canplay ,Converter={StaticResource True2FalseConverter}}"
-                    WidthRequest="280"
-                    VerticalOptions="Center"
-                    HorizontalOptions="Center"   
-                    Grid.Column="0">
-
-                        </controls:EmptyContentView>
                     </Grid>
                 </ContentView>
 
             </Grid>
-            <controls:EmptyContentView Margin="{StaticResource DefaultContentVerticalPadding}"
-                                       HeightRequest="200"
-                                       IsVisible="{Binding Canplay ,Converter={StaticResource True2FalseConverter}}"
-                                       WidthRequest="280"
-                                       VerticalOptions="Center"
-                                       HorizontalOptions="Center"   
-                                       Grid.Column="0">
-
-            </controls:EmptyContentView>
-
             <controls:MusicMiniView
-          BindingContext="{Binding CurrentMusicRelatedViewModel}"
+          BindingContext="{Binding}"
           HeightRequest="64"
           VerticalOptions="EndAndExpand"
           x:Name="MiniViewLayout"></controls:MusicMiniView>

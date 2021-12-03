@@ -2,6 +2,7 @@
 using Abp.Reflection.Extensions;
 using MatoMusic.Core;
 using MatoMusic.EntityFrameworkCore;
+using MatoMusic.ViewModels;
 
 namespace MatoMusic
 {
@@ -12,5 +13,6 @@ namespace MatoMusic
         {
             IocManager.RegisterAssemblyByConvention(typeof(MatoMusicModule).GetAssembly());
         }
+
     }
 }

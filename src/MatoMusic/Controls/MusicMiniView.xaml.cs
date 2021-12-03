@@ -13,9 +13,9 @@ namespace MatoMusic
             InitializeComponent();
         }
 
-        private void TapGestureRecognizer_OnTapped(object sender, EventArgs e)
+        private async void TapGestureRecognizer_OnTapped(object sender, EventArgs e)
         {
-            CommonHelper.GoPage("NowPlayingPage");
+            await Shell.Current.GoToAsync("NowPlayingPage");
         }
     }
 }

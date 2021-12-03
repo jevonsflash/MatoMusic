@@ -1,7 +1,6 @@
 ﻿<Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:windows="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.WindowsSpecific;assembly=Microsoft.Maui.Controls"
-             xmlns:local="clr-namespace:MatoMusic"
              xmlns:converter="clr-namespace:MatoMusic.Converter;assembly=MatoMusic"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              x:Class="MatoMusic.App"
@@ -55,4 +54,29 @@
             </converter:Bool2StringConverter>
         </ResourceDictionary>
     </Application.Resources>
+    <Application.MainPage>
+        <Shell>
+            <Shell.FlyoutHeaderTemplate>
+                <DataTemplate>
+                    <BoxView HeightRequest="68"/>
+                </DataTemplate>
+            </Shell.FlyoutHeaderTemplate>
+
+            <!-- Desktop/Tablet-->
+            <FlyoutItem Route="NowPlayingPage" Title="正在播放" Icon="tab_home.png">
+                <ShellContent x:Name="NowPlayingPageShellContent"/>
+            </FlyoutItem>
+            <FlyoutItem Route="QueuePage" Title="播放队列" Icon="tab_favorites.png">
+                <ShellContent x:Name="QueuePageShellContent"/>
+            </FlyoutItem>
+            <FlyoutItem Route="LibraryPage" Title="库" Icon="tab_map.png">
+                <ShellContent x:Name="LibraryPageShellContent"/>
+            </FlyoutItem>
+            <FlyoutItem Route="PlaylistPage" Title="歌单" Icon="tab_map.png">
+                <ShellContent x:Name="PlaylistPageShellContent"/>
+            </FlyoutItem>
+        </Shell>
+
+    </Application.MainPage>
+
 </Application>

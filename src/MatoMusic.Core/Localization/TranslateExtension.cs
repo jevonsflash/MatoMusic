@@ -12,7 +12,11 @@ namespace MatoMusic.Core.Localization
     [ContentProperty("Text")]
     public class TranslateExtension : DomainService, IMarkupExtension
     {
+        public TranslateExtension()
+        {
+            LocalizationSourceName = MatoMusicConsts.LocalizationSourceName;
 
+        }
         public string Text { get; set; }
 
         public object ProvideValue(IServiceProvider serviceProvider)

@@ -7,25 +7,18 @@ using MatoMusic.Infrastructure;
 using MatoMusic.Core.Models;
 using MatoMusic.Core.ViewModel;
 using MatoMusic.Core.Helper;
+using Abp.Dependency;
 
 namespace MatoMusic.ViewModels
 {
-    public class LibraryPageViewModel : ViewModelBase
+    public class LibraryPageViewModel : MusicRelatedViewModel
     {
-
-        private readonly IMusicInfoManager musicInfoManager;
-        private readonly MusicRelatedViewModel musicRelatedViewModel;
-
-        public LibraryPageViewModel(IMusicInfoManager musicInfoManager, MusicRelatedViewModel musicRelatedViewModel)
+        public LibraryPageViewModel(IMusicInfoManager musicInfoManager) : base(musicInfoManager)
         {
             PlayAllCommand = new Command(PlayAllAction, CanPlayExcute);
             QueueAllCommand = new Command(QueueAllAction, CanPlayExcute);
             GoUriCommand = new Command(GoUrlAction, c => true);
             this.PropertyChanged += LibraryPageViewModel_PropertyChanged;
-            Init();
-            this.musicRelatedViewModel = musicRelatedViewModel;
-            this.musicInfoManager = musicInfoManager;
-
         }
 
         private void LibraryPageViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -46,7 +39,7 @@ namespace MatoMusic.ViewModels
             var result = await musicInfoManager.CreateQueueEntrys(Musics);
             if (result)
             {
-                await musicRelatedViewModel.RebuildMusicInfos();
+                await RebuildMusicInfos();
                 CommonHelper.ShowMsg(L("Msg_HasAddedQueue"));
 
             }
@@ -62,10 +55,10 @@ namespace MatoMusic.ViewModels
             var result = await musicInfoManager.CreateQueueEntrys(Musics);
             if (result)
             {
-                await musicRelatedViewModel.RebuildMusicInfos();
+                await RebuildMusicInfos();
 
-                var CurrentMusic = await musicInfoManager.GetQueueEntry();
-                musicRelatedViewModel.CurrentMusic = CurrentMusic[0];
+                var CurrentMusics = await musicInfoManager.GetQueueEntry();
+                CurrentMusic = CurrentMusics[0];
             }
             else
             {
@@ -107,12 +100,9 @@ namespace MatoMusic.ViewModels
         public List<MusicInfo> Musics { get => AGMusics.Origin; }
         private async void Init()
         {
-
             AGMusics = await InitMusics();
             AGAlbums = await InitAlbums();
             AGArtists = await InitArtists();
-
-
         }
 
         private AlphaGroupedObservableCollection<MusicInfo> _aGMusics;
@@ -216,9 +206,9 @@ namespace MatoMusic.ViewModels
         {
             await musicInfoManager.InsertToEndQueueEntry(musicInfo);
 
-            await musicRelatedViewModel.RebuildMusicInfos();
+            await RebuildMusicInfos();
 
-            musicRelatedViewModel.ChangeMusic(musicInfo);
+           await ChangeMusic(musicInfo);
         }
 
         public Command PlayAllCommand { get; set; }

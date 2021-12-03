@@ -13,19 +13,15 @@ using MatoMusic.Core.Helper;
 
 namespace MatoMusic.Core.ViewModel
 {
-    public class MusicRelatedViewModel : ViewModelBase, ISingletonDependency
+    public abstract class MusicRelatedViewModel : ViewModelBase
     {
-
-        private readonly IMusicInfoManager musicInfoManager;
+        public IMusicInfoManager musicInfoManager { get; }
+        
         private readonly IMusicSystem musicSystem;
-
 
         private bool _isInited = false;
 
         private bool _isFastSeeking = false;
-
-
-        
 
         public bool IsInitFinished = false;
 
@@ -578,8 +574,6 @@ namespace MatoMusic.Core.ViewModel
         public Command RepeatOneCommand { get; set; }
 
         public Command FavouriteCommand { get; set; }
-
-
     }
 }
 

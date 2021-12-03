@@ -21,7 +21,7 @@
                 </Image>
             </Grid>
             <Grid Grid.Row="0"
-                      IsVisible="{Binding CurrentMusicRelatedViewModel.Canplay}">
+                      IsVisible="{Binding Canplay}">
                 <Grid IsVisible="{Binding IsLrcPanel ,Converter={StaticResource True2FalseConverter}}" 
                           Margin="0,94,0,0">
                     <Grid>
@@ -41,7 +41,7 @@
                                                    WidthRequest="260"
                                                    VerticalOptions="Fill"
                                        TranslationX="-320"
-                                       Source="{Binding CurrentMusicRelatedViewModel.PreviewMusic.AlbumArt,Converter={StaticResource AlbumArtConverter}}">
+                                       Source="{Binding PreviewMusic.AlbumArt,Converter={StaticResource AlbumArtConverter}}">
                             </Image>
 
                             <Image 
@@ -49,7 +49,7 @@
                                     WidthRequest="260"
                                        HorizontalOptions="Fill"
                                        VerticalOptions="Fill"
-                                       Source="{Binding CurrentMusicRelatedViewModel.CurrentMusic.AlbumArt,Converter={StaticResource AlbumArtConverter}}">
+                                       Source="{Binding CurrentMusic.AlbumArt,Converter={StaticResource AlbumArtConverter}}">
                             </Image>
 
                             <Image HorizontalOptions="Fill"
@@ -59,18 +59,18 @@
                                            
                                        VerticalOptions="Fill"
                                        TranslationX="320"
-                                       Source="{Binding CurrentMusicRelatedViewModel.NextMusic.AlbumArt,Converter={StaticResource AlbumArtConverter}}">
+                                       Source="{Binding NextMusic.AlbumArt,Converter={StaticResource AlbumArtConverter}}">
                             </Image>
                         </Grid>
                     </Grid>
                     <Button Command="{Binding SwitchPannelCommand}"></Button>
                 </Grid>
                 <Grid IsVisible="{Binding IsLrcPanel}">
-                    <!--<view:LyricView CurrentMusicInfo="{Binding CurrentMusicRelatedViewModel.CurrentMusic}"
+                    <!--<view:LyricView CurrentMusicInfo="{Binding CurrentMusic}"
                                         IsVisible="{Binding IsLrcPanel}"
                                         PropertyChanged="BindableObject_OnPropertyChanged"
                                     OnClosed="LyricView_OnOnClosed"
-                                    ElapsedTime="{Binding CurrentMusicRelatedViewModel.CurrentTime}"></view:LyricView>-->
+                                    ElapsedTime="{Binding CurrentTime}"></view:LyricView>-->
                     <Grid 
                             HeightRequest="32" 
                             Margin="{StaticResource DefaultContentPadding}"
@@ -94,7 +94,7 @@
             <Grid Margin="{StaticResource DefaultContentPadding}"
                   Grid.Row="0"
                   x:Name="EmptyAlertLayout"
-                  IsVisible="{Binding CurrentMusicRelatedViewModel.Canplay,Converter={StaticResource True2FalseConverter}}"
+                  IsVisible="{Binding Canplay,Converter={StaticResource True2FalseConverter}}"
                   HorizontalOptions="Center"
                   VerticalOptions="Center">
                 <Grid.RowDefinitions>
@@ -155,7 +155,7 @@
                       Grid.Row="1"
                       x:Name="ModeControlLayout"
                       Margin="{StaticResource DefaultContentPadding}"
-                      BindingContext="{Binding CurrentMusicRelatedViewModel}">
+                      BindingContext="{Binding}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
@@ -196,7 +196,7 @@
                       Margin="{StaticResource DefaultContentPadding}"
                         
                       x:Name="ProgressControlLayout"
-                      BindingContext="{Binding CurrentMusicRelatedViewModel}">
+                      BindingContext="{Binding}">
 
                 <StackLayout Margin="0,0,0,0" Orientation="Horizontal">
                     <Label Text="{Binding CurrentTime,Converter={StaticResource SecondsToTimeSpanConverter}}" 
@@ -221,7 +221,7 @@
             <Grid
                     Margin="{StaticResource DefaultContentPadding}"
                     Grid.Row="3"
-                    BindingContext="{Binding CurrentMusicRelatedViewModel}"
+                    BindingContext="{Binding}"
                     x:Name="PlayControlLayout">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*"></ColumnDefinition>

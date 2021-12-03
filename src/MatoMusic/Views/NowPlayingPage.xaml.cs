@@ -13,6 +13,7 @@ using MatoMusic.Core.Localization;
 using MatoMusic.Core.Models;
 using MatoMusic.Core.Settings;
 using MatoMusic.Core.ViewModel;
+using MatoMusic.Services;
 using MatoMusic.ViewModels;
 using Microsoft.Maui.Controls;
 
@@ -24,21 +25,25 @@ namespace MatoMusic
 
         private MusicFunctionPage _musicFunctionPage;
         private PlaylistChoosePage _playlistChoosePage;
+        private readonly NavigationService navigationService;
         private readonly ISettingManager settingManager;
         private readonly ILocalizationManager localizationManager;
 
-        private INavigation PopupNavigation => Application.Current.MainPage.Navigation;
-
-        public NowPlayingPage(NowPlayingPageViewModel nowPlayingPageViewModel, ISettingManager settingManager, ILocalizationManager localizationManager
+        public NowPlayingPage(NowPlayingPageViewModel nowPlayingPageViewModel,
+            NavigationService navigationService,
+            ISettingManager settingManager,
+            ILocalizationManager localizationManager
 )
         {
+            this.navigationService = navigationService;
+            this.settingManager = settingManager;
+            this.localizationManager = localizationManager; 
             InitializeComponent();
+            this.BindingContext = nowPlayingPageViewModel;
             this.Disappearing += NowPlayingPage_Disappearing;
             this.SizeChanged += NowPlayingPage_SizeChanged;
             this.Appearing += NowPlayingPage_Appearing;
-            this.BindingContext = nowPlayingPageViewModel;
-            this.settingManager = settingManager;
-            this.localizationManager = localizationManager;
+
         }
 
         private void NowPlayingPage_Appearing(object sender, EventArgs e)
@@ -104,13 +109,13 @@ namespace MatoMusic
             }
         }
 
-        private void Button_OnClicked(object sender, EventArgs e)
+        private async void Button_OnClicked(object sender, EventArgs e)
         {
-            CommonHelper.GoPage("QueuePage");
+            await navigationService.GoPageAsync("QueuePage");
         }
 
 
-        private void MoreButton_OnClicked(object sender, EventArgs e)
+        private async void MoreButton_OnClicked(object sender, EventArgs e)
         {
 
 
@@ -141,7 +146,7 @@ namespace MatoMusic
             _musicFunctionPage = new MusicFunctionPage(musicInfo, mainMenuCellInfos);
             _musicFunctionPage.OnFinished += MusicFunctionPage_OnFinished;
 
-            PopupNavigation.PushAsync(_musicFunctionPage);
+            await navigationService.PushAsync(_musicFunctionPage);
 
         }
 
@@ -151,7 +156,7 @@ namespace MatoMusic
             {
                 return;
             }
-            await PopupNavigation.PopToRootAsync();
+            await navigationService.PopToRootAsync();
             if (e.MenuCellInfo.Code == "AddToPlaylist")
             {
                 _playlistChoosePage = new PlaylistChoosePage();
@@ -169,9 +174,9 @@ namespace MatoMusic
                             CommonHelper.ShowMsg(localizationManager.GetString(MatoMusicConsts.LocalizationSourceName, "Msg_AddFaild"));
                         }
                     }
-                   await PopupNavigation.PopAsync();
+                    await navigationService.PopAsync();
                 };
-                await PopupNavigation.PushAsync(_playlistChoosePage);
+                await navigationService.PushAsync(_playlistChoosePage);
 
             }
 
@@ -185,7 +190,7 @@ namespace MatoMusic
                 }
                 list = isSucc.Result;
                 var albumInfo = list.Find(c => c.Title == (e.MusicInfo as MusicInfo).AlbumTitle);
-                CommonHelper.GoNavigate("MusicCollectionPage", new object[] { albumInfo });
+                navigationService.GoNavigate("MusicCollectionPage", new object[] { albumInfo });
             }
             else if (e.MenuCellInfo.Code == "GoArtistPage")
             {
@@ -198,7 +203,7 @@ namespace MatoMusic
                 }
                 list = isSucc.Result;
                 var artistInfo = list.Find(c => c.Title == (e.MusicInfo as MusicInfo).Artist);
-                CommonHelper.GoNavigate("MusicCollectionPage", new object[] { artistInfo });
+                navigationService.GoNavigate("MusicCollectionPage", new object[] { artistInfo });
             }
 
         }
@@ -210,9 +215,9 @@ namespace MatoMusic
                 nowPlayingPageViewModel.IsLrcPanel = !nowPlayingPageViewModel.IsLrcPanel;
         }
 
-        private void GoLibrary_OnClicked(object sender, EventArgs e)
+        private async void GoLibrary_OnClicked(object sender, EventArgs e)
         {
-            CommonHelper.GoPage("LibraryPage");
+            await navigationService.GoPageAsync("LibraryPage");
         }
 
         private void BindableObject_OnPropertyChanged(object sender, PropertyChangedEventArgs e)

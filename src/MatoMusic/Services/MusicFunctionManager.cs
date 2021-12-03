@@ -3,30 +3,34 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Abp;
 using Abp.Dependency;
 using Abp.Domain.Services;
 using MatoMusic.Common;
 using MatoMusic.Core;
 using MatoMusic.Core.Helper;
 using MatoMusic.Core.Models;
+using MatoMusic.Core.Services;
 using MatoMusic.Core.ViewModel;
 using Microsoft.Maui.Controls;
 
 namespace MatoMusic.Services
 {
-    public class MusicFunctionManager : DomainService
+    public class MusicFunctionManager : AbpServiceBase, ISingletonDependency
     {
         private PlaylistChoosePage _playlistChoosePage;
+        private readonly NavigationService navigationService;
         private readonly IMusicInfoManager musicInfoManager;
-        private readonly MusicRelatedViewModel musicRelatedViewModel;
+        private readonly MusicRelatedService musicRelatedViewModel;
 
-        private INavigation PopupNavigation => Application.Current.MainPage.Navigation;
 
         public MusicFunctionManager(
-
-            IMusicInfoManager musicInfoManager, MusicRelatedViewModel musicRelatedViewModel
+            NavigationService navigationService,
+            IMusicInfoManager musicInfoManager,
+            MusicRelatedService musicRelatedViewModel
             )
         {
+            this.navigationService = navigationService;
             this.musicInfoManager = musicInfoManager;
             this.musicRelatedViewModel = musicRelatedViewModel;
         }
@@ -42,7 +46,7 @@ namespace MatoMusic.Services
                 return;
             }
             //this.Popup.HidePopup();
-            await PopupNavigation.PopToRootAsync();
+            await navigationService.PopToRootAsync();
             if (musicFunctionEventArgs.MenuCellInfo.Code == "AddToPlaylist")
             {
                 _playlistChoosePage = new PlaylistChoosePage();
@@ -61,9 +65,9 @@ namespace MatoMusic.Services
                         }
 
                     }
-                    await PopupNavigation.PopAsync();
+                    await navigationService.PopAsync();
                 };
-                await PopupNavigation.PushAsync(_playlistChoosePage);
+                await navigationService.PushAsync(_playlistChoosePage);
             }
             else if (musicFunctionEventArgs.MenuCellInfo.Code == "NextPlay")
             {
@@ -103,7 +107,7 @@ namespace MatoMusic.Services
                 }
                 list = isSucc.Result;
                 var albumInfo = list.Find(c => c.Title == (musicFunctionEventArgs.MusicInfo as MusicInfo).AlbumTitle);
-                CommonHelper.GoNavigate("MusicCollectionPage", new object[] { albumInfo });
+                navigationService.GoNavigate("MusicCollectionPage", new object[] { albumInfo });
             }
             else if (musicFunctionEventArgs.MenuCellInfo.Code == "GoArtistPage")
             {
@@ -116,7 +120,7 @@ namespace MatoMusic.Services
                 }
                 list = isSucc.Result;
                 var artistInfo = list.Find(c => c.Title == (musicFunctionEventArgs.MusicInfo as MusicInfo).Artist);
-                CommonHelper.GoNavigate("MusicCollectionPage", new object[] { artistInfo });
+                navigationService.GoNavigate("MusicCollectionPage", new object[] { artistInfo });
             }
             else if (musicFunctionEventArgs.MenuCellInfo.Code == "AddMusicCollectionToPlaylist")
             {
@@ -136,10 +140,10 @@ namespace MatoMusic.Services
                             CommonHelper.ShowMsg(L("Msg_AddFaild"));
                         }
                     }
-                    await PopupNavigation.PopAsync();
+                    await navigationService.PopAsync();
                 };
 
-                await PopupNavigation.PushAsync(_playlistChoosePage);
+                await navigationService.PushAsync(_playlistChoosePage);
 
             }
             else if (musicFunctionEventArgs.MenuCellInfo.Code == "AddToFavourite")
