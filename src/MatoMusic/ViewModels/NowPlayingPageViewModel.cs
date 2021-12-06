@@ -2,6 +2,7 @@
 using Abp.Dependency;
 using MatoMusic.Core;
 using MatoMusic.Core.Helper;
+using MatoMusic.Core.Services;
 using MatoMusic.Core.ViewModel;
 using Microsoft.Maui.Controls;
 
@@ -10,7 +11,7 @@ namespace MatoMusic.ViewModels
     public class NowPlayingPageViewModel : MusicRelatedViewModel
     {
 
-        public NowPlayingPageViewModel(IMusicInfoManager musicInfoManager) : base(musicInfoManager)
+        public NowPlayingPageViewModel(IMusicInfoManager musicInfoManager, MusicRelatedService musicRelatedService) : base(musicInfoManager, musicRelatedService)
         {
             SwitchPannelCommand = new Command(SwitchPannelAction, c => true);
             PlayAllCommand = new Command(PlayAllAction, c => true);

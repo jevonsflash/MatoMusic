@@ -10,12 +10,13 @@ using Microsoft.Maui.Controls;
 using MatoMusic.Core.Models;
 using MatoMusic.Core.ViewModel;
 using MatoMusic.Core.Helper;
+using MatoMusic.Core.Services;
 
 namespace MatoMusic.ViewModels
 {
     public class PlaylistPageViewModel : MusicRelatedViewModel
     {
-        public PlaylistPageViewModel(IMusicInfoManager musicInfoManager) : base(musicInfoManager)
+        public PlaylistPageViewModel(IMusicInfoManager musicInfoManager, MusicRelatedService musicRelatedService) : base(musicInfoManager, musicRelatedService)
         {
             DeleteCommand = new Command(DeleteAction, c => true);
         }

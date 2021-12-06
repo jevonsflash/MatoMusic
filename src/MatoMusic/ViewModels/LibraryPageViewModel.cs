@@ -8,15 +8,16 @@ using MatoMusic.Core.Models;
 using MatoMusic.Core.ViewModel;
 using MatoMusic.Core.Helper;
 using Abp.Dependency;
+using MatoMusic.Core.Services;
 
 namespace MatoMusic.ViewModels
 {
     public class LibraryPageViewModel : MusicRelatedViewModel
     {
-        public LibraryPageViewModel(IMusicInfoManager musicInfoManager) : base(musicInfoManager)
+        public LibraryPageViewModel(IMusicInfoManager musicInfoManager, MusicRelatedService musicRelatedService) : base(musicInfoManager, musicRelatedService)
         {
-            PlayAllCommand = new Command(PlayAllAction, CanPlayExcute);
-            QueueAllCommand = new Command(QueueAllAction, CanPlayExcute);
+            PlayAllCommand = new Command(PlayAllAction, CanPlayAllExcute);
+            QueueAllCommand = new Command(QueueAllAction, CanPlayAllExcute);
             GoUriCommand = new Command(GoUrlAction, c => true);
             this.PropertyChanged += LibraryPageViewModel_PropertyChanged;
         }
@@ -25,8 +26,6 @@ namespace MatoMusic.ViewModels
         {
             if (e.PropertyName == nameof(AGMusics) && AGMusics != null)
             {
-                Canplay = CanPlayExcute(null);
-
                 PlayAllCommand.ChangeCanExecute();
                 QueueAllCommand.ChangeCanExecute();
                 RaisePropertyChanged(nameof(Musics));
@@ -65,20 +64,7 @@ namespace MatoMusic.ViewModels
                 CommonHelper.ShowMsg(L("Msg_AlreadyExists"));
             }
         }
-        private bool _canPlay;
-
-        /// <summary>
-        /// 是否可播放
-        /// </summary>
-        public new bool Canplay
-        {
-            get { return _canPlay; }
-            private set
-            {
-                _canPlay = value;
-                RaisePropertyChanged();
-            }
-        }
+     
         private void GoUrlAction(object obj)
         {
             CommonHelper.GoUrl(obj);
@@ -89,12 +75,7 @@ namespace MatoMusic.ViewModels
         public Command GoUriCommand { get; set; }
 
 
-        private new bool CanPlayExcute(object obj)
-        {
-            var result = Musics.Count > 0;
-            return result;
-
-        }
+  
 
 
         public new List<MusicInfo> Musics { get => AGMusics.Origin; }

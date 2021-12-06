@@ -10,23 +10,21 @@ using Microsoft.Maui.Essentials;
 using Abp.Configuration;
 using MatoMusic.Core.Settings;
 using MatoMusic.Core.Helper;
+using MatoMusic.Core.Services;
 
 namespace MatoMusic.Core.ViewModel
 {
     public abstract class MusicRelatedViewModel : ViewModelBase
     {
         public IMusicInfoManager musicInfoManager { get; }
-        
-        private readonly IMusicSystem musicSystem;
 
-        private bool _isInited = false;
+        private readonly IMusicSystem musicSystem;
+        private readonly MusicRelatedService ms;
 
         private bool _isFastSeeking = false;
 
-        public bool IsInitFinished = false;
 
-        public Action RebuildMusicInfosHandler;
-        
+
         public event EventHandler OnMusicChanged;
         public static class Properties
         {
@@ -40,10 +38,8 @@ namespace MatoMusic.Core.ViewModel
         }
 
         public MusicRelatedViewModel(
-            IMusicInfoManager musicInfoManager
-            )
+            IMusicInfoManager musicInfoManager, MusicRelatedService musicRelatedService)
         {
-            Device.StartTimer(new TimeSpan(0, 0, 0, 0, 100), DoUpdate);
 
             this.PlayCommand = new Command(PlayAction, CanPlayExcute);
             this.PreCommand = new Command(PreAction, CanPlayExcute);
@@ -56,11 +52,73 @@ namespace MatoMusic.Core.ViewModel
             musicSystem.MusicInfoManager = musicInfoManager;
             musicSystem.OnPlayFinished += MusicSystem_OnMusicChanged;
             this.musicInfoManager = musicInfoManager;
+            this.ms = musicRelatedService;
+            this.ms.PropertyChanged += this.Delegate_PropertyChanged;
         }
 
-        public async Task InitAll()
+        private void Delegate_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-           await musicSystem.RebuildMusicInfos(MusicSystem_OnRebuildMusicInfosFinished);
+            //this.DetailPageViewModel_PropertyChanged(this, e);
+            this.RaisePropertyChanged(e.PropertyName);
+        }
+
+        public MusicInfo CurrentMusic
+        {
+            get => ms.CurrentMusic;
+            set => ms.CurrentMusic = value;
+        }
+
+        public MusicInfo NextMusic
+        {
+            get => ms.NextMusic;
+            set => ms.NextMusic = value;
+        }
+
+        public MusicInfo PreviewMusic
+        {
+            get => ms.PreviewMusic;
+            set => ms.PreviewMusic = value;
+        }
+
+        public List<MusicInfo> Musics
+        {
+            get => ms.Musics;
+            set => ms.Musics = value;
+        }
+
+        public bool Canplay
+        {
+            get => ms.Canplay;
+        }
+
+        public bool IsPlaying
+        {
+            get => ms.IsPlaying;
+            set => ms.IsPlaying = value;
+        }
+
+        public bool IsShuffle
+        {
+            get => ms.IsShuffle;
+            set => ms.IsShuffle = value;
+        }
+
+        public bool IsRepeatOne
+        {
+            get => ms.IsRepeatOne;
+            set => ms.IsRepeatOne = value;
+        }
+
+        public double CurrentTime
+        {
+            get => ms.CurrentTime;
+            set => ms.CurrentTime = value;
+        }
+
+        public double Duration
+        {
+            get => ms.Duration;
+            set => ms.Duration = value;
         }
 
         public async Task RebuildMusicInfos()
@@ -74,24 +132,7 @@ namespace MatoMusic.Core.ViewModel
             callback?.Invoke();
         }
 
-        private void MusicSystem_OnRebuildMusicInfosFinished()
-        {
-            //当队列初始化完成时初始化当前曲目
-           Device.BeginInvokeOnMainThread(() =>
-            {
-                InitCurrentMusic();
-            });
-            musicSystem.SetRepeatOneStatus(IsRepeatOne);
-            musicSystem.OnPlayStatusChanged += MusicSystem_OnPlayStatusChanged;
-            this._isInited = true;
-            RebuildMusicInfosHandler?.Invoke();
-        }
-
-        private void MusicSystem_OnPlayStatusChanged(object sender, bool e)
-        {
-            this.IsPlaying = e;
-        }
-
+    
         private void FavouriteAction(object obj)
         {
             CurrentMusic.IsFavourite = !CurrentMusic.IsFavourite;
@@ -105,7 +146,13 @@ namespace MatoMusic.Core.ViewModel
 
         public bool CanPlayExcute(object obj)
         {
-            var result = this.CurrentMusic != null;
+            var result = ms.Canplay;
+            return result;
+        }
+
+        public bool CanPlayAllExcute(object obj)
+        {
+            var result = ms.CanplayAll;
             return result;
         }
 
@@ -115,59 +162,22 @@ namespace MatoMusic.Core.ViewModel
             NextAction(null);
         }
 
-        private bool DoUpdate()
-        {
-            this.CurrentTime = GetPlatformSpecificTime(musicSystem.CurrentTime);
-            this.Duration = GetPlatformSpecificTime(musicSystem.Duration);
-
-            return true;
-        }
-
-        /// <summary>
-        /// 获取指定平台的准确时间
-        /// </summary>
-        /// <param name="originTime"></param>
-        /// <returns></returns>
-        private double GetPlatformSpecificTime(double originTime)
-        {
-            double resultTime;
-            switch (Device.RuntimePlatform)
-            {
-                case Device.iOS:
-                    resultTime = originTime;
-                    break;
-                case Device.Android:
-                    resultTime = originTime / 1000;
-                    break;
-
-                case Device.UWP:
-                case Device.WPF:
-                    resultTime = originTime;
-                    break;
-                default:
-                    resultTime = 0;
-                    break;
-            }
-            return resultTime;
-
-        }
 
         private async void DetailPageViewModel_PropertyChanged(Object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == Properties.CurrentMusic)
             {
-                Canplay = CanPlayExcute(null);
-                if (CurrentMusic == null || _isInited == false)
+                if (!Canplay || ms.IsInited == false)
                 {
                     return;
 
                 }
                 musicSystem.InitPlayer(CurrentMusic);
                 musicSystem.Play(CurrentMusic);
-                DoUpdate();
-                InitPreviewAndNextMusic();
+                ms.DoUpdate();
+                ms.InitPreviewAndNextMusic();
                 OnMusicChanged?.Invoke(this, EventArgs.Empty);
-                this.Duration = GetPlatformSpecificTime(musicSystem.Duration);
+                this.Duration = ms.GetPlatformSpecificTime(musicSystem.Duration);
                 this.SettingManager.ChangeSettingForApplication(CommonSettingNames.BreakPointMusicIndex, Musics.IndexOf(CurrentMusic).ToString());
                 RaiseCanPlayExecuteChanged();
             }
@@ -178,11 +188,11 @@ namespace MatoMusic.Core.ViewModel
                 if (IsShuffle)
                 {
                     await musicSystem.UpdateShuffleMap();
-                    InitPreviewAndNextMusic();
+                    ms.InitPreviewAndNextMusic();
                 }
                 else
                 {
-                    InitPreviewAndNextMusic();
+                    ms.InitPreviewAndNextMusic();
                 }
             }
 
@@ -191,6 +201,7 @@ namespace MatoMusic.Core.ViewModel
                 this.SettingManager.ChangeSettingForApplication(CommonSettingNames.IsRepeatOne, this.IsRepeatOne.ToString());
                 musicSystem.SetRepeatOneStatus(this.IsRepeatOne);
             }
+                 
         }
 
         /// <summary>
@@ -206,14 +217,7 @@ namespace MatoMusic.Core.ViewModel
             FavouriteCommand.ChangeCanExecute();
         }
 
-        /// <summary>
-        /// 初始化下一首/上一首曲目
-        /// </summary>
-        public void InitPreviewAndNextMusic()
-        {
-            this.PreviewMusic = musicSystem.GetPreMusic(this.CurrentMusic, IsShuffle);
-            this.NextMusic = musicSystem.GetNextMusic(this.CurrentMusic, IsShuffle);
-        }
+
 
         /// <summary>
         /// 下一曲
@@ -277,7 +281,7 @@ namespace MatoMusic.Core.ViewModel
         /// <param name="progress"></param>
         public void ChangeProgess(double progress)
         {
-            if (Math.Abs(progress - GetPlatformSpecificTime(musicSystem.CurrentTime)) > 2.0)
+            if (Math.Abs(progress - ms.GetPlatformSpecificTime(musicSystem.CurrentTime)) > 2.0)
             {
                 musicSystem.SeekTo(progress);
             }
@@ -342,225 +346,8 @@ namespace MatoMusic.Core.ViewModel
         {
             this.CurrentMusic = Musics.FirstOrDefault(c => c.Title == title);
         }
-
-        private bool _canPlay;
-
-        /// <summary>
-        /// 是否可播放
-        /// </summary>
-        public bool Canplay
-        {
-            get { return _canPlay; }
-            set
-            {
-                _canPlay = value;
-                RaisePropertyChanged();
-            }
-        }
-
-
-        private List<MusicInfo> _musics;
-
-        /// <summary>
-        /// 当前播放列表
-        /// </summary>
-        public List<MusicInfo> Musics
-        {
-            get
-            {
-
-                _musics = musicSystem.MusicInfos;
-                return _musics;
-            }
-            set
-            {
-                _musics = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        private MusicInfo _currentMusic;
-
-        /// <summary>
-        /// 当前曲目
-        /// </summary>
-        public MusicInfo CurrentMusic
-        {
-            get
-            {
-                return _currentMusic;
-            }
-            set
-            {
-                _currentMusic = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        public void InitCurrentMusic()
-        {           
-            var musicIndex = int.Parse(this.SettingManager.GetSettingValue(CommonSettingNames.BreakPointMusicIndex));
-            if (Musics.Count > 0)
-            {
-                if (musicIndex >= 0 && musicIndex <= Musics.Count - 1)
-                {
-                    CurrentMusic = Musics[musicIndex];
-                }
-                else
-                {
-                    CurrentMusic = Musics[0];
-                }
-                musicSystem.InitPlayer(CurrentMusic);
-
-                this.Duration = GetPlatformSpecificTime(musicSystem.Duration);
-            }
-            else
-            {
-                this.Duration = 0;
-                this.CurrentTime = 0;
-            }
-        }
-
-        private bool _isPlaying;
-
-        /// <summary>
-        /// 是否正在播放
-        /// </summary>
-        public bool IsPlaying
-        {
-            get { return _isPlaying; }
-            set
-            {
-                if (_isPlaying != value)
-                {
-                    _isPlaying = value;
-
-                    RaisePropertyChanged();
-
-                }
-            }
-        }
-
-        private double _currentTime;
-
-        /// <summary>
-        /// 当前进度
-        /// </summary>
-        public double CurrentTime
-        {
-            get { return _currentTime; }
-            set
-            {
-                _currentTime = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        private double _duration;
-
-        /// <summary>
-        /// 当前曲目总时间
-        /// </summary>
-        public double Duration
-        {
-            get { return _duration; }
-            set
-            {
-                _duration = value;
-
-                RaisePropertyChanged();
-            }
-        }
-
-        private MusicInfo _previewMusic;
-
-        /// <summary>
-        /// 上一曲目
-        /// </summary>
-        public MusicInfo PreviewMusic
-        {
-            get
-            {
-                return _previewMusic;
-            }
-            set
-            {
-                _previewMusic = value;
-                RaisePropertyChanged();
-            }
-        }
-        private MusicInfo _nextMusic;
-
-        /// <summary>
-        /// 下一曲目
-        /// </summary>
-        public MusicInfo NextMusic
-        {
-            get
-            {
-                return _nextMusic;
-            }
-            set
-            {
-                _nextMusic = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        private bool _isShuffle;
-
-        /// <summary>
-        /// 是否随机播放
-        /// </summary>
-        public bool IsShuffle
-        {
-            get
-            {
-                if (!IsInitFinished)
-                {
-                    this._isShuffle =bool.Parse(this.SettingManager.GetSettingValue(CommonSettingNames.IsShuffle));
-                    IsInitFinished = true;
-                }
-
-                return _isShuffle;
-            }
-            set
-            {
-                if (value != _isShuffle)
-                {
-                    _isShuffle = value;
-                    RaisePropertyChanged();
-
-                }
-            }
-        }
-
-        /// <summary>
-        /// 是否单曲循环
-        /// </summary>
-        private bool _isRepeatOne;
-
-        public bool IsRepeatOne
-        {
-            get
-            {
-                if (!IsInitFinished)
-                {
-                    this._isRepeatOne = bool.Parse(this.SettingManager.GetSettingValue(CommonSettingNames.IsRepeatOne));
-                    IsInitFinished = true;
-                }
-                return _isRepeatOne;
-            }
-            set
-            {
-                if (value != _isRepeatOne)
-                {
-                    _isRepeatOne = value;
-                    RaisePropertyChanged();
-
-                }
-            }
-        }
+    
+       
         #endregion
 
         public Command PlayCommand { get; set; }

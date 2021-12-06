@@ -240,7 +240,16 @@ namespace MatoMusic.Core
 
         private void CurrentPlayer_CurrentStateChanged(MediaPlayer sender, object args)
         {
+            if (sender.CurrentState==MediaPlayerState.Paused || sender.CurrentState==MediaPlayerState.Stopped)
+            {
+                OnPlayStatusChanged?.Invoke(this, false);
 
+            }
+            else if (sender.CurrentState == MediaPlayerState.Playing)
+            {
+                OnPlayStatusChanged?.Invoke(this, true);
+
+            }
         }
 
         public void Play(MusicInfo currentMusic)

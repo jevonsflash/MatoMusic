@@ -12,6 +12,7 @@ using Abp.Dependency;
 using MatoMusic;
 using MatoMusic.Core.Helper;
 using MatoMusic.Services;
+using MatoMusic.Core.Services;
 
 namespace MatoMusic.ViewModels;
 
@@ -22,17 +23,16 @@ public class QueuePageViewModel : MusicRelatedViewModel
 
 
     public QueuePageViewModel(IMusicInfoManager musicInfoManager,
-            NavigationService navigationService) : base(musicInfoManager)
+            NavigationService navigationService, MusicRelatedService musicRelatedService) : base(musicInfoManager, musicRelatedService)
     {
         DeleteCommand = new Command(DeleteAction, c => true);
-        CleanQueueCommand = new Command(CleanQueueAction, CanDoAll);
-        FlyBackCommand = new Command(FlyBackAction, CanDoAll);
-        PlayAllCommand = new Command(PlayAllAction, c => true);
-        PatchupCommand = new Command(PatchupAction, CanDoAll);
+        CleanQueueCommand = new Command(CleanQueueAction, CanPlayAllExcute);
+        FlyBackCommand = new Command(FlyBackAction, CanPlayAllExcute);
+        PlayAllCommand = new Command(PlayAllAction, CanPlayAllExcute);
+        PatchupCommand = new Command(PatchupAction, CanPlayAllExcute);
         PropertyChanged += QueuePageViewModel_PropertyChanged;
         this.navigationService = navigationService;
         this.OnMusicChanged += MusicRelatedViewModel_OnMusicChanged;
-        this.RebuildMusicInfosHandler = MusicSystem_OnRebuildMusicInfosFinished;
     }
 
     private void MusicRelatedViewModel_OnMusicChanged(object sender, EventArgs e)
@@ -98,7 +98,7 @@ public class QueuePageViewModel : MusicRelatedViewModel
             RaiseAllExecuteChanged();
         }
 
-        else if (e.PropertyName == nameof(CurrentMusic) && CurrentMusic != null)
+        else if (e.PropertyName == nameof(CurrentMusic))
         {
             if (Canplay)
             {
@@ -107,14 +107,7 @@ public class QueuePageViewModel : MusicRelatedViewModel
                 {
                     ChangeMusic(CurrentMusic);
                 }
-            }
-            else
-            {
-                ChangeMusic(CurrentMusic);
-
-            }
-            await Task.Delay(300);
-            CurrentMusic = null;
+            }          
         }
     }
 
@@ -140,7 +133,6 @@ public class QueuePageViewModel : MusicRelatedViewModel
                 {
                     CurrentMusic.IsPlaying = true;
                 }
-                //ImageService.Instance.InvalidateMemoryCache();
 
             }
         });
@@ -183,18 +175,6 @@ public class QueuePageViewModel : MusicRelatedViewModel
     }
 
 
-    private MusicInfo _currentMusic;
-
-    public new MusicInfo CurrentMusic
-    {
-        get { return _currentMusic; }
-        set
-        {
-            _currentMusic = value;
-            RaisePropertyChanged();
-        }
-    }
-
 
     private ObservableCollection<MusicInfo> musics;
 
@@ -231,12 +211,6 @@ public class QueuePageViewModel : MusicRelatedViewModel
         }
     }
 
-    private bool CanDoAll(object obj)
-    {
-        var result = Musics.Count > 0;
-        return result;
-
-    }
 
     private void InitMusics()
     {
@@ -285,7 +259,7 @@ public class QueuePageViewModel : MusicRelatedViewModel
         CleanQueueCommand.ChangeCanExecute();
         PatchupCommand.ChangeCanExecute();
         FlyBackCommand.ChangeCanExecute();
-        IsEmpty = !CanDoAll(null);
+        IsEmpty = !CanPlayAllExcute(null);
     }
 
     public Command FlyBackCommand { get; set; }

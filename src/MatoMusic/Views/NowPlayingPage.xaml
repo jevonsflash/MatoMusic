@@ -7,8 +7,8 @@
         <Grid RowSpacing="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
-                <RowDefinition Height="42" />
-                <RowDefinition Height="28" />
+                <RowDefinition Height="62" />
+                <RowDefinition Height="48" />
                 <RowDefinition Height="128" />
                 <RowDefinition Height="38" />
             </Grid.RowDefinitions>
@@ -22,8 +22,7 @@
             </Grid>
             <Grid Grid.Row="0"
                       IsVisible="{Binding Canplay}">
-                <Grid IsVisible="{Binding IsLrcPanel ,Converter={StaticResource True2FalseConverter}}" 
-                          Margin="0,94,0,0">
+                <Grid IsVisible="{Binding IsLrcPanel ,Converter={StaticResource True2FalseConverter}}" >
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="1*">
@@ -73,7 +72,6 @@
                                     ElapsedTime="{Binding CurrentTime}"></view:LyricView>-->
                     <Grid 
                             HeightRequest="32" 
-                            Margin="{StaticResource DefaultContentPadding}"
                             VerticalOptions="StartAndExpand" >
                         <BoxView 
                                 BackgroundColor="Transparent"                  
@@ -81,7 +79,6 @@
                         </BoxView>
                     </Grid>
                     <Grid  Grid.Row="0" 
-                                  Margin="{StaticResource DefaultContentPadding}"
                                   VerticalOptions="StartAndExpand"
                                   HorizontalOptions="CenterAndExpand">
                         <Button Command="{Binding SwitchPannelCommand}"
@@ -91,7 +88,7 @@
                     </Grid>
                 </Grid>
             </Grid>
-            <Grid Margin="{StaticResource DefaultContentPadding}"
+            <Grid 
                   Grid.Row="0"
                   x:Name="EmptyAlertLayout"
                   IsVisible="{Binding Canplay,Converter={StaticResource True2FalseConverter}}"
@@ -154,7 +151,6 @@
             <Grid 
                       Grid.Row="1"
                       x:Name="ModeControlLayout"
-                      Margin="{StaticResource DefaultContentPadding}"
                       BindingContext="{Binding}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -193,8 +189,6 @@
 
             <!--进度控制区域-->
             <Grid Grid.Row="2"
-                      Margin="{StaticResource DefaultContentPadding}"
-                        
                       x:Name="ProgressControlLayout"
                       BindingContext="{Binding}">
 
@@ -209,7 +203,6 @@
                                 HorizontalOptions="End" />
                 </StackLayout>
                 <Slider                       
-                        HeightRequest="4"
                         Maximum="{Binding Duration,Converter={StaticResource SliderMaxValueConverter}}"
                             Minimum="0.0"
                             IsEnabled="{Binding Canplay}"
@@ -219,7 +212,6 @@
             </Grid>
             <!--播放控制按钮-->
             <Grid
-                    Margin="{StaticResource DefaultContentPadding}"
                     Grid.Row="3"
                     BindingContext="{Binding}"
                     x:Name="PlayControlLayout">
