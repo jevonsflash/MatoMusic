@@ -34,15 +34,12 @@ namespace MatoMusic
             this.musicFunctionManager = musicFunctionManager;
             InitializeComponent();
             this.BindingContext = playlistPageViewModel;
-            
-
-
         }
 
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-            await (this.BindingContext as PlaylistPageViewModel).init();
+            await (this.BindingContext as PlaylistPageViewModel).Init();
         }
 
         private void ListView_OnItemSelected(object sender, SelectedItemChangedEventArgs e)

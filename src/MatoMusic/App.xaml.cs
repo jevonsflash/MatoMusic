@@ -29,11 +29,15 @@ namespace MatoMusic
         {
             var nowPlayingPage = _abpBootstrapper.IocManager.Resolve<NowPlayingPage>();
             var queuePage = _abpBootstrapper.IocManager.Resolve<QueuePage>();
-            var libraryPage = _abpBootstrapper.IocManager.Resolve<LibraryPage>();
+            var musicPage = _abpBootstrapper.IocManager.Resolve<MusicPage>();
+            var albumPage = _abpBootstrapper.IocManager.Resolve<AlbumPage>();
+            var artistPage = _abpBootstrapper.IocManager.Resolve<ArtistPage>();
             var playlistPage = _abpBootstrapper.IocManager.Resolve<PlaylistPage>();
             this.NowPlayingPageShellContent.Content = nowPlayingPage;
             this.QueuePageShellContent.Content = queuePage;
-            this.LibraryPageShellContent.Content = libraryPage;
+            this.MusicPageShellContent.Content = musicPage;
+            this.ArtistPageShellContent.Content = albumPage;
+            this.AlbumPageShellContent.Content = artistPage;
             this.PlaylistPageShellContent.Content = playlistPage;
         }
     }

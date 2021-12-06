@@ -18,7 +18,6 @@ namespace MatoMusic.ViewModels
         public PlaylistPageViewModel(IMusicInfoManager musicInfoManager) : base(musicInfoManager)
         {
             DeleteCommand = new Command(DeleteAction, c => true);
-            Init();
         }
 
         private async void Playlists_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -149,7 +148,7 @@ namespace MatoMusic.ViewModels
             }
         }
 
-        public async void Init()
+        public async Task Init()
         {
             Playlists = new ObservableCollection<PlaylistInfo>(await InitPlaylist());
             Playlists.CollectionChanged += Playlists_CollectionChanged;

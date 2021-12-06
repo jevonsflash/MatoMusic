@@ -59,7 +59,8 @@ namespace MatoMusic.Services
 
         public async Task GoPageAsync(string obj)
         {
-            await mainShell.GoToAsync(obj);
+            var route = $"///{obj}";
+            await mainShell.GoToAsync(route);
         }
 
         private Page GetPageInstance(string obj, object[] args, IList<ToolbarItem> barItem = null)

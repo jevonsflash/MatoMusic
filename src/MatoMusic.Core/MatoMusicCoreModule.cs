@@ -51,7 +51,7 @@ namespace MatoMusic.Core
         public override async void PostInitialize()
         {
             var musicRelatedViewModel = IocManager.Resolve<MusicRelatedService>();
-            await musicRelatedViewModel.init();
+            await musicRelatedViewModel.InitAll();
             base.PostInitialize();
         }
 

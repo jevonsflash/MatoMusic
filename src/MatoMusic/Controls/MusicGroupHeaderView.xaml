@@ -3,39 +3,22 @@
              x:Class="MatoMusic.MusicGroupHeaderView"
             >
 
-    <Grid
-          BackgroundColor="Transparent"
-          Padding="10,12">
+    <Grid BackgroundColor="{DynamicResource PhoneBackgroundBrush}">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="34"></ColumnDefinition>
-            <ColumnDefinition Width="1*"></ColumnDefinition>
+            <ColumnDefinition Width="Auto">
+            </ColumnDefinition>
+            <ColumnDefinition>
+            </ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <Image Grid.Column="0"
-               IsVisible="False"
-               WidthRequest="18"
-               HeightRequest="18"
-               HorizontalOptions="StartAndExpand"
-               x:Name="ImageContentImage"
-               VerticalOptions="CenterAndExpand">
-
-        </Image>
-        <Label Grid.Column="0"
-               FontFamily="FontAwesome"
-               TextColor="{DynamicResource PhoneForegroundBrush}"
-               FontSize="{StaticResource MidFontSize}"
-               VerticalTextAlignment="Center"
-               HorizontalOptions="StartAndExpand"
-               x:Name="LabelIconText"
-               VerticalOptions="CenterAndExpand">
-
-        </Label>
-        <Label Grid.Column="1"
-               x:Name="LabelContentText"
-               HorizontalOptions="StartAndExpand"
-               TextColor="{DynamicResource PhoneContrastForegroundBrush}"
-               FontSize="{StaticResource MidFontSize}"
-               VerticalOptions="CenterAndExpand"
-               VerticalTextAlignment="Center">
+        <BoxView Color="{DynamicResource PhoneContrastBackgroundBrush}"
+                     Margin="0,5"
+                     WidthRequest="54">
+        </BoxView>
+        <Label VerticalTextAlignment="Center"
+                   HorizontalTextAlignment="Center"
+                   Text="{Binding Title}"
+                   TextColor="{DynamicResource PhoneForegroundBrush}"
+                   FontSize="{StaticResource BodyFontSize}">
         </Label>
     </Grid>
 

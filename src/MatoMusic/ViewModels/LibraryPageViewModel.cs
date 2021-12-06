@@ -39,7 +39,7 @@ namespace MatoMusic.ViewModels
             var result = await musicInfoManager.CreateQueueEntrys(Musics);
             if (result)
             {
-                await RebuildMusicInfos();
+                //await RebuildMusicInfos();
                 CommonHelper.ShowMsg(L("Msg_HasAddedQueue"));
 
             }
@@ -55,7 +55,7 @@ namespace MatoMusic.ViewModels
             var result = await musicInfoManager.CreateQueueEntrys(Musics);
             if (result)
             {
-                await RebuildMusicInfos();
+                //await RebuildMusicInfos();
 
                 var CurrentMusics = await musicInfoManager.GetQueueEntry();
                 CurrentMusic = CurrentMusics[0];
@@ -70,7 +70,7 @@ namespace MatoMusic.ViewModels
         /// <summary>
         /// 是否可播放
         /// </summary>
-        public bool Canplay
+        public new bool Canplay
         {
             get { return _canPlay; }
             private set
@@ -89,7 +89,7 @@ namespace MatoMusic.ViewModels
         public Command GoUriCommand { get; set; }
 
 
-        private bool CanPlayExcute(object obj)
+        private new bool CanPlayExcute(object obj)
         {
             var result = Musics.Count > 0;
             return result;
@@ -97,8 +97,8 @@ namespace MatoMusic.ViewModels
         }
 
 
-        public List<MusicInfo> Musics { get => AGMusics.Origin; }
-        private async void Init()
+        public new List<MusicInfo> Musics { get => AGMusics.Origin; }
+        public async Task Init()
         {
             AGMusics = await InitMusics();
             AGAlbums = await InitAlbums();
@@ -167,23 +167,6 @@ namespace MatoMusic.ViewModels
 
             }
         }
-        private bool _isShowGrid;
-
-        public bool IsShowGrid
-        {
-            get
-            {
-
-                return _isShowGrid;
-
-            }
-            set
-            {
-                _isShowGrid = value;
-                RaisePropertyChanged();
-
-            }
-        }
         private Task<AlphaGroupedObservableCollection<ArtistInfo>> InitArtists()
         {
             var aGArtists = musicInfoManager.GetAlphaGroupedArtistInfo();
@@ -202,13 +185,13 @@ namespace MatoMusic.ViewModels
             return aGMusics;
         }
 
-        public async Task ChangeMusic(MusicInfo musicInfo)
+        public override async void ChangeMusic(MusicInfo musicInfo)
         {
             await musicInfoManager.InsertToEndQueueEntry(musicInfo);
 
-            await RebuildMusicInfos();
+            //await RebuildMusicInfos();
 
-           await ChangeMusic(musicInfo);
+            base.ChangeMusic(musicInfo);
         }
 
         public Command PlayAllCommand { get; set; }

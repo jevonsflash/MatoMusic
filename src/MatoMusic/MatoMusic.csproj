@@ -97,8 +97,14 @@
 	  <Compile Update="Controls\MenuCell.xaml.cs">
 	    <DependentUpon>MenuCell.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="Views\LibraryPage.xaml.cs">
-	    <DependentUpon>LibraryPage.xaml</DependentUpon>
+	  <Compile Update="Views\LibraryPages\AlbumPage.xaml.cs">
+	    <DependentUpon>AlbumPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\LibraryPages\ArtistPage.xaml.cs">
+	    <DependentUpon>ArtistPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Views\LibraryPages\MusicPage.xaml.cs">
+	    <DependentUpon>MusicPage.xaml</DependentUpon>
 	  </Compile>
 	  <Compile Update="Views\PlaylistPage.xaml.cs">
 	    <DependentUpon>PlaylistPage.xaml</DependentUpon>
@@ -134,7 +140,15 @@
 	    <SubType>Designer</SubType>
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\LibraryPage.xaml">
+	  <MauiXaml Update="Views\LibraryPages\AlbumPage.xaml">
+	    <SubType>Designer</SubType>
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\LibraryPages\ArtistPage.xaml">
+	    <SubType>Designer</SubType>
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\LibraryPages\MusicPage.xaml">
 	    <SubType>Designer</SubType>
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

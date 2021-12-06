@@ -26,7 +26,6 @@ public class QueuePageViewModel : MusicRelatedViewModel
     {
         DeleteCommand = new Command(DeleteAction, c => true);
         CleanQueueCommand = new Command(CleanQueueAction, CanDoAll);
-        PlayCommand = new Command(PlayAction, CanDoAll);
         FlyBackCommand = new Command(FlyBackAction, CanDoAll);
         PlayAllCommand = new Command(PlayAllAction, c => true);
         PatchupCommand = new Command(PatchupAction, CanDoAll);
@@ -119,11 +118,6 @@ public class QueuePageViewModel : MusicRelatedViewModel
         }
     }
 
-
-    private void PlayAction(object obj)
-    {
-    }
-
     private void MusicSystem_OnRebuildMusicInfosFinished()
     {
         Device.BeginInvokeOnMainThread(() =>
@@ -177,7 +171,7 @@ public class QueuePageViewModel : MusicRelatedViewModel
         {
             await musicInfoManager.ClearQueue();
         }
-        await RebuildMusicInfos();
+        //await RebuildMusicInfos();
 
         RaiseAllExecuteChanged();
 
@@ -191,7 +185,7 @@ public class QueuePageViewModel : MusicRelatedViewModel
 
     private MusicInfo _currentMusic;
 
-    public MusicInfo CurrentMusic
+    public new MusicInfo CurrentMusic
     {
         get { return _currentMusic; }
         set
@@ -205,7 +199,7 @@ public class QueuePageViewModel : MusicRelatedViewModel
     private ObservableCollection<MusicInfo> musics;
 
 
-    public ObservableCollection<MusicInfo> Musics
+    public new ObservableCollection<MusicInfo> Musics
     {
         get
         {
@@ -246,7 +240,7 @@ public class QueuePageViewModel : MusicRelatedViewModel
 
     private void InitMusics()
     {
-        Musics = new ObservableCollection<MusicInfo>(Musics);
+        Musics = new ObservableCollection<MusicInfo>(base.Musics);
         Musics.CollectionChanged += Musics_CollectionChanged;
     }
     private async void PlayAllAction(object obj)
@@ -298,8 +292,6 @@ public class QueuePageViewModel : MusicRelatedViewModel
 
     public Command DeleteCommand { get; set; }
     public Command CleanQueueCommand { get; set; }
-    public Command PlayCommand { get; set; }
-
     public Command PlayAllCommand { get; private set; }
     public Command PatchupCommand { get; private set; }
 }

@@ -58,7 +58,7 @@ namespace MatoMusic.Core.ViewModel
             this.musicInfoManager = musicInfoManager;
         }
 
-        public async Task init()
+        public async Task InitAll()
         {
            await musicSystem.RebuildMusicInfos(MusicSystem_OnRebuildMusicInfosFinished);
         }
@@ -329,7 +329,7 @@ namespace MatoMusic.Core.ViewModel
         /// 以MusicInfo对象切歌
         /// </summary>
         /// <param name="musicInfo"></param>
-        public void ChangeMusic(MusicInfo musicInfo)
+        public virtual void ChangeMusic(MusicInfo musicInfo)
         {
             this.CurrentMusic = musicInfo;
         }

@@ -1,0 +1,134 @@
+﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:MatoMusic;assembly=MatoMusic"
+             x:Class="MatoMusic.ArtistPage"
+             xmlns:projectMato="clr-namespace:MatoMusic.Core.Localization;assembly=MatoMusic.Core"
+             BackgroundColor="{DynamicResource SecondaryColor}">
+    <Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <StackLayout VerticalOptions="CenterAndExpand"
+                         HorizontalOptions="CenterAndExpand"
+                         Orientation="Horizontal">
+                <Label 
+                                FontSize="{StaticResource TinyFontSize}" 
+                Text="{Binding AGArtists.Origin.Count}"></Label>
+                <Label 
+                                FontSize="{StaticResource TinyFontSize}" 
+                Text="位艺术家"></Label>
+
+            </StackLayout>
+            <Grid Grid.Row="1">
+                <Grid Padding="{StaticResource DefaultContentPadding}"
+                >
+                    <ListView RowHeight="64"
+                                       IsGroupingEnabled="true"
+                                       GroupDisplayBinding="{Binding Title}"
+                                       GroupShortNameBinding="{Binding Title}"
+                                       ItemsSource="{Binding AGArtists.Root,Mode=TwoWay}"
+                                       ItemSelected="ListView_OnItemSelected">
+                        <ListView.Header>
+                            <Button  HeightRequest="44"
+                             Text="搜索"
+                             Clicked="SearchButton_OnClicked"
+                             BackgroundColor="{DynamicResource PhoneContrastBackgroundBrush}"></Button>
+
+                        </ListView.Header>
+
+                        <ListView.GroupHeaderTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <controls:MusicGroupHeaderView></controls:MusicGroupHeaderView>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.GroupHeaderTemplate>
+
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <Grid VerticalOptions="CenterAndExpand">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <Image
+                                                              x:Name="FavouriteButton"
+                                                              HeightRequest="54"
+                                                              WidthRequest="54"
+                                                        Source="{Binding AlbumArt,Converter={StaticResource AlbumArtConverter}}"
+                                                              Grid.Column="0"
+                                                              HorizontalOptions="Center" />
+                                        <StackLayout Grid.Column="1"
+                                                               HorizontalOptions="Start"
+                                                               VerticalOptions="CenterAndExpand">
+                                            <Label Text="{Binding Title}"  LineBreakMode="TailTruncation"
+                                                               HorizontalOptions="StartAndExpand"
+                                                               HorizontalTextAlignment="Center"
+                                                               FontSize="{StaticResource BodyFontSize}"
+                                                />
+                                            <StackLayout Orientation="Horizontal"
+                                         HorizontalOptions="StartAndExpand"
+                                         Margin="0,-5,0,0">
+                                                <Label
+                                  Text="{Binding Count}"
+                                  HorizontalOptions="StartAndExpand"
+                                  HorizontalTextAlignment="Center"
+                                  FontSize="{StaticResource BodyFontSize}"
+                                  TextColor="{DynamicResource PhoneChromeBrush}" />
+                                                <Label
+                                  Text="首"
+                                  HorizontalOptions="StartAndExpand"
+                                  HorizontalTextAlignment="Center"
+                                  FontSize="{StaticResource BodyFontSize}"
+                                  TextColor="{DynamicResource PhoneChromeBrush}" />
+                                            </StackLayout>
+                                        </StackLayout>
+                                        <Button
+                                                          x:Name="ArtistMoreButton"
+                                                          HeightRequest="64"
+                                                          WidthRequest="48"
+                                                          Text=""
+                                                          Clicked="ArtistMoreButton_OnClicked"
+                                                          FontFamily="FontAwesome"
+                                                          Grid.Column="2"
+                                                          HorizontalOptions="Center" />
+                                    </Grid>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                        <ListView.Footer>
+                            <BoxView HeightRequest="48"></BoxView>
+                        </ListView.Footer>
+
+                    </ListView>
+                </Grid>
+                <Grid HeightRequest="48"
+                    Margin="0,0,0,0"
+                    VerticalOptions="EndAndExpand" >
+                    <BoxView BackgroundColor="Transparent"
+                         x:Name="ButtonLayout2">
+                    </BoxView>
+                </Grid>
+                <StackLayout  Grid.Row="0"
+                            Margin="0,0,0,-10"
+                            Orientation="Horizontal"
+                            VerticalOptions="EndAndExpand"
+                            HorizontalOptions="EndAndExpand">
+                    <Button Command="{Binding QueueAllCommand}"
+                        Text="{projectMato:Translate AddToQueue}"></Button>
+                </StackLayout>
+            </Grid>
+
+        </Grid>
+
+        <controls:MusicMiniView
+          BindingContext="{Binding}"
+          HeightRequest="64"
+          VerticalOptions="EndAndExpand"
+          x:Name="MiniViewLayout"></controls:MusicMiniView>
+    </Grid>
+</ContentPage>
