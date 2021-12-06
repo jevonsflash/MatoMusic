@@ -2,8 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:MatoMusic;assembly=MatoMusic"
              x:Class="MatoMusic.AlbumPage"
-             xmlns:projectMato="clr-namespace:MatoMusic.Core.Localization;assembly=MatoMusic.Core"
-             BackgroundColor="{DynamicResource SecondaryColor}">
+             xmlns:projectMato="clr-namespace:MatoMusic.Core.Localization;assembly=MatoMusic.Core">
     <Grid>
         <Grid>
             <Grid.RowDefinitions>
@@ -34,8 +33,7 @@
                         <ListView.Header>
                             <Button  HeightRequest="44"
                              Text="搜索"
-                             Clicked="SearchButton_OnClicked"
-                             BackgroundColor="{DynamicResource PhoneContrastBackgroundBrush}"></Button>
+                             Clicked="SearchButton_OnClicked"></Button>
 
                         </ListView.Header>
 

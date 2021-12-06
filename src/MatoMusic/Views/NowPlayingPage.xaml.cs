@@ -21,7 +21,7 @@ namespace MatoMusic
 {
     public partial class NowPlayingPage : ContentPage, ITransientDependency
     {
-        public IMusicInfoManager MusicInfoManager => DependencyService.Get<IMusicInfoManager>();
+        public IMusicInfoManager MusicInfoManager => (this.BindingContext as NowPlayingPageViewModel).musicInfoManager;
 
         private MusicFunctionPage _musicFunctionPage;
         private PlaylistChoosePage _playlistChoosePage;

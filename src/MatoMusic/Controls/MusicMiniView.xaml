@@ -3,8 +3,7 @@
              x:Class="MatoMusic.MusicMiniView"
             >
 
-    <Grid HeightRequest="62"
-          BackgroundColor="{DynamicResource PhoneContrastBackgroundBrush}">
+    <Grid HeightRequest="62">
         <Grid.GestureRecognizers>
             <TapGestureRecognizer Tapped="TapGestureRecognizer_OnTapped"></TapGestureRecognizer>
         </Grid.GestureRecognizers>

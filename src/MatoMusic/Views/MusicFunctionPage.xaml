@@ -1,13 +1,11 @@
 ﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:MatoMusic;assembly=MatoMusic"
-             x:Class="MatoMusic.MusicFunctionPage"
-             BackgroundColor="{DynamicResource SecondaryColor}">
-    
+             x:Class="MatoMusic.MusicFunctionPage">
+
     <Grid VerticalOptions="Center"  
           Padding="20,10" 
-          HorizontalOptions="FillAndExpand"  
-          BackgroundColor="{DynamicResource PhoneContrastBackgroundBrush}">
+          HorizontalOptions="FillAndExpand">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto">
             </RowDefinition>

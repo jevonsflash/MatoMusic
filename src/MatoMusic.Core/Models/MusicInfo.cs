@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Abp.Dependency;
 using MatoMusic.Infrastructure.Common;
 using Microsoft.Maui.Controls;
 
@@ -11,9 +12,6 @@ namespace MatoMusic.Core
 {
     public class MusicInfo : ObservableObject, IBasicInfo, IClueObject
     {
-        public IMusicInfoManager MusicInfoManager => DependencyService.Get<IMusicInfoManager>();
-
-
         public MusicInfo()
         {
             PropertyChanged += MusicInfo_PropertyChanged;
@@ -21,6 +19,8 @@ namespace MatoMusic.Core
 
         private void MusicInfo_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            var MusicInfoManager = IocManager.Instance.Resolve<MusicInfoManager>();
+
             if (e.PropertyName == nameof(IsFavourite))
             {
                 if (IsFavourite)
