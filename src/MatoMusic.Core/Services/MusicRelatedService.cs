@@ -306,7 +306,6 @@ namespace MatoMusic.Core.Services
                     break;
 
                 case Device.UWP:
-                case Device.WPF:
                     resultTime = originTime;
                     break;
                 default:
