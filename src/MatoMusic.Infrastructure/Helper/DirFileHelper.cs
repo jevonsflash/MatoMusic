@@ -249,9 +249,8 @@ namespace MatoMusic.Infrastructure.Helper
                 /// <param name="pagestr">文件内容</param>
         public static void CreateFile(string dir, string pagestr)
         {
-            dir = dir.Replace("/", "\\");
-            if (dir.IndexOf("\\") > -1)
-                CreateDir(dir.Substring(0, dir.LastIndexOf("\\")));
+            var path = Path.GetDirectoryName(dir);
+            CreateDir(path);
             StreamWriter sw = new StreamWriter(dir, false, Encoding.GetEncoding("UTF-8"));
             sw.Write(pagestr);
             sw.Close();

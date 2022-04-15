@@ -48,7 +48,7 @@
 	<ItemGroup Condition="$(TargetFramework.Contains('-windows'))">
 		<!-- Required - WinUI does not yet have buildTransitive for everything -->
 		<PackageReference Include="Microsoft.Graphics.Win2D" Version="1.0.1" />
-		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.0.2" />
+		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.1.0-preview1" />
 	</ItemGroup>
 
 	<PropertyGroup Condition="$(TargetFramework.Contains('-windows'))">
@@ -84,8 +84,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="CommunityToolkit.Maui" Version="1.0.0-pre3" />
-
+	  <PackageReference Include="CommunityToolkit.Maui" Version="1.0.0-pre9" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -200,15 +199,6 @@
 	  <PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.1.1">
 	    <PrivateAssets>all</PrivateAssets>
 	    <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-	  </PackageReference>
-	</ItemGroup>
-
-	<ItemGroup Condition="'$(TargetFramework)' == 'net6.0-android'">
-	  <PackageReference Include="Xamarin.AndroidX.Concurrent.Futures">
-	    <Version>1.1.0.8</Version>
-	  </PackageReference>
-	  <PackageReference Include="Xamarin.Google.Guava.ListenableFuture">
-	    <Version>1.0.0.6</Version>
 	  </PackageReference>
 	</ItemGroup>
 	
