@@ -6,7 +6,6 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.Maui.Controls;
 using Abp.Dependency;
-using Microsoft.Maui.Essentials;
 using Abp.Configuration;
 using MatoMusic.Core.Settings;
 using MatoMusic.Core.Helper;
