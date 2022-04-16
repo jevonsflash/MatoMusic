@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Abp.Dependency;
 
-namespace MatoMusic.Core
+namespace MatoMusic.Core.Interfaces
 {
-    public interface IMusicSystem
+    public interface IMusicControlService
     {
         event EventHandler<bool> OnPlayFinished;
         event EventHandler OnRebuildMusicInfosFinished;
@@ -18,10 +18,6 @@ namespace MatoMusic.Core
         int[] ShuffleMap { get; }
         List<MusicInfo> MusicInfos { get; }
         int LastIndex { get; }
-        double Duration { get; }
-        double CurrentTime { get; }
-        bool IsPlaying { get; }
-        bool IsInitFinished { get; }
         Task RebuildMusicInfos();
         Task RebuildMusicInfos(Action callback);
         void SeekTo(double position);
@@ -29,12 +25,16 @@ namespace MatoMusic.Core
         MusicInfo GetPreMusic(MusicInfo current, bool isShuffle);
         int GetMusicIndex(MusicInfo musicInfo);
         MusicInfo GetMusicByIndex(int index);
-        void InitPlayer(MusicInfo musicInfo);
+        Task InitPlayer(MusicInfo musicInfo);
         void Play(MusicInfo currentMusic);
         void Stop();
         void PauseOrResume();
         void PauseOrResume(bool status);
         Task UpdateShuffleMap();
         void SetRepeatOneStatus(bool isRepeatOne);
+        double Duration();
+        double CurrentTime();
+        bool IsPlaying();
+        bool IsInitFinished();
     }
 }

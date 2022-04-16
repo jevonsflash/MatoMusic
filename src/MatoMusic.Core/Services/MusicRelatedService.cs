@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MatoMusic.Core.Interfaces;
 using MatoMusic.Core.Settings;
 using MatoMusic.Core.ViewModel;
 using Microsoft.Maui.Controls;
@@ -12,15 +13,15 @@ namespace MatoMusic.Core.Services
     public class MusicRelatedService : ViewModelBase
     {
         private readonly IMusicInfoManager musicInfoManager;
-        private readonly IMusicSystem musicSystem;
+        private readonly IMusicControlService musicSystem;
         private bool IsInitFinished = false;
         private bool _isInited = false;
         public Action RebuildMusicInfosHandler;
 
-        public MusicRelatedService(IMusicInfoManager musicInfoManager)
+        public MusicRelatedService(IMusicInfoManager musicInfoManager, IMusicControlService musicControlService)
         {
             this.musicInfoManager = musicInfoManager;
-            musicSystem = DependencyService.Get<IMusicSystem>();
+            musicSystem = musicControlService;
             Device.StartTimer(new TimeSpan(0, 0, 0, 0, 100), DoUpdate);
 
         }
@@ -220,10 +221,10 @@ namespace MatoMusic.Core.Services
 
         public async Task InitAll()
         {
-            await musicSystem.RebuildMusicInfos(MusicSystem_OnRebuildMusicInfosFinished);
+            await musicSystem.RebuildMusicInfos(MusicControlService_OnRebuildMusicInfosFinished);
         }
 
-        private void MusicSystem_OnRebuildMusicInfosFinished()
+        private void MusicControlService_OnRebuildMusicInfosFinished()
         {
             //当队列初始化完成时初始化当前曲目
             Device.BeginInvokeOnMainThread(() =>
@@ -231,7 +232,7 @@ namespace MatoMusic.Core.Services
                 InitCurrentMusic();
             });
             musicSystem.SetRepeatOneStatus(IsRepeatOne);
-            musicSystem.OnPlayStatusChanged += MusicSystem_OnPlayStatusChanged;
+            musicSystem.OnPlayStatusChanged += MusicControlService_OnPlayStatusChanged;
             this._isInited = true;
             RebuildMusicInfosHandler?.Invoke();
         }
@@ -266,7 +267,7 @@ namespace MatoMusic.Core.Services
                 }
                 musicSystem.InitPlayer(CurrentMusic);
 
-                this.Duration = GetPlatformSpecificTime(musicSystem.Duration);
+                this.Duration = GetPlatformSpecificTime(musicSystem.Duration());
             }
             else
             {
@@ -275,15 +276,15 @@ namespace MatoMusic.Core.Services
             }
         }
 
-        private void MusicSystem_OnPlayStatusChanged(object sender, bool e)
+        private void MusicControlService_OnPlayStatusChanged(object sender, bool e)
         {
             this.IsPlaying = e;
         }
 
         public bool DoUpdate()
         {
-            this.CurrentTime = GetPlatformSpecificTime(musicSystem.CurrentTime);
-            this.Duration = GetPlatformSpecificTime(musicSystem.Duration);
+            this.CurrentTime = GetPlatformSpecificTime(musicSystem.CurrentTime());
+            this.Duration = GetPlatformSpecificTime(musicSystem.Duration());
 
             return true;
         }

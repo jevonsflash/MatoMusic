@@ -13,6 +13,7 @@ using MatoMusic;
 using MatoMusic.Core.Helper;
 using MatoMusic.Services;
 using MatoMusic.Core.Services;
+using MatoMusic.Core.Interfaces;
 
 namespace MatoMusic.ViewModels;
 
@@ -111,7 +112,7 @@ public class QueuePageViewModel : MusicRelatedViewModel
         }
     }
 
-    private void MusicSystem_OnRebuildMusicInfosFinished()
+    private void MusicControlService_OnRebuildMusicInfosFinished()
     {
         Device.BeginInvokeOnMainThread(() =>
         {
@@ -220,7 +221,7 @@ public class QueuePageViewModel : MusicRelatedViewModel
     private async void PlayAllAction(object obj)
     {
 
-        await RebuildMusicInfos(MusicSystem_OnRebuildMusicInfosFinished);
+        await RebuildMusicInfos(MusicControlService_OnRebuildMusicInfosFinished);
 
         var isSucc = await musicInfoManager.GetMusicInfos();
         if (!isSucc.IsSucess)

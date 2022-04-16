@@ -7,34 +7,16 @@ using System.Threading;
 using System.Threading.Tasks;
 using MatoMusic.Infrastructure.Helper;
 using Abp.Dependency;
+using MatoMusic.Core.Interfaces;
 
 namespace MatoMusic.Core
 {
-    public partial class MusicSystem : IMusicSystem
+    public partial class MusicControlService : IMusicControlService
     {
-
-        public IMusicInfoManager MusicInfoManager { get; set; }
-
-        public event EventHandler<bool> OnPlayFinished;
-
-        public event EventHandler OnRebuildMusicInfosFinished;
-
-        public event EventHandler<double> OnProgressChanged;
-
-        public event EventHandler<bool> OnPlayStatusChanged;
 
         private NSError nserror = new NSError();
 
-        public MusicSystem()
-        {
-
-        }
-        public MusicSystem(IMusicInfoManager musicInfoManager)
-        {
-
-            MusicInfoManager = musicInfoManager;
-        }
-
+  
 
         private void OnFinishedPlaying(object sender, AVStatusEventArgs e)
         {
@@ -46,101 +28,73 @@ namespace MatoMusic.Core
         }
 
 
-        private int[] shuffleMap;
+      
+        private AVAudioPlayer CurrentIosPlayer;
 
-        public int[] ShuffleMap
-        {
-            get
-            {
-                if (shuffleMap == null || shuffleMap.Length == 0)
-                {
-                    shuffleMap = CommonHelper.GetRandomArry(0, LastIndex);
-                }
-                return shuffleMap;
-            }
-        }
-        private AVAudioPlayer CurrentPlayer;
 
-        private List<MusicInfo> musicInfos;
 
-        public List<MusicInfo> MusicInfos
-        {
-            get
-            {
-                if (musicInfos == null || musicInfos.Count == 0)
-                {
-                    musicInfos = new List<MusicInfo>();
-                }
-                return musicInfos;
-            }
-        }
-
-        public async Task RebuildMusicInfos()
+        public partial async Task RebuildMusicInfos()
         {
             musicInfos = await MusicInfoManager.GetQueueEntry();
             OnRebuildMusicInfosFinished?.Invoke(this, EventArgs.Empty);
 
         }
 
-        public async Task RebuildMusicInfos(Action callback)
+        public partial async Task RebuildMusicInfos(Action callback)
         {
             await RebuildMusicInfos();
             callback?.Invoke();
         }
 
-        public int LastIndex { get { return MusicInfos.FindLastIndex(c => true); } }
 
 
-        public double Duration
+        public partial double Duration()
         {
-            get
-            {
-                if (CurrentPlayer == null)
+           
+                if (CurrentIosPlayer == null)
                 {
 
                     return 1.0;
                 }
-                return CurrentPlayer.Duration;
+                return CurrentIosPlayer.Duration;
 
-            }
+            
         }
 
 
-        public double CurrentTime
+        public partial double CurrentTime()
         {
-            get
-            {
-                if (CurrentPlayer == null)
+           
+                if (CurrentIosPlayer == null)
                 {
                     return default;
                 }
-                return CurrentPlayer.CurrentTime;
-            }
+                return CurrentIosPlayer.CurrentTime;
+            
         }
 
 
-        public bool IsPlaying
+        public partial bool IsPlaying()
         {
-            get
-            {
-                if (CurrentPlayer == null)
+           
+                if (CurrentIosPlayer == null)
                 {
                     return default;
                 }
-                return CurrentPlayer.Playing;
-            }
+                return CurrentIosPlayer.Playing;
+            
         }
 
-        public bool IsInitFinished => CurrentPlayer != null;
+        public partial bool IsInitFinished() { return CurrentIosPlayer != null; }
 
-        public void SeekTo(double position)
+        public partial void SeekTo(double position)
 
         {
-            if (!IsInitFinished) { return; }
-            CurrentPlayer.CurrentTime = position;
+            if (!IsInitFinished()) { return; }
+            CurrentIosPlayer.CurrentTime = position;
         }
 
-        public MusicInfo GetNextMusic(MusicInfo current, bool isShuffle)
+        public partial MusicInfo GetNextMusic(MusicInfo current, bool isShuffle)
         {
             MusicInfo currentMusicInfo = null;
             if (current == null)
@@ -172,7 +126,7 @@ namespace MatoMusic.Core
             return currentMusicInfo;
         }
 
-        public MusicInfo GetPreMusic(MusicInfo current, bool isShuffle)
+        public partial MusicInfo GetPreMusic(MusicInfo current, bool isShuffle)
         {
             MusicInfo currentMusicInfo = null;
 
@@ -205,92 +159,92 @@ namespace MatoMusic.Core
             return currentMusicInfo;
         }
 
-        public int GetMusicIndex(MusicInfo musicInfo)
+        public partial int GetMusicIndex(MusicInfo musicInfo)
         {
             var current = MusicInfos;
             var result = current.IndexOf(current.FirstOrDefault(c => c.Id == musicInfo.Id));
             return result;
         }
 
-        public MusicInfo GetMusicByIndex(int index)
+        public partial MusicInfo GetMusicByIndex(int index)
         {
             var result = MusicInfos[index];
             return result;
         }
 
-        public void InitPlayer(MusicInfo currentMusic)
+        public partial async Task InitPlayer(MusicInfo musicInfo)
         {
             AVAudioSession.SharedInstance().SetCategory(AVAudioSessionCategory.Playback);
             AVAudioSession.SharedInstance().SetActive(true);
-            if (CurrentPlayer != null)
+            if (CurrentIosPlayer != null)
             {
                 Stop();
-                CurrentPlayer.Dispose();
+                CurrentIosPlayer.Dispose();
             }
 
             try
             {
-                CurrentPlayer = new AVAudioPlayer(new NSUrl(currentMusic.Url), "", out nserror);
+                CurrentIosPlayer = new AVAudioPlayer(new NSUrl(musicInfo.Url), "", out nserror);
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                CurrentPlayer = null;
+                CurrentIosPlayer = null;
                 return;
             }
             //注册完成播放事件
-            CurrentPlayer.FinishedPlaying -= new EventHandler<AVStatusEventArgs>(OnFinishedPlaying);
-            CurrentPlayer.FinishedPlaying += new EventHandler<AVStatusEventArgs>(OnFinishedPlaying);
+            CurrentIosPlayer.FinishedPlaying -= new EventHandler<AVStatusEventArgs>(OnFinishedPlaying);
+            CurrentIosPlayer.FinishedPlaying += new EventHandler<AVStatusEventArgs>(OnFinishedPlaying);
 
 
         }
 
-        public void Play(MusicInfo currentMusic)
+        public partial void Play(MusicInfo currentMusic)
         {
-            if (!IsInitFinished) { return; }
-            CurrentPlayer?.Play();
+            if (!IsInitFinished()) { return; }
+            CurrentIosPlayer?.Play();
             OnPlayStatusChanged?.Invoke(this, true);
         }
 
-        public void Stop()
+        public partial void Stop()
         {
-            if (!IsInitFinished) { return; }
+            if (!IsInitFinished()) { return; }
 
-            if (CurrentPlayer.Playing)
+            if (CurrentIosPlayer.Playing)
             {
-                CurrentPlayer.Stop();
+                CurrentIosPlayer.Stop();
                 OnPlayStatusChanged?.Invoke(this, false);
 
             }
         }
 
-        public void PauseOrResume()
+        public partial void PauseOrResume()
         {
-            if (!IsInitFinished) { return; }
+            if (!IsInitFinished()) { return; }
 
-            var status = CurrentPlayer.Playing;
+            var status = CurrentIosPlayer.Playing;
             PauseOrResume(status);
         }
 
-        public void PauseOrResume(bool status)
+        public partial void PauseOrResume(bool status)
         {
-            if (!IsInitFinished) { return; }
+            if (!IsInitFinished()) { return; }
 
             if (status)
             {
-                CurrentPlayer.Pause();
+                CurrentIosPlayer.Pause();
                 OnPlayStatusChanged?.Invoke(this, false);
             }
             else
             {
-                CurrentPlayer.Play();
+                CurrentIosPlayer.Play();
                 OnPlayStatusChanged?.Invoke(this, true);
 
             }
 
         }
 
-        private int GetShuffleMusicIndex(int originItem, int increment)
+        private partial int GetShuffleMusicIndex(int originItem, int increment)
         {
             var originItemIndex = 0;
 
@@ -335,7 +289,7 @@ namespace MatoMusic.Core
 
         }
 
-        public Task UpdateShuffleMap()
+        public partial Task UpdateShuffleMap()
         {
             return Task.Run(() =>
             {
@@ -345,10 +299,10 @@ namespace MatoMusic.Core
 
         }
 
-        public void SetRepeatOneStatus(bool isRepeatOne)
+        public partial void SetRepeatOneStatus(bool isRepeatOne)
         {
-            if (!IsInitFinished) { return; }
-            CurrentPlayer.NumberOfLoops = isRepeatOne ? nint.MaxValue : 0;
+            if (!IsInitFinished()) { return; }
+            CurrentIosPlayer.NumberOfLoops = isRepeatOne ? nint.MaxValue : 0;
         }
     }
 }

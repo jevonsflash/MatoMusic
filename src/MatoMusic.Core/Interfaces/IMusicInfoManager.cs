@@ -4,7 +4,7 @@ using Abp.Dependency;
 using MatoMusic.Core.Models;
 using MatoMusic.Infrastructure;
 
-namespace MatoMusic.Core
+namespace MatoMusic.Core.Interfaces
 {
     public interface IMusicInfoManager
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using Abp.Dependency;
-using MatoMusic.Core;
 using MatoMusic.Core.Helper;
+using MatoMusic.Core.Interfaces;
 using MatoMusic.Core.Services;
 using MatoMusic.Core.ViewModel;
 using Microsoft.Maui.Controls;
@@ -43,7 +43,7 @@ namespace MatoMusic.ViewModels
             }
         }
 
-        private void MusicSystem_OnRebuildMusicInfosFinished()
+        private void MusicControlService_OnRebuildMusicInfosFinished()
         {
             Device.BeginInvokeOnMainThread(() =>
             {
@@ -54,7 +54,7 @@ namespace MatoMusic.ViewModels
 
         private async void PlayAllAction(object obj)
         {
-            await RebuildMusicInfos(MusicSystem_OnRebuildMusicInfosFinished);
+            await RebuildMusicInfos(MusicControlService_OnRebuildMusicInfosFinished);
 
             var isSucc = await musicInfoManager.GetMusicInfos();
             if (!isSucc.IsSucess)

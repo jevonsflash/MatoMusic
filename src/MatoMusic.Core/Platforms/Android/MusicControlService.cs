@@ -7,6 +7,7 @@ using Android.App;
 using Android.Content;
 using Android.Media;
 using Android.OS;
+using MatoMusic.Core.Interfaces;
 using MatoMusic.Infrastructure.Helper;
 
 namespace MatoMusic.Core
@@ -27,124 +28,73 @@ namespace MatoMusic.Core
 
         }
     }
-    public partial class MusicSystem : IMusicSystem
+    public partial class MusicControlService : IMusicControlService
     {
-        public IMusicInfoManager MusicInfoManager { get; set; }
+       
+        private MediaPlayer _currentAndroidPlayer;
 
-        public event EventHandler<bool> OnPlayFinished;
-
-        public event EventHandler OnRebuildMusicInfosFinished;
-
-        public event EventHandler<double> OnProgressChanged;
-
-        public event EventHandler<bool> OnPlayStatusChanged;
-
-        public MusicSystem()
+        private MediaPlayer CurrentAndroidPlayer
         {
 
-        }
-        public MusicSystem(IMusicInfoManager musicInfoManager)
-        {
-
-            MusicInfoManager = musicInfoManager;
-        }
-
-
-
-        private int[] shuffleMap;
-
-        public int[] ShuffleMap
-        {
+            set { _currentAndroidPlayer = value; }
             get
             {
-                if (shuffleMap == null || shuffleMap.Length == 0)
-                {
-                    shuffleMap = CommonHelper.GetRandomArry(0, LastIndex);
-                }
-                return shuffleMap;
-            }
-        }
-
-        private MediaPlayer _currentPlayer;
-
-        private MediaPlayer CurrentPlayer
-        {
-
-            set { _currentPlayer = value; }
-            get
-            {
-                if (_currentPlayer == null)
+                if (_currentAndroidPlayer == null)
                 {
 
-                    _currentPlayer = new MediaPlayer();
+                    _currentAndroidPlayer = new MediaPlayer();
                     var cl = new CompleteListener();
-                    _currentPlayer.SetOnCompletionListener(cl);
+                    _currentAndroidPlayer.SetOnCompletionListener(cl);
                     cl.OnComplete += Cl_OnComplete;
                 }
-                return _currentPlayer;
+                return _currentAndroidPlayer;
             }
         }
 
         private void Cl_OnComplete(object sender, MediaPlayer e)
         {
-            if (!CurrentPlayer.Looping && e.Duration > 0.0)
+            if (!CurrentAndroidPlayer.Looping && e.Duration > 0.0)
             {
                 OnPlayFinished?.Invoke(null, true);
 
             }
         }
 
-        private List<MusicInfo> musicInfos;
 
-        public List<MusicInfo> MusicInfos
-        {
-            get
-            {
-                if (musicInfos == null || musicInfos.Count == 0)
-                {
-                    musicInfos = new List<MusicInfo>();
-                }
-                return musicInfos;
-            }
-        }
-
-
-        public async Task RebuildMusicInfos()
+        public partial async Task RebuildMusicInfos()
         {
             musicInfos = await MusicInfoManager.GetQueueEntry();
             OnRebuildMusicInfosFinished?.Invoke(this, EventArgs.Empty);
 
         }
 
-        public async Task RebuildMusicInfos(Action callback)
+        public partial async Task RebuildMusicInfos(Action callback)
         {
             await RebuildMusicInfos();
             callback?.Invoke();
         }
 
-        public int LastIndex { get { return MusicInfos.FindLastIndex(c => true); } }
+
+        public partial double Duration() {  return CurrentAndroidPlayer.Duration;  }
 
 
-        public double Duration { get { return CurrentPlayer.Duration; } }
+        public partial double CurrentTime() { return CurrentAndroidPlayer.CurrentPosition;  }
 
 
-        public double CurrentTime { get { return CurrentPlayer.CurrentPosition; } }
+        public partial bool IsPlaying() {  return CurrentAndroidPlayer.IsPlaying;  }
 
 
-        public bool IsPlaying { get { return CurrentPlayer.IsPlaying; } }
+        public partial bool IsInitFinished() {return true; }
 
 
-        public bool IsInitFinished { get { return true; } }
-
-
-        public void SeekTo(double position)
+        public partial void SeekTo(double position)
 
         {
-            CurrentPlayer.SeekTo((int)position * 1000);
+            CurrentAndroidPlayer.SeekTo((int)position * 1000);
 
         }
 
-        public MusicInfo GetNextMusic(MusicInfo current, bool isShuffle)
+        public partial MusicInfo GetNextMusic(MusicInfo current, bool isShuffle)
         {
             MusicInfo currentMusicInfo = null;
             if (current == null)
@@ -176,7 +126,7 @@ namespace MatoMusic.Core
             return currentMusicInfo;
         }
 
-        public MusicInfo GetPreMusic(MusicInfo current, bool isShuffle)
+        public partial MusicInfo GetPreMusic(MusicInfo current, bool isShuffle)
         {
             MusicInfo currentMusicInfo = null;
 
@@ -209,68 +159,68 @@ namespace MatoMusic.Core
             return currentMusicInfo;
         }
 
-        public int GetMusicIndex(MusicInfo musicInfo)
+        public partial int GetMusicIndex(MusicInfo musicInfo)
         {
             var result = MusicInfos.IndexOf(MusicInfos.FirstOrDefault(c => c.Id == musicInfo.Id));
             return result;
         }
 
-        public MusicInfo GetMusicByIndex(int index)
+        public partial MusicInfo GetMusicByIndex(int index)
         {
             var result = MusicInfos[index];
             return result;
         }
 
-        public void InitPlayer(MusicInfo musicInfo)
+        public partial async Task InitPlayer(MusicInfo musicInfo)
         {
-            CurrentPlayer.Reset();
-            CurrentPlayer.SetDataSource(musicInfo.Url);
+            CurrentAndroidPlayer.Reset();
+            CurrentAndroidPlayer.SetDataSource(musicInfo.Url);
 
-            CurrentPlayer.Prepare();
+            CurrentAndroidPlayer.Prepare();
         }
 
-        public void Play(MusicInfo currentMusic)
+        public partial void Play(MusicInfo currentMusic)
         {
             if (currentMusic != null)
             {
-                CurrentPlayer?.Start();
+                CurrentAndroidPlayer?.Start();
             }
         }
 
-        public void Stop()
+        public partial void Stop()
         {
-            if (CurrentPlayer.IsPlaying)
+            if (CurrentAndroidPlayer.IsPlaying)
             {
-                CurrentPlayer.SeekTo(0);
-                CurrentPlayer.Pause();
+                CurrentAndroidPlayer.SeekTo(0);
+                CurrentAndroidPlayer.Pause();
 
             }
         }
 
-        public void PauseOrResume()
+        public partial void PauseOrResume()
         {
 
-            var status = CurrentPlayer.IsPlaying;
+            var status = CurrentAndroidPlayer.IsPlaying;
             PauseOrResume(status);
         }
 
-        public void PauseOrResume(bool status)
+        public partial void PauseOrResume(bool status)
         {
 
             if (status)
             {
-                CurrentPlayer.Pause();
+                CurrentAndroidPlayer.Pause();
                 OnPlayStatusChanged?.Invoke(this, false);
             }
             else
             {
-                CurrentPlayer.Start();
+                CurrentAndroidPlayer.Start();
                 OnPlayStatusChanged?.Invoke(this, true);
             }
 
         }
 
-        private int GetShuffleMusicIndex(int originItem, int increment)
+        private partial int GetShuffleMusicIndex(int originItem, int increment)
         {
             var originItemIndex = 0;
 
@@ -312,7 +262,7 @@ namespace MatoMusic.Core
             }
         }
 
-        public Task UpdateShuffleMap()
+        public partial Task UpdateShuffleMap()
         {
             return Task.Run(() =>
             {
@@ -321,11 +271,11 @@ namespace MatoMusic.Core
             });
         }
 
-        public void SetRepeatOneStatus(bool isRepeatOne)
+        public partial void SetRepeatOneStatus(bool isRepeatOne)
         {
-            if (CurrentPlayer != null)
+            if (CurrentAndroidPlayer != null)
             {
-                CurrentPlayer.Looping = isRepeatOne;
+                CurrentAndroidPlayer.Looping = isRepeatOne;
             }
         }
     }

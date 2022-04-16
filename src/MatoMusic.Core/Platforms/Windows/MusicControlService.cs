@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MatoMusic.Core;
+using MatoMusic.Core.Interfaces;
 using MatoMusic.Infrastructure.Helper;
 using Microsoft.Maui.Controls;
 using Windows.Media.Core;
@@ -11,29 +11,9 @@ using Windows.Storage;
 
 namespace MatoMusic.Core
 {
-    public partial class MusicSystem : IMusicSystem
+    public partial class MusicControlService : IMusicControlService
     {
-        public IMusicInfoManager MusicInfoManager { get; set; }
 
-        public event EventHandler<bool> OnPlayFinished;
-
-        public event EventHandler OnRebuildMusicInfosFinished;
-
-        public event EventHandler<double> OnProgressChanged;
-
-        public event EventHandler<bool> OnPlayStatusChanged;
-
-        public MusicSystem()
-        {
-
-        }
-
-        public MusicSystem(IMusicInfoManager musicInfoManager)
-        {
-
-            InitializeAudioListener();
-            this.MusicInfoManager = musicInfoManager;
-        }
 
         private void InitializeAudioListener()
         {
@@ -41,38 +21,23 @@ namespace MatoMusic.Core
         }
 
 
+        private MediaPlayer _currentWindowsPlayer;
 
-        private int[] shuffleMap;
-
-        public int[] ShuffleMap
-        {
-            get
-            {
-                if (shuffleMap == null || shuffleMap.Length == 0)
-                {
-                    shuffleMap = CommonHelper.GetRandomArry(0, LastIndex);
-                }
-                return shuffleMap;
-            }
-        }
-
-        private MediaPlayer _currentPlayer;
-
-        private MediaPlayer CurrentPlayer
+        private MediaPlayer CurrentWindowsPlayer
         {
 
-            set { _currentPlayer = value; }
+            set { _currentWindowsPlayer = value; }
             get
             {
-                if (_currentPlayer == null)
+                if (_currentWindowsPlayer == null)
                 {
 
-                    _currentPlayer = new MediaPlayer();
+                    _currentWindowsPlayer = new MediaPlayer();
 
 
 
                 }
-                return _currentPlayer;
+                return _currentWindowsPlayer;
             }
         }
 
@@ -81,41 +46,27 @@ namespace MatoMusic.Core
             OnPlayFinished?.Invoke(null, true);
         }
 
-        private List<MusicInfo> musicInfos;
 
-        public List<MusicInfo> MusicInfos
-        {
-            get
-            {
-                if (musicInfos == null || musicInfos.Count == 0)
-                {
-                    musicInfos = new List<MusicInfo>();
-                }
-                return musicInfos;
-            }
-        }
 
-        public async Task RebuildMusicInfos()
+        public partial async Task RebuildMusicInfos()
         {
             musicInfos = await MusicInfoManager.GetQueueEntry();
             OnRebuildMusicInfosFinished?.Invoke(this, EventArgs.Empty);
         }
 
-        public async Task RebuildMusicInfos(Action callback)
+        public partial async Task RebuildMusicInfos(Action callback)
         {
             await RebuildMusicInfos();
             callback?.Invoke();
         }
-        public int LastIndex { get { return MusicInfos.FindLastIndex(c => true); } }
+
+        public partial double Duration() { return CurrentWindowsPlayer.PlaybackSession.NaturalDuration.TotalSeconds; }
 
 
-        public double Duration { get { return CurrentPlayer.PlaybackSession.NaturalDuration.TotalSeconds; } }
+        public partial double CurrentTime() { return CurrentWindowsPlayer.PlaybackSession.Position.TotalSeconds; }
 
 
-        public double CurrentTime { get { return CurrentPlayer.PlaybackSession.Position.TotalSeconds; } }
-
-
-        public bool IsPlaying { get { return GetIsPlaying(CurrentPlayer.PlaybackSession.PlaybackState); } }
+        public partial bool IsPlaying() { return GetIsPlaying(CurrentWindowsPlayer.PlaybackSession.PlaybackState); }
 
 
         private bool GetIsPlaying(MediaPlaybackState status)
@@ -139,17 +90,17 @@ namespace MatoMusic.Core
             return result;
         }
 
-        public bool IsInitFinished { get { return true; } }
+        public partial bool IsInitFinished() { return true; }
 
 
-        public void SeekTo(double position)
+        public partial void SeekTo(double position)
 
         {
-            CurrentPlayer.Position = new TimeSpan(0, 0, 0, (int)position);
+            CurrentWindowsPlayer.Position = new TimeSpan(0, 0, 0, (int)position);
 
         }
 
-        public MusicInfo GetNextMusic(MusicInfo current, bool isShuffle)
+        public partial MusicInfo GetNextMusic(MusicInfo current, bool isShuffle)
         {
             MusicInfo currentMusicInfo = null;
             var index = GetMusicIndex(current);
@@ -177,7 +128,7 @@ namespace MatoMusic.Core
             return currentMusicInfo;
         }
 
-        public MusicInfo GetPreMusic(MusicInfo current, bool isShuffle)
+        public partial MusicInfo GetPreMusic(MusicInfo current, bool isShuffle)
         {
             MusicInfo currentMusicInfo = null;
             var index = GetMusicIndex(current);
@@ -205,24 +156,24 @@ namespace MatoMusic.Core
             return currentMusicInfo;
         }
 
-        public int GetMusicIndex(MusicInfo musicInfo)
+        public partial int GetMusicIndex(MusicInfo musicInfo)
         {
             var result = MusicInfos.IndexOf(MusicInfos.FirstOrDefault(c => c.Id == musicInfo.Id));
             return result;
         }
 
-        public MusicInfo GetMusicByIndex(int index)
+        public partial MusicInfo GetMusicByIndex(int index)
         {
             var result = MusicInfos[index];
             return result;
         }
 
-        public async void InitPlayer(MusicInfo musicInfo)
+        public partial async Task InitPlayer(MusicInfo musicInfo)
         {
-            CurrentPlayer.CurrentStateChanged -= CurrentPlayer_CurrentStateChanged;
+            CurrentWindowsPlayer.CurrentStateChanged -= CurrentPlayer_CurrentStateChanged;
 
-            CurrentPlayer.Dispose();
-            CurrentPlayer = new MediaPlayer();
+            CurrentWindowsPlayer.Dispose();
+            CurrentWindowsPlayer = new MediaPlayer();
 
             var results = StorageFile.GetFileFromPathAsync(musicInfo.Url);
 
@@ -231,16 +182,16 @@ namespace MatoMusic.Core
             {
 
             }
-            CurrentPlayer.Source =
+            CurrentWindowsPlayer.Source =
                 MediaSource.CreateFromStream(await file.OpenAsync(FileAccessMode.Read), file.ContentType);
-            CurrentPlayer.CurrentStateChanged += CurrentPlayer_CurrentStateChanged; ;
+            CurrentWindowsPlayer.CurrentStateChanged += CurrentPlayer_CurrentStateChanged; ;
 
 
         }
 
         private void CurrentPlayer_CurrentStateChanged(MediaPlayer sender, object args)
         {
-            if (sender.CurrentState==MediaPlayerState.Paused || sender.CurrentState==MediaPlayerState.Stopped)
+            if (sender.CurrentState == MediaPlayerState.Paused || sender.CurrentState == MediaPlayerState.Stopped)
             {
                 OnPlayStatusChanged?.Invoke(this, false);
 
@@ -252,45 +203,45 @@ namespace MatoMusic.Core
             }
         }
 
-        public void Play(MusicInfo currentMusic)
+        public partial void Play(MusicInfo currentMusic)
         {
             if (currentMusic != null)
             {
-                CurrentPlayer?.Play();
+                CurrentWindowsPlayer?.Play();
             }
         }
 
-        public void Stop()
+        public partial void Stop()
         {
-            if (GetIsPlaying(CurrentPlayer.PlaybackSession.PlaybackState))
+            if (GetIsPlaying(CurrentWindowsPlayer.PlaybackSession.PlaybackState))
             {
-                CurrentPlayer.Dispose();
+                CurrentWindowsPlayer.Dispose();
             }
         }
 
-        public void PauseOrResume()
+        public partial void PauseOrResume()
         {
 
-            var status = GetIsPlaying(CurrentPlayer.PlaybackSession.PlaybackState);
+            var status = GetIsPlaying(CurrentWindowsPlayer.PlaybackSession.PlaybackState);
             PauseOrResume(status);
         }
 
-        public void PauseOrResume(bool status)
+        public partial void PauseOrResume(bool status)
         {
 
             if (status)
             {
-                CurrentPlayer.Pause();
+                CurrentWindowsPlayer.Pause();
 
             }
             else
             {
-                CurrentPlayer.Play();
+                CurrentWindowsPlayer.Play();
             }
 
         }
 
-        private int GetShuffleMusicIndex(int originItem, int increment)
+        private partial int GetShuffleMusicIndex(int originItem, int increment)
         {
             var originItemIndex = 0;
 
@@ -323,7 +274,7 @@ namespace MatoMusic.Core
             }
         }
 
-        public Task UpdateShuffleMap()
+        public partial Task UpdateShuffleMap()
         {
             return Task.Run(() =>
             {
@@ -332,11 +283,11 @@ namespace MatoMusic.Core
             });
         }
 
-        public void SetRepeatOneStatus(bool isRepeatOne)
+        public partial void SetRepeatOneStatus(bool isRepeatOne)
         {
-            if (CurrentPlayer != null)
+            if (CurrentWindowsPlayer != null)
             {
-                CurrentPlayer.IsLoopingEnabled = isRepeatOne;
+                CurrentWindowsPlayer.IsLoopingEnabled = isRepeatOne;
             }
         }
 

@@ -11,6 +11,7 @@ using MatoMusic.Core.Models;
 using MatoMusic.Core.ViewModel;
 using MatoMusic.Core.Helper;
 using MatoMusic.Core.Services;
+using MatoMusic.Core.Interfaces;
 
 namespace MatoMusic.ViewModels
 {

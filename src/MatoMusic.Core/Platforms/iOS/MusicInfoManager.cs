@@ -14,34 +14,12 @@ using Abp.Dependency;
 using Microsoft.Maui.Controls;
 using MatoMusic.Core.Models;
 using MatoMusic.Core.ViewModel;
+using MatoMusic.Core.Interfaces;
 
 namespace MatoMusic.Core
 {
     public partial class MusicInfoManager : IMusicInfoManager, ISingletonDependency
     {
-        private const int MyFavouriteIndex = 1;
-        private readonly IRepository<Queue, long> queueRepository;
-        private readonly IRepository<PlaylistItem, long> playlistItemRepository;
-        private readonly IRepository<Playlist, long> playlistRepository;
-        private readonly IUnitOfWorkManager unitOfWorkManager;
-        private readonly IMusicSystem _musicSystem;
-        List<MusicInfo> _musicInfos;
-
-        public MusicInfoManager(IRepository<Queue, long> queueRepository,
-            IRepository<PlaylistItem, long> playlistItemRepository,
-            IRepository<Playlist, long> playlistRepository,
-            IUnitOfWorkManager unitOfWorkManager
-            )
-        {
-            this.queueRepository = queueRepository;
-            this.playlistItemRepository = playlistItemRepository;
-            this.playlistRepository = playlistRepository;
-            this.unitOfWorkManager = unitOfWorkManager;
-            _musicSystem = DependencyService.Get<IMusicSystem>();
-            _musicSystem.MusicInfoManager = this;
-
-        }
-
         private MPMediaQuery _mediaQuery;
 
         public MPMediaQuery MediaQuery
@@ -133,7 +111,7 @@ namespace MatoMusic.Core
 
         }
 
-        private bool MediaLibraryAuthorization()
+        private partial bool MediaLibraryAuthorization()
         {
             var result = false;
             var status = MPMediaLibrary.AuthorizationStatus;
@@ -806,7 +784,7 @@ namespace MatoMusic.Core
         /// </summary>
         /// <param name="title"></param>
         /// <returns></returns>
-        private string GetGroupHeader(string title)
+        private partial string GetGroupHeader(string title)
         {
             string result = string.Empty;
             if (!string.IsNullOrEmpty(title))

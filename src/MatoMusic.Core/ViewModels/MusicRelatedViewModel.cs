@@ -10,6 +10,7 @@ using Abp.Configuration;
 using MatoMusic.Core.Settings;
 using MatoMusic.Core.Helper;
 using MatoMusic.Core.Services;
+using MatoMusic.Core.Interfaces;
 
 namespace MatoMusic.Core.ViewModel
 {
@@ -17,7 +18,7 @@ namespace MatoMusic.Core.ViewModel
     {
         public IMusicInfoManager musicInfoManager { get; }
 
-        private readonly IMusicSystem musicSystem;
+        private readonly IMusicControlService musicSystem;
         private readonly MusicRelatedService ms;
 
         private bool _isFastSeeking = false;
@@ -37,7 +38,7 @@ namespace MatoMusic.Core.ViewModel
         }
 
         public MusicRelatedViewModel(
-            IMusicInfoManager musicInfoManager, MusicRelatedService musicRelatedService)
+            IMusicInfoManager musicInfoManager, MusicRelatedService musicRelatedService,IMusicControlService musicControlService)
         {
 
             this.PlayCommand = new Command(PlayAction, CanPlayExcute);
@@ -47,9 +48,9 @@ namespace MatoMusic.Core.ViewModel
             this.ShuffleCommand = new Command(ShuffleAction, CanPlayExcute);
             this.FavouriteCommand = new Command(FavouriteAction, CanPlayExcute);
             this.PropertyChanged += DetailPageViewModel_PropertyChanged;
-            musicSystem = DependencyService.Get<IMusicSystem>();
+            musicSystem = musicControlService;
             musicSystem.MusicInfoManager = musicInfoManager;
-            musicSystem.OnPlayFinished += MusicSystem_OnMusicChanged;
+            musicSystem.OnPlayFinished += MusicControlService_OnMusicChanged;
             this.musicInfoManager = musicInfoManager;
             this.ms = musicRelatedService;
             this.ms.PropertyChanged += this.Delegate_PropertyChanged;
@@ -156,13 +157,13 @@ namespace MatoMusic.Core.ViewModel
         }
 
         #region methods
-        private void MusicSystem_OnMusicChanged(Object sender, bool e)
+        private void MusicControlService_OnMusicChanged(Object sender, bool e)
         {
             NextAction(null);
         }
 
 
-        private async void DetailPageViewModel_PropertyChanged(Object sender, PropertyChangedEventArgs e)
+        private async void DetailPageViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == Properties.CurrentMusic)
             {
@@ -171,12 +172,12 @@ namespace MatoMusic.Core.ViewModel
                     return;
 
                 }
-                musicSystem.InitPlayer(CurrentMusic);
+                await musicSystem.InitPlayer(CurrentMusic);
                 musicSystem.Play(CurrentMusic);
                 ms.DoUpdate();
                 ms.InitPreviewAndNextMusic();
                 OnMusicChanged?.Invoke(this, EventArgs.Empty);
-                this.Duration = ms.GetPlatformSpecificTime(musicSystem.Duration);
+                this.Duration = ms.GetPlatformSpecificTime(musicSystem.Duration());
                 this.SettingManager.ChangeSettingForApplication(CommonSettingNames.BreakPointMusicIndex, Musics.IndexOf(CurrentMusic).ToString());
                 RaiseCanPlayExecuteChanged();
             }
@@ -280,13 +281,13 @@ namespace MatoMusic.Core.ViewModel
         /// <param name="progress"></param>
         public void ChangeProgess(double progress)
         {
-            if (Math.Abs(progress - ms.GetPlatformSpecificTime(musicSystem.CurrentTime)) > 2.0)
+            if (Math.Abs(progress - ms.GetPlatformSpecificTime(musicSystem.CurrentTime())) > 2.0)
             {
                 musicSystem.SeekTo(progress);
             }
         }
 
-        public async void StartFastSeeking(int increment)
+        public async Task StartFastSeeking(int increment)
         {
             var seekingDuration = 0;
             _isFastSeeking = true;
@@ -295,7 +296,7 @@ namespace MatoMusic.Core.ViewModel
 
                 while (_isFastSeeking)
                 {
-                    var currentTime = this.musicSystem.CurrentTime;
+                    var currentTime = this.musicSystem.CurrentTime();
 
                     var seekingSpan = 0;
 
