@@ -15,7 +15,7 @@ namespace MatoMusic.ViewModels
 {
     public class LibraryPageViewModel : MusicRelatedViewModel
     {
-        public LibraryPageViewModel(IMusicInfoManager musicInfoManager, MusicRelatedService musicRelatedService) : base(musicInfoManager, musicRelatedService)
+        public LibraryPageViewModel(IMusicInfoManager musicInfoManager, MusicRelatedService musicRelatedService, IMusicControlService musicControlService) : base(musicInfoManager, musicRelatedService, musicControlService)
         {
             PlayAllCommand = new Command(PlayAllAction, CanPlayAllExcute);
             QueueAllCommand = new Command(QueueAllAction, CanPlayAllExcute);

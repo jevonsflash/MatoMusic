@@ -11,7 +11,7 @@ namespace MatoMusic.ViewModels
     public class NowPlayingPageViewModel : MusicRelatedViewModel
     {
 
-        public NowPlayingPageViewModel(IMusicInfoManager musicInfoManager, MusicRelatedService musicRelatedService) : base(musicInfoManager, musicRelatedService)
+        public NowPlayingPageViewModel(IMusicInfoManager musicInfoManager, MusicRelatedService musicRelatedService, IMusicControlService musicControlService) : base(musicInfoManager, musicRelatedService, musicControlService)
         {
             SwitchPannelCommand = new Command(SwitchPannelAction, c => true);
             PlayAllCommand = new Command(PlayAllAction, c => true);

@@ -24,7 +24,7 @@ public class QueuePageViewModel : MusicRelatedViewModel
 
 
     public QueuePageViewModel(IMusicInfoManager musicInfoManager,
-            NavigationService navigationService, MusicRelatedService musicRelatedService) : base(musicInfoManager, musicRelatedService)
+            NavigationService navigationService, MusicRelatedService musicRelatedService,IMusicControlService musicControlService) : base(musicInfoManager, musicRelatedService, musicControlService)
     {
         DeleteCommand = new Command(DeleteAction, c => true);
         CleanQueueCommand = new Command(CleanQueueAction, CanPlayAllExcute);
