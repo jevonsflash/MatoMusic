@@ -38,8 +38,12 @@ namespace MatoMusic.Core
             string documentsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), MatoMusicConsts.LocalizationSourceName);
 
             var configuration = AppConfigurations.Get(documentsPath, development);
-            Configuration.DefaultNameOrConnectionString = configuration.GetConnectionString(MatoMusicConsts.ConnectionStringName);
+            var connectionString = configuration.GetConnectionString(MatoMusicConsts.ConnectionStringName);
 
+            var dbName = "mato.db";
+            string dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), MatoMusicConsts.LocalizationSourceName, dbName);
+
+            Configuration.DefaultNameOrConnectionString = String.Format(connectionString, dbPath);
             base.PreInitialize();
         }
 

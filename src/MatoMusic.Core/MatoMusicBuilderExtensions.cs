@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Abp;
+using Abp.Extensions;
 using Abp.Castle.Logging.Log4Net;
 using Abp.Dependency;
 using Abp.Modules;
@@ -34,7 +36,7 @@ namespace MatoMusic.Core
 
             InitConfig(logCfgName, documentsPath);
             InitConfig(appCfgName, documentsPath2);
-            //InitDataBase(dbName, dbPath);
+            InitDataBase(dbName, dbPath);
             var _bootstrapper = AbpBootstrapper.Create<TStartupModule>(options =>
             {
                 options.IocManager = new IocManager();
@@ -49,10 +51,7 @@ namespace MatoMusic.Core
 
         private static void InitConfig(string logCfgName, string documentsPath)
         {
-            if (DirFileHelper.IsExistFile(documentsPath))
-            {
-                return;
-            }
+
             var assembly = IntrospectionExtensions.GetTypeInfo(typeof(MatoMusicBuilderExtensions)).Assembly;
 
             Stream stream = assembly.GetManifestResourceStream($"MatoMusic.Core.{logCfgName}");
@@ -61,7 +60,22 @@ namespace MatoMusic.Core
             {
                 text = reader.ReadToEnd();
             }
-            DirFileHelper.CreateFile(documentsPath, text);
+            if (DirFileHelper.IsExistFile(documentsPath))
+            {
+                var currentFileContent = DirFileHelper.ReadFile(documentsPath);
+                var isSameContent = currentFileContent.ToMd5() == text.ToMd5();
+                if (isSameContent)
+                {
+                    return;
+                }
+                DirFileHelper.CreateFile(documentsPath, text);
+
+            }
+            else
+            {
+                DirFileHelper.CreateFile(documentsPath, text);
+
+            }
         }
 
         private static void InitDataBase(string dbName, string documentsPath)

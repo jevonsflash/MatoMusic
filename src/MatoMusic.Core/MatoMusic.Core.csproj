@@ -23,7 +23,7 @@
 
 	<ItemGroup>
 	  <EmbeddedResource Include="appsettings.json">
-	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </EmbeddedResource>
 	  <EmbeddedResource Include="log4net.config">
 	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
@@ -31,7 +31,9 @@
 	  <EmbeddedResource Include="log4net.Production.config">
 	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 	  </EmbeddedResource>
-	  <EmbeddedResource Include="mato.db" />
+	  <EmbeddedResource Include="mato.db">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </EmbeddedResource>
 	</ItemGroup>
 
 	<ItemGroup>
