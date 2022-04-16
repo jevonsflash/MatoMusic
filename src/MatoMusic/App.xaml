@@ -22,7 +22,9 @@
             <Color x:Key="White">#FFFFFF</Color>
             <Color x:Key="Black">#000000</Color>
             
-            <!-- SHELL -->
+   
+
+
             <Style x:Key="BaseStyle"
            TargetType="Element">
                 <Setter Property="Shell.FlyoutBackgroundColor"
@@ -109,12 +111,22 @@
         </ResourceDictionary>
     </Application.Resources>
     <Application.MainPage>
-        <Shell>
+        <Shell FlyoutBackgroundColor="Teal">
             <Shell.FlyoutHeaderTemplate>
                 <DataTemplate>
-                    <BoxView HeightRequest="68"/>
+                    <BoxView HeightRequest="68" BackgroundColor="Green"/>
                 </DataTemplate>
             </Shell.FlyoutHeaderTemplate>
+            <Shell.MenuItemTemplate>
+                <DataTemplate>
+                    
+                </DataTemplate>
+            </Shell.MenuItemTemplate>
+            <!--<Shell.FlyoutFooterTemplate>
+                <DataTemplate>
+                    <BoxView HeightRequest="68" BackgroundColor="Red"/>
+                </DataTemplate>
+            </Shell.FlyoutFooterTemplate>-->
 
             <!-- Desktop/Tablet-->
             <FlyoutItem Route="NowPlayingPage" Title="正在播放" Icon="tab_home.png">
@@ -123,13 +135,8 @@
             <FlyoutItem Route="QueuePage" Title="播放队列" Icon="tab_favorites.png">
                 <ShellContent x:Name="QueuePageShellContent"/>
             </FlyoutItem>
-            <FlyoutItem Title="库" Icon="tab_map.png" >
-                <Tab>
-                    <ShellContent  Title="歌曲" Icon="tab_map.png"  Route="MusicPage" x:Name="MusicPageShellContent"/>
-                    <ShellContent  Title="艺术家" Icon="tab_map.png" Route="ArtistPage" x:Name="ArtistPageShellContent"/>
-                    <ShellContent  Title="专辑" Icon="tab_map.png" Route="AlbumPage"  x:Name="AlbumPageShellContent"/>
-
-                </Tab>
+            <FlyoutItem Title="库" Icon="tab_map.png"  Route="LibraryMainPage" >
+                <ShellContent x:Name="LibraryMainPageShellContent"/>
             </FlyoutItem>
             <FlyoutItem Route="PlaylistPage" Title="歌单" Icon="tab_map.png">
                 <ShellContent x:Name="PlaylistPageShellContent"/>

@@ -51,14 +51,5 @@ namespace MatoMusic.Core
         {
             IocManager.RegisterAssemblyByConvention(typeof(MatoMusicCoreModule).GetAssembly());
         }
-
-        public override async void PostInitialize()
-        {
-            var musicRelatedViewModel = IocManager.Resolve<MusicRelatedService>();
-            await musicRelatedViewModel.InitAll();
-            base.PostInitialize();
-        }
-
-
     }
 }

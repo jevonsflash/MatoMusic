@@ -1,17 +1,25 @@
 ﻿using Abp.Modules;
 using Abp.Reflection.Extensions;
 using MatoMusic.Core;
+using MatoMusic.Core.Services;
 using MatoMusic.EntityFrameworkCore;
 using MatoMusic.ViewModels;
 
 namespace MatoMusic
 {
-    [DependsOn(typeof(MatoMusicEntityFrameworkCoreModule), typeof(MatoMusicCoreModule))]
+    [DependsOn(typeof(MatoMusicEntityFrameworkCoreModule))]
     public class MatoMusicModule : AbpModule
     {
         public override void Initialize()
         {
             IocManager.RegisterAssemblyByConvention(typeof(MatoMusicModule).GetAssembly());
+        }
+
+        public async override void PostInitialize()
+        {
+            var musicRelatedViewModel = IocManager.Resolve<MusicRelatedService>();
+            await musicRelatedViewModel.InitAll();
+            base.PostInitialize();
         }
 
     }

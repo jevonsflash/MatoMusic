@@ -43,6 +43,7 @@ namespace MatoMusic.EntityFrameworkCore
         {
  
             IocManager.RegisterAssemblyByConvention(typeof(MatoMusicEntityFrameworkCoreModule).GetAssembly());
+            
         }
 
         public override void PostInitialize()

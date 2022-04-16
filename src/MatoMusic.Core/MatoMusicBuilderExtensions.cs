@@ -81,8 +81,12 @@ namespace MatoMusic.Core
         private static void InitDataBase(string dbName, string documentsPath)
         {
             var assembly = IntrospectionExtensions.GetTypeInfo(typeof(MatoMusicBuilderExtensions)).Assembly;
-            Stream stream = assembly.GetManifestResourceStream($"MatoMusic.Core.{dbName}");
-            StreamHelper.WriteStream(stream, documentsPath);
+            //ef不需要我们写入db文件
+            //Stream stream = assembly.GetManifestResourceStream($"MatoMusic.Core.{dbName}");
+            //StreamHelper.WriteStream(stream, documentsPath);
+
+            var path = Path.GetDirectoryName(documentsPath);
+            DirFileHelper.CreateDir(path);
         }
     }
 

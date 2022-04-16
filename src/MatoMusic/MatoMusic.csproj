@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net6.0;net6.0-android;net6.0-ios</TargetFrameworks>
+		<TargetFrameworks>net6.0-android;net6.0-ios</TargetFrameworks>
 		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows')) and '$(MSBuildRuntimeType)' == 'Full'">$(TargetFrameworks);net6.0-windows10.0.19041</TargetFrameworks>
 		<OutputType>Exe</OutputType>
 		<RootNamespace>MatoMusic</RootNamespace>
@@ -14,8 +14,8 @@
 		<ApplicationTitle>MatoMusic</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.companyname.MatoMusic</ApplicationId>
-		<ApplicationId Condition="$(TargetFramework.Contains('-windows'))">B87FCC47-24F6-425E-82B3-DF001756D9DB</ApplicationId>
+		<ApplicationId>com.matoapp.MatoMusic</ApplicationId>
+		<ApplicationId Condition="$(TargetFramework.Contains('-windows'))">com.matoapp.MatoMusic</ApplicationId>
 
 		<!-- Versions -->
 		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
@@ -119,6 +119,9 @@
 	  <Compile Update="Controls\MenuCell.xaml.cs">
 	    <DependentUpon>MenuCell.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="Views\LibraryPages\LibraryMainPage.xaml.cs">
+	    <DependentUpon>LibraryMainPage.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Views\LibraryPages\AlbumPage.xaml.cs">
 	    <DependentUpon>AlbumPage.xaml</DependentUpon>
 	  </Compile>
@@ -160,6 +163,9 @@
 	  </MauiXaml>
 	  <MauiXaml Update="Controls\MenuCell.xaml">
 	    <SubType>Designer</SubType>
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\LibraryPages\LibraryMainPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\LibraryPages\AlbumPage.xaml">
