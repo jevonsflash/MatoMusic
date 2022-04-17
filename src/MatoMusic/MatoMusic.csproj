@@ -119,6 +119,12 @@
 	  <Compile Update="Controls\MenuCell.xaml.cs">
 	    <DependentUpon>MenuCell.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="Styles\CommonResourceDictionary.xaml.cs">
+	    <DependentUpon>CommonResourceDictionary.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Styles\DarkTheme.xaml.cs">
+	    <DependentUpon>DarkTheme.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Views\LibraryPages\LibraryMainPage.xaml.cs">
 	    <DependentUpon>LibraryMainPage.xaml</DependentUpon>
 	  </Compile>
@@ -163,6 +169,15 @@
 	  </MauiXaml>
 	  <MauiXaml Update="Controls\MenuCell.xaml">
 	    <SubType>Designer</SubType>
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Styles\CommonResourceDictionary.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Styles\DarkTheme.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Styles\LightTheme.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\LibraryPages\LibraryMainPage.xaml">

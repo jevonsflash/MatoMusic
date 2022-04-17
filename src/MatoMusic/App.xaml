@@ -1,113 +1,17 @@
 ﻿<Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:windows="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.WindowsSpecific;assembly=Microsoft.Maui.Controls"
-             xmlns:converter="clr-namespace:MatoMusic.Converter;assembly=MatoMusic"
+             xmlns:style="clr-namespace:MatoMusic.Styles;assembly=MatoMusic"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
              x:Class="MatoMusic.App"
              windows:Application.ImageDirectory="Assets">
     <Application.Resources>
         <ResourceDictionary>
-            <system:String x:Key="Version">2.0</system:String>
-            <system:Double x:Key="TinyFontSize">10</system:Double>
-            <system:Double x:Key="StandOutBodyFontSize">28</system:Double>
-            <system:Double x:Key="MidFontSize">22</system:Double>
-            <system:Double x:Key="BodyFontSize">18</system:Double>
-
-            <Color x:Key="PhoneBackgroundBrush">#181818</Color>
-            <Color x:Key="PhoneForegroundBrush">White</Color>
-            <Color x:Key="PhoneContrastBackgroundBrush">#222326</Color>
-            <Color x:Key="PhoneContrastForegroundBrush">#DFD8F7</Color>
-            <Color x:Key="PhoneAccentBrush">#512bdf</Color>
-            <Color x:Key="PhoneChromeBrush">#A5A5A5</Color>
-            <Color x:Key="White">#FFFFFF</Color>
-            <Color x:Key="Black">#000000</Color>
-            
-   
-
-
-            <Style x:Key="BaseStyle"
-           TargetType="Element">
-                <Setter Property="Shell.FlyoutBackgroundColor"
-                        Value="{StaticResource PhoneBackgroundBrush}"/>
-                <Setter Property="Shell.BackgroundColor"
-                    Value="{StaticResource PhoneBackgroundBrush}" />
-                <Setter Property="Shell.ForegroundColor"
-                    Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}" />
-                <Setter Property="Shell.TitleColor"
-                    Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Black}}" />
-                <Setter Property="Shell.DisabledColor"
-                    Value="#B4000000" />
-                <Setter Property="Shell.UnselectedColor"
-                    Value="#CC0000" />
-                <Setter Property="Shell.NavBarHasShadow"
-                    Value="False"/>
-
-            </Style>
-
-            <Style BasedOn="{StaticResource BaseStyle}"
-           ApplyToDerivedTypes="True"
-           TargetType="FlyoutItem" />
-
-            <Style TargetType="Label">
-                <Setter Property="TextColor" Value="{DynamicResource PhoneForegroundBrush}" />
-                <Setter Property="FontFamily" Value="OpenSansRegular" />
-            </Style>
-
-            <Style TargetType="Button">
-                <Setter Property="CornerRadius" Value="8"/>
-                <Setter Property="TextColor" Value="{DynamicResource PhoneContrastForegroundBrush}" />
-                <Setter Property="FontFamily" Value="OpenSansRegular" />
-                <Setter Property="BackgroundColor" Value="{DynamicResource PhoneContrastBackgroundBrush}" />
-                <Setter Property="Padding" Value="14,10" />
-            </Style>
-
-            <Style TargetType="Button" x:Key="PrimaryButtonOutline">
-                <Setter Property="CornerRadius" Value="8"/>
-                <Setter Property="BackgroundColor" Value="Transparent"/>
-                <Setter Property="TextColor" Value="{DynamicResource PhoneContrastForegroundBrush}" />
-                <Setter Property="BorderWidth" Value="1"/>
-                <Setter Property="BorderColor" Value="{DynamicResource PhoneAccentBrush}"/>
-            </Style>
-
-            <Style TargetType="TabBar">
-                <Setter Property="Shell.TabBarBackgroundColor"
-            Value="{StaticResource PhoneContrastBackgroundBrush}" />
-                <Setter Property="Shell.TabBarTitleColor"
-            Value="{StaticResource PhoneAccentBrush}" />
-                <Setter Property="Shell.TabBarForegroundColor"
-            Value="{StaticResource PhoneAccentBrush}" />
-            </Style>
-            
-            <Style TargetType="Page" ApplyToDerivedTypes="True">
-                <Setter Property="Padding" Value="0"/>
-                <Setter Property="BackgroundColor" Value="{StaticResource PhoneBackgroundBrush}"/>
-            </Style>
-
-            <Style TargetType="NavigationPage" ApplyToDerivedTypes="True">
-                <Setter Property="BackgroundColor" Value="{StaticResource PhoneBackgroundBrush}"/>
-                <Setter Property="BarBackgroundColor" Value="{StaticResource PhoneBackgroundBrush}"/>
-                <Setter Property="BarTextColor" Value="{StaticResource White}"/>
-            </Style>
-            
-            <Thickness x:Key="DefaultContentPadding"
-                       Left="12"
-                       Top="64"
-                       Right="12"
-                       Bottom="0" />
-
-
-            <converter:True2FalseConverter x:Key="True2FalseConverter">
-            </converter:True2FalseConverter>
-            <converter:SliderMaxValueConverter x:Key="SliderMaxValueConverter">
-            </converter:SliderMaxValueConverter>
-            <converter:SecondsToTimeSpanConverter x:Key="SecondsToTimeSpanConverter">
-            </converter:SecondsToTimeSpanConverter>
-            <converter:IsValid2BoolConverter x:Key="IsNotEmpty2BoolConverter">
-            </converter:IsValid2BoolConverter>
-            <converter:AlbumArtConverter x:Key="AlbumArtConverter">
-            </converter:AlbumArtConverter>
-            <converter:Bool2StringConverter x:Key="Bool2StringConverter">
-            </converter:Bool2StringConverter>
+            <ResourceDictionary.MergedDictionaries>
+                <style:DarkTheme />
+                <!--<style:LightTheme />-->
+                <style:CommonResourceDictionary />
+            </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
     <Application.MainPage>
