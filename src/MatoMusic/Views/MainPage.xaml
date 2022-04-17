@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Shell xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MatoMusic.MainPage"
+            FlyoutBackgroundColor="Teal">
+    <Shell.FlyoutHeaderTemplate>
+        <DataTemplate>
+            <BoxView HeightRequest="68" BackgroundColor="Green"/>
+        </DataTemplate>
+    </Shell.FlyoutHeaderTemplate>
+    <Shell.MenuItemTemplate>
+        <DataTemplate>
+
+        </DataTemplate>
+    </Shell.MenuItemTemplate>
+    <!--<Shell.FlyoutFooterTemplate>
+                <DataTemplate>
+                    <BoxView HeightRequest="68" BackgroundColor="Red"/>
+                </DataTemplate>
+            </Shell.FlyoutFooterTemplate>-->
+
+    <!-- Desktop/Tablet-->
+    <FlyoutItem Route="NowPlayingPage" Title="正在播放" Icon="tab_home.png">
+        <ShellContent x:Name="NowPlayingPageShellContent"/>
+    </FlyoutItem>
+    <FlyoutItem Route="QueuePage" Title="播放队列" Icon="tab_favorites.png">
+        <ShellContent x:Name="QueuePageShellContent"/>
+    </FlyoutItem>
+    <FlyoutItem Title="库" Icon="tab_map.png"  Route="LibraryMainPage" >
+        <ShellContent x:Name="LibraryMainPageShellContent"/>
+    </FlyoutItem>
+    <FlyoutItem Route="PlaylistPage" Title="歌单" Icon="tab_map.png">
+        <ShellContent x:Name="PlaylistPageShellContent"/>
+    </FlyoutItem>
+</Shell>

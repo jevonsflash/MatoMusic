@@ -147,7 +147,7 @@ namespace MatoMusic
             _musicFunctionPage = new MusicFunctionPage(musicInfo, mainMenuCellInfos);
             _musicFunctionPage.OnFinished += MusicFunctionPage_OnFinished;
 
-            await navigationService.PushAsync(_musicFunctionPage);
+            await navigationService.ShowPopupAsync(_musicFunctionPage);
 
         }
 
@@ -175,9 +175,9 @@ namespace MatoMusic
                             CommonHelper.ShowMsg(localizationManager.GetString(MatoMusicConsts.LocalizationSourceName, "Msg_AddFaild"));
                         }
                     }
-                    await navigationService.PopAsync();
+                    await navigationService.HidePopupAsync(_playlistChoosePage);
                 };
-                await navigationService.PushAsync(_playlistChoosePage);
+                await navigationService.ShowPopupAsync(_playlistChoosePage);
 
             }
 

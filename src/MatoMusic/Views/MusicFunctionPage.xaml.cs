@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Abp.Dependency;
+using CommunityToolkit.Maui.Views;
 using MatoMusic.Common;
 using MatoMusic.Core;
 using MatoMusic.Core.Models;
@@ -11,7 +12,7 @@ using Microsoft.Maui.Controls;
 
 namespace MatoMusic
 {
-    public partial class MusicFunctionPage:ContentPage, ITransientDependency
+    public partial class MusicFunctionPage:Popup, ITransientDependency
     {
         public event EventHandler<MusicFunctionEventArgs> OnFinished;
 

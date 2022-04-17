@@ -85,10 +85,10 @@ public class QueuePageViewModel : MusicRelatedViewModel
                         CommonHelper.ShowMsg(L("Msg_AddFaild"));
                     }
                 }
-                await navigationService.PopAsync();
+                await navigationService.HidePopupAsync(_playlistChoosePage);
             };
 
-            await navigationService.PushAsync(_playlistChoosePage);
+            await navigationService.ShowPopupAsync(_playlistChoosePage);
         }
     }
 

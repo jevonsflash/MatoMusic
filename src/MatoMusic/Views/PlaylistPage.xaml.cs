@@ -12,6 +12,7 @@ using MatoMusic.Infrastructure.Common;
 using MatoMusic.Services;
 using MatoMusic.ViewModels;
 using Microsoft.Maui.Controls;
+using CommunityToolkit.Maui.Views;
 
 
 namespace MatoMusic
@@ -154,7 +155,8 @@ namespace MatoMusic
             var _musicFunctionPage = new MusicFunctionPage(musicInfo as IBasicInfo, _mainMenuCellInfos);
             _musicFunctionPage.OnFinished += _musicFunctionPage_OnFinished;
 
-            await navigationService.PushAsync(_musicFunctionPage);
+            this.ShowPopup(_musicFunctionPage);
+            //await navigationService.ShowPopupAsync(_musicFunctionPage);
 
         }
 

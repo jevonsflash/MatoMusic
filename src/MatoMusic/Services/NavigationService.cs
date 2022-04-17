@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Abp;
 using Abp.Dependency;
 using Abp.Domain.Services;
+using CommunityToolkit.Maui.Views;
 using Microsoft.Maui.Controls;
 
 namespace MatoMusic.Services
@@ -63,6 +64,14 @@ namespace MatoMusic.Services
             await mainShell.GoToAsync(route);
         }
 
+        public async Task ShowPopupAsync(Popup popupPage)
+        {
+           await Shell.Current.CurrentPage.ShowPopupAsync(popupPage);
+        }
+        public async Task HidePopupAsync(Popup popupPage)
+        {
+           popupPage.Close();
+        }
         private Page GetPageInstance(string obj, object[] args, IList<ToolbarItem> barItem = null)
         {
             Page result = null;

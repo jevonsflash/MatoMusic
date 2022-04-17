@@ -3,6 +3,7 @@
              xmlns:windows="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.WindowsSpecific;assembly=Microsoft.Maui.Controls"
              xmlns:style="clr-namespace:MatoMusic.Styles;assembly=MatoMusic"
              xmlns:system="clr-namespace:System;assembly=mscorlib"
+             xmlns:view="clr-namespace:MatoMusic;assembly=MatoMusic"
              x:Class="MatoMusic.App"
              windows:Application.ImageDirectory="Assets">
     <Application.Resources>
@@ -14,39 +15,4 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
-    <Application.MainPage>
-        <Shell FlyoutBackgroundColor="Teal">
-            <Shell.FlyoutHeaderTemplate>
-                <DataTemplate>
-                    <BoxView HeightRequest="68" BackgroundColor="Green"/>
-                </DataTemplate>
-            </Shell.FlyoutHeaderTemplate>
-            <Shell.MenuItemTemplate>
-                <DataTemplate>
-                    
-                </DataTemplate>
-            </Shell.MenuItemTemplate>
-            <!--<Shell.FlyoutFooterTemplate>
-                <DataTemplate>
-                    <BoxView HeightRequest="68" BackgroundColor="Red"/>
-                </DataTemplate>
-            </Shell.FlyoutFooterTemplate>-->
-
-            <!-- Desktop/Tablet-->
-            <FlyoutItem Route="NowPlayingPage" Title="正在播放" Icon="tab_home.png">
-                <ShellContent x:Name="NowPlayingPageShellContent"/>
-            </FlyoutItem>
-            <FlyoutItem Route="QueuePage" Title="播放队列" Icon="tab_favorites.png">
-                <ShellContent x:Name="QueuePageShellContent"/>
-            </FlyoutItem>
-            <FlyoutItem Title="库" Icon="tab_map.png"  Route="LibraryMainPage" >
-                <ShellContent x:Name="LibraryMainPageShellContent"/>
-            </FlyoutItem>
-            <FlyoutItem Route="PlaylistPage" Title="歌单" Icon="tab_map.png">
-                <ShellContent x:Name="PlaylistPageShellContent"/>
-            </FlyoutItem>
-        </Shell>
-
-    </Application.MainPage>
-
 </Application>

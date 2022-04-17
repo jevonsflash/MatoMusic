@@ -46,7 +46,6 @@ namespace MatoMusic.Services
             {
                 return;
             }
-            //this.Popup.HidePopup();
             await navigationService.PopToRootAsync();
             if (musicFunctionEventArgs.MenuCellInfo.Code == "AddToPlaylist")
             {
@@ -66,9 +65,9 @@ namespace MatoMusic.Services
                         }
 
                     }
-                    await navigationService.PopAsync();
+                    await navigationService.HidePopupAsync(_playlistChoosePage);
                 };
-                await navigationService.PushAsync(_playlistChoosePage);
+                await navigationService.ShowPopupAsync(_playlistChoosePage);
             }
             else if (musicFunctionEventArgs.MenuCellInfo.Code == "NextPlay")
             {
@@ -141,10 +140,10 @@ namespace MatoMusic.Services
                             CommonHelper.ShowMsg(L("Msg_AddFaild"));
                         }
                     }
-                    await navigationService.PopAsync();
+                    await navigationService.HidePopupAsync(_playlistChoosePage);
                 };
 
-                await navigationService.PushAsync(_playlistChoosePage);
+                await navigationService.ShowPopupAsync(_playlistChoosePage);
 
             }
             else if (musicFunctionEventArgs.MenuCellInfo.Code == "AddToFavourite")

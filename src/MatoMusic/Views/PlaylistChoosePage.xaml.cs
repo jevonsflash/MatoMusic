@@ -1,12 +1,13 @@
 ﻿using System;
 using Abp.Dependency;
+using CommunityToolkit.Maui.Views;
 using MatoMusic.Core.Models;
 using Microsoft.Maui.Controls;
 
 
 namespace MatoMusic
 {
-	public partial class PlaylistChoosePage : ContentPage, ITransientDependency
+	public partial class PlaylistChoosePage : Popup, ITransientDependency
 	{
 		public PlaylistChoosePage()
 		{
