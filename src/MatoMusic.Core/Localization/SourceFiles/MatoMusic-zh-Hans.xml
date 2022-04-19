@@ -1,164 +1,85 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <localizationDictionary culture="zh-Hans">
-  <texts>
-    <text name="HomePage" value="主页" />
-    <text name="About" value="关于我们" />
-    <text name="WelcomeMessage" value="欢迎使用 CAH!" />
-    <text name="FormIsNotValidMessage" value="部分输入信息不符合要求，请检查并改正.." />
-    <text name="TenantNameCanNotBeEmpty" value="租户名不能为空" />
-    <text name="InvalidUserNameOrPassword" value="用户名或密码无效" />
-    <text name="ThereIsNoTenantDefinedWithName{0}" value="租户 {0}不存在" />
-    <text name="TenantIsNotActive" value="租户 {0} 未激活." />
-    <text name="UserIsNotActiveAndCanNotLogin" value="用户 {0} 未激活，不能登录." />
-    <text name="PleaseEnterLoginInformation" value="请输入登录信息" />
-    <text name="TenancyName" value="租户标识" />
-    <text name="UserNameOrEmail" value="用户名或邮箱地址" />
-    <text name="Password" value="密码" />
-    <text name="RememberMe" value="记住我" />
-    <text name="ForgetPassword" value="忘记密码"/>
-    <text name="NotSelected" value="未选"/>
-    <text name="ChangeTenant" value="更改租户"/>
-    <text name="LeaveEmptyToSwitchToHost" value="留空以切换到Host"/>
-    <text name="LogIn" value="登录" />
-    <text name="LoginFailed" value="登录失败!" />
-    <text name="AppName" >CAH</text>
-    <text name="UserNamePlaceholder" >请输入账户</text>
-    <text name="PasswordPlaceholder" >请输入密码</text>
-    <text name="CopyRight" >© 2021 CAH</text>
-    <text name="LoginPrompt" >正在登陆，请稍候！</text>
-    <text name="UserProfile" >用户资料</text>
-    <text name="Users" >用户</text>
-    <text name="Roles" >角色</text>
-    <text name="Tenants" >租户</text>
-    <text name="Logout" >注销</text>
-    <text name="ManageMenu" >菜单</text>
-    <text name="LabelOptions" >页签操作</text>
-    <text name="ClearAll" >关闭所有</text>
-    <text name="ClearOthers" >关闭其他</text>
-    <text name="Create" >创建</text>
-    <text name="Add" >添加</text>
-    <text name="Edit" >编辑</text>
-    <text name="Delete">删除</text>
-    <text name="Find" >查找</text>
-    <text name="CreationTime">创建时间</text>
-    <text name="Actions">操作</text>
-    <text name="Keyword">关键字</text>
-    <text name="NoDatas">没有结果</text>
-    <text name="Select">请选择</text>
-    <text name="SelectDate">请选择</text>
-    <text name="Tips">提示</text>
-    <text name="DeleteConfirm">确定删除？</text>
-    <text name="Title" >标题</text>
-    <text name="Content" >内容</text>
-    <text name="ChangePassword" >修改密码</text>
-    <text name="PasswordComplexityNotSatisfied">密码复杂度要求不符.</text>
-    <text name="PasswordRequireDigit">密码至少需要一位是0到9的数字.</text>
-    <text name="PasswordRequireLowercase">密码至少需要一位是a到z的小写字母.</text>
-    <text name="PasswordRequireNonAlphanumeric">密码至少需要包含一个特殊字符（非字母或数字的字符）.</text>
-    <text name="PasswordRequireUppercase">密码至少需要一位是A到Z的大写字母.</text>
-    <text name="PasswordTooShort">密码长度太短</text>
-    <text name="UserName">用户名</text>
-    <text name="Name">名称</text>
-    <text name="IsActive">是否启用</text>
-    <text name="LastLoginTime">最近登陆时间</text>
-    <text name="RoleName">角色名</text>
-    <text name="DisplayName">显示名</text>
-    <text name="Description">描述</text>
-    <text name="IsStatic">是否内置</text>
-
-    <text name="All">全部</text>
-    <text name="Actived">启用</text>
-    <text name="NoActive">未启用</text>
-
-    <text name="Yes">是</text>
-    <text name="No">否</text>
-
-    <text name="Cancel">取消</text>
-    <text name="OK">确定</text>
-    <text name="CreateNewRole">创建新角色</text>
-    <text name="RoleDetails">角色详情</text>
-    <text name="RolePermission">角色权限</text>
-    <text name="EditRole">编辑角色</text>
-    <text name="DeleteRolesConfirm">确认删除该角色？</text>
-
-    <text name="CreateNewUser">创建新用户</text>
-    <text name="UserDetails">用户详情</text>
-    <text name="UserRoles">用户角色</text>
-    <text name="ConfirmPassword">确认密码</text>
-    <text name="EmailAddress">邮箱地址</text>
-    <text name="Surname">姓</text>
-    <text name="DeleteUserConfirm">确认删除该用户？</text>
-    <text name="EditUser">编辑用户</text>
-
-    <text name="CreateNewTenant">创建新租户</text>
-    <text name="DatabaseConnectionString">数据库连接</text>
-    <text name="AdminEmailAddress">管理员邮箱地址</text>
-    <text name="DefaultPasswordIs">默认密码为：{0}</text>
-    <text name="DeleteTenantConfirm">确认删除该租户？</text>
-    <text name="EditTenant">编辑租户</text>
-    <text name="SearchWithThreeDot">搜索...</text>
-
-
-    <!--文章-->
-
-    <text name="ArticleComment">文章评论</text>
-    <text name="Article">文章</text>
-    <text name="ArticleView">文章浏览</text>
-
-    <!--随访-->
-
-    <text name="FollowupCategory">随访策略组</text>
-    <text name="TrackingScheduleTemplate">随访计划模板</text>
-    <text name="FollowupTemplateCategory">随访策略模板组</text>
-    <text name="FollowupTemplate">随访策略模板</text>
-    <text name="TrackingSchedule">随访计划</text>
-    <text name="TrackingCase">随访管理</text>
-    <text name="FollowupTagConfig">随访策略标签</text>
-    <text name="Followup">随访策略</text>
-
-
-    <!--问卷-->
-
-    <text name="AnswerTemplate">选项模板</text>
-    <text name="QuestionTemplate">问题模板</text>
-    <text name="QuestionnaireConfig">问卷配置</text>
-    <text name="QuestionnaireGroup">问卷组</text>
-    <text name="Question">问题</text>
-    <text name="Questionnaire">问卷</text>
-    <text name="Publish">发布</text>
-    <text name="Survey">问卷调查</text>
-    <text name="Answer">选项</text>
-    <text name="Examine">填写问卷</text>
-    <text name="Evaluate">评估问卷</text>
-    <text name="ValueRecordCategory">记录类别</text>
-    <text name="ValueRecordCategoryTemplate">记录类别模板</text>
-
-
-    <!--系统-->
-
-    <text name="BackgroundJob">后台任务</text>
-    <text name="AuditLog">审计</text>
-    <text name="Configuration">设置</text>
-    <text name="ManageUsers">用户管理</text>
-    <text name="Units">组织机构</text>
-    <text name="Tag">标签</text>
-    <text name="Users_Activation">激活/失活用户</text>
-    <text name="Notifications">通知</text>
-    <text name="Send">发送</text>
-
-	<!--我的-->
-	<text name="MyView">我的(企业用户端)</text>
-	<text name="MyClientView">我的(客户端)</text>
-
-	<!--其他-->
-    <text name="DataEnums">枚举管理</text>
-    <text name="Disease">疾病</text>
-    <text name="Client">患者</text>
-    <text name="ClientNote">患者备注</text>
-    <text name="ClientReport">患者警报</text>
-    <text name="Menu">菜单</text>
-    <text name="Index">页面</text>
-  </texts>
+	<texts>
+		<text name="About">关于</text>
+		<text name="AboutContent1">首先感谢下载并体验，祝您有个好心情</text>
+		<text name="AboutContent2">如果您在使用的过程中有疑问，可以参考下面的使用帮助，也可以发送邮件给我。邮件链接在【意见反馈】一栏。</text>
+		<text name="AboutContent3">更新内容：</text>
+		<text name="AddMusic">添加曲目</text>
+		<text name="AddPlaylist">添加歌单</text>
+		<text name="AddTo">添加到..</text>
+		<text name="AddToFavourite">收藏至我最喜爱</text>
+		<text name="AddToQueue">添加到队列</text>
+		<text name="AddToQueue2">追加到队列</text>
+		<text name="Albums">专辑</text>
+		<text name="Artists">艺术家</text>
+		<text name="Brief">这是一款专注本地音乐体验的播放器</text>
+		<text name="Cancel">取消</text>
+		<text name="Clean">清空</text>
+		<text name="CreatePlaylist">新增歌单</text>
+		<text name="CreatePlaylistPlaceholder">请输入歌单名称</text>
+		<text name="Edit">编辑</text>
+		<text name="EditPlaylist">编辑歌单</text>
+		<text name="Feedback">意见反馈</text>
+		<text name="FeedBackContent">如果您觉得MatoPlayer不错，请支持我！</text>
+		<text name="FeedbackContent1">同样，我非常期待您的意见和建议。请将要反馈的内容发送到以下地址：</text>
+		<text name="FeedbackContent2">也可以关注我的新浪微博：</text>
+		<text name="FliperAlert1">去「音乐库」看看</text>
+		<text name="FliperAlert2">当前曲目为空</text>
+		<text name="GivePraise">在AppStore上打分和评价</text>
+		<text name="Help">使用帮助</text>
+		<text name="HelpContent">1.在音乐库中，若您只是点击歌曲而不添加到队列，只能起到预览作用而不能再次找到此歌曲2.在队列与歌单中可通过长按激活排序状态3.在主页您可以点击专辑封面打开歌词</text>
+		<text name="Library">音乐库</text>
+		<text name="LibraryAlert">请将设备链接至iTunes,然后同步一些歌曲</text>
+		<text name="LibraryAlert2">请拷贝一些歌曲到您的Android设备中</text>
+		<text name="LyricAlert">请开始一首歌以显示歌词</text>
+		<text name="LyricAlert2">已关闭自动歌词</text>
+		<text name="LyricContent">点此加载</text>
+		<text name="MatoPlayer">番茄播放器</text>
+		<text name="Msg_AddFailed">添加失败</text>
+		<text name="Msg_AlreadyExists">已存在</text>
+		<text name="Msg_EditFailed">无法修改</text>
+		<text name="Msg_HasAdded">已添加至</text>
+		<text name="Msg_HasAddedQueue">已添加至队列</text>
+		<text name="Msg_HasAddedQueue2">已追加至队列</text>
+		<text name="Msg_HasCreated">已创建</text>
+		<text name="Msg_HasEdit">已修改</text>
+		<text name="Msg_HasRemoved">已删除</text>
+		<text name="Msg_Nameillegal">无法使用名称</text>
+		<text name="Msg_QueueCleaned">已清空队列</text>
+		<text name="Msg_RemoveFailed">无法删除</text>
+		<text name="Msg_TrunoffSleepMode">已关闭睡眠模式</text>
+		<text name="Musics">歌曲</text>
+		<text name="MyFavourite">我最喜爱</text>
+		<text name="NewPlaylist">新建歌单</text>
+		<text name="Next">下一曲</text>
+		<text name="NoItem">没有任何项目</text>
+		<text name="NoteAndAppreciation">说明</text>
+		<text name="NowPlaying">正在播放</text>
+		<text name="Personalize">个性化</text>
+		<text name="Play">播放</text>
+		<text name="PlayAll">播放全部</text>
+		<text name="Playlist">歌单</text>
+		<text name="PlayNext">下一首播放</text>
+		<text name="PlayThis">播放此</text>
+		<text name="Queue">队列</text>
+		<text name="Remove">删除</text>
+		<text name="Rename">重命名..</text>
+		<text name="Search">搜索</text>
+		<text name="SearchPlaceholder">请输入歌曲、艺术家、或专辑的名称</text>
+		<text name="Setting">设置</text>
+		<text name="SettingContent1">睡眠模式设置</text>
+		<text name="SettingContent2">常规</text>
+		<text name="SettingContent3">自动下载歌词</text>
+		<text name="SettingContent4">协助改善产品</text>
+		<text name="SleepMode">睡眠模式</text>
+		<text name="SleepModeContent1">已开启睡眠模式 将在{0}小时{1}分钟后停止</text>
+		<text name="SleepModeContent3">注意:请保证播放器在前台运行，可锁屏</text>
+		<text name="SleepModeOn">已启用睡眠</text>
+		<text name="Statement">本应用使用并遵循各开源框架条款</text>
+		<text name="Submit">提交</text>
+		<text name="Timer">定时</text>
+	</texts>
 </localizationDictionary>
 
 

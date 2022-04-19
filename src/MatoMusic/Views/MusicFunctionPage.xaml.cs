@@ -34,7 +34,7 @@ namespace MatoMusic
             this.BindingContext = new MusicFunctionPageViewModel(ObjInfo, Menus);
             if (ObjInfo is MusicInfo)
             {
-                this.FavouritLayout.IsVisible = true;
+                //this.FavouritLayout.IsVisible = true;
             }
         }
 

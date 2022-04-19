@@ -155,8 +155,7 @@ namespace MatoMusic
             var _musicFunctionPage = new MusicFunctionPage(musicInfo as IBasicInfo, _mainMenuCellInfos);
             _musicFunctionPage.OnFinished += _musicFunctionPage_OnFinished;
 
-            this.ShowPopup(_musicFunctionPage);
-            //await navigationService.ShowPopupAsync(_musicFunctionPage);
+            await navigationService.ShowPopupAsync(_musicFunctionPage);
 
         }
 

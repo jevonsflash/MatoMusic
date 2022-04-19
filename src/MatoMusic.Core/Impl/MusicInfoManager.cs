@@ -6,6 +6,7 @@ using Abp.Domain.Uow;
 using MatoMusic.Core.Interfaces;
 using MatoMusic.Core.Models;
 using MatoMusic.Infrastructure;
+using static Microsoft.Maui.ApplicationModel.Permissions;
 
 namespace MatoMusic.Core
 {
@@ -34,6 +35,65 @@ namespace MatoMusic.Core
             _musicSystem.MusicInfoManager = this;
 
         }
+
+        public async Task<bool> PermissionAuthorization<T>(T permission) where T : BasePermission
+        {
+            var status = await permission.CheckStatusAsync();
+
+            if (status == PermissionStatus.Granted)
+                return true;
+
+            if (status == PermissionStatus.Denied && DeviceInfo.Platform == DevicePlatform.iOS)
+            {
+
+                // Prompt the user to turn on in settings
+                // On iOS once a permission has been denied it may not be requested again from the application
+                return false;
+            }
+
+            if (permission.ShouldShowRationale())
+            {
+                // Prompt the user with additional information as to why the permission is needed
+            }
+
+            status = await permission.RequestAsync();
+
+            return status == PermissionStatus.Granted;
+        }
+
+        public async Task<bool> MediaLibraryAuthorization()
+        {
+            var mediaPermission = await PermissionAuthorization(new Permissions.Media());
+            var rdPermission = await PermissionAuthorization(new Permissions.StorageRead());
+            var wtPermission = await PermissionAuthorization(new Permissions.StorageWrite());
+
+            return mediaPermission && rdPermission && wtPermission;
+
+            var status = await Permissions.CheckStatusAsync<Permissions.StorageRead>();
+            var status2 = await Permissions.CheckStatusAsync<Permissions.StorageWrite>();
+            var status3 = await Permissions.CheckStatusAsync<Permissions.Media>();
+
+            if (status == PermissionStatus.Granted)
+                return true;
+
+            if (status == PermissionStatus.Denied && DeviceInfo.Platform == DevicePlatform.iOS)
+            {
+                // Prompt the user to turn on in settings
+                // On iOS once a permission has been denied it may not be requested again from the application
+                return false;
+            }
+
+            if (Permissions.ShouldShowRationale<Permissions.StorageRead>())
+            {
+                // Prompt the user with additional information as to why the permission is needed
+            }
+
+            status = await Permissions.RequestAsync<Permissions.StorageRead>();
+            return status == PermissionStatus.Granted;
+
+        }
+
+
 
         public partial Task ClearQueue();
 
@@ -154,8 +214,8 @@ namespace MatoMusic.Core
 
         public partial Task<bool> UpdatePlaylist(Playlist playlist);
 
-        private partial bool MediaLibraryAuthorization();
-
         private partial string GetGroupHeader(string title);
+
+
     }
 }

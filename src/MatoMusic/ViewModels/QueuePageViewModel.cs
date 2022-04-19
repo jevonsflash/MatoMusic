@@ -114,7 +114,7 @@ public class QueuePageViewModel : MusicRelatedViewModel
 
     private void MusicControlService_OnRebuildMusicInfosFinished()
     {
-        Device.BeginInvokeOnMainThread(() =>
+        CommonHelper.BeginInvokeOnMainThread(() =>
         {
             InitMusics();
             foreach (var c in Musics)

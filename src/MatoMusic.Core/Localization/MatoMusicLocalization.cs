@@ -18,7 +18,7 @@ namespace MatoMusic.Core.Localization
                 new DictionaryBasedLocalizationSource(MatoMusicConsts.LocalizationSourceName,
                     new XmlEmbeddedFileLocalizationDictionaryProvider(
                         typeof(LocalizationConfigurer).GetAssembly(),
-                        "MatoMusic.Localization.SourceFiles"
+                        "MatoMusic.Core.Localization.SourceFiles"
                     )
                 )
             );

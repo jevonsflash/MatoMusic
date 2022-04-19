@@ -204,12 +204,6 @@ namespace MatoMusic.Core
 
         }
 
-        private partial bool MediaLibraryAuthorization()
-        {
-            var result = true;
-            //权限验证
-            return result;
-        }
 
         /// <summary>
         /// 获取MusicInfo集合
@@ -219,7 +213,7 @@ namespace MatoMusic.Core
         {
             List<MusicInfo> musicInfos;
             var result = false;
-            if (MediaLibraryAuthorization())
+            if (await MediaLibraryAuthorization())
             {
                 musicInfos = await SetMusicListAsync();
                 result = true;
@@ -242,7 +236,7 @@ namespace MatoMusic.Core
         {
             List<AlbumInfo> albumInfo;
             var result = false;
-            if (MediaLibraryAuthorization())
+            if (await MediaLibraryAuthorization())
             {
 
 
@@ -292,7 +286,7 @@ namespace MatoMusic.Core
             List<ArtistInfo> artistInfo;
 
             var result = false;
-            if (MediaLibraryAuthorization())
+            if (await MediaLibraryAuthorization())
             {
 
 

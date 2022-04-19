@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MatoMusic.Core.Helper;
 using MatoMusic.Core.Interfaces;
 using MatoMusic.Core.Settings;
 using MatoMusic.Core.ViewModel;
@@ -227,7 +228,7 @@ namespace MatoMusic.Core.Services
         private void MusicControlService_OnRebuildMusicInfosFinished()
         {
             //当队列初始化完成时初始化当前曲目
-            Device.BeginInvokeOnMainThread(() =>
+            CommonHelper.BeginInvokeOnMainThread(() =>
             {
                 InitCurrentMusic();
             });

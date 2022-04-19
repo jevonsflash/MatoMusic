@@ -111,28 +111,8 @@ namespace MatoMusic.Core
 
         }
 
-        private partial bool MediaLibraryAuthorization()
-        {
-            var result = false;
-            var status = MPMediaLibrary.AuthorizationStatus;
-            switch (status)
-            {
-                case MPMediaLibraryAuthorizationStatus.Authorized:
-                    result = true;
-                    break;
-                case MPMediaLibraryAuthorizationStatus.NotDetermined:
-                    MPMediaLibrary.RequestAuthorization((c) =>
-                    {
-                        result = c == MPMediaLibraryAuthorizationStatus.Authorized;
-                    });
-                    break;
-                case MPMediaLibraryAuthorizationStatus.Denied:
-                case MPMediaLibraryAuthorizationStatus.Restricted:
-                    result = false;
-                    break;
-            }
-            return result;
-        }
+
+
 
         /// <summary>
         /// 获取MusicInfo集合
@@ -143,7 +123,7 @@ namespace MatoMusic.Core
             List<MusicInfo> musicInfos;
 
             var result = false;
-            if (MediaLibraryAuthorization())
+            if (await MediaLibraryAuthorization())
             {
                 musicInfos = await Task.Run(() =>
                 {
@@ -190,7 +170,7 @@ namespace MatoMusic.Core
 
             var result = false;
 
-            if (MediaLibraryAuthorization())
+            if (await MediaLibraryAuthorization())
             {
 
                 albumInfo = await Task.Run(() =>
@@ -245,7 +225,7 @@ namespace MatoMusic.Core
             List<ArtistInfo> artistInfo;
 
             var result = false;
-            if (MediaLibraryAuthorization())
+            if (await MediaLibraryAuthorization())
             {
                 artistInfo = await Task.Run(() =>
                 {

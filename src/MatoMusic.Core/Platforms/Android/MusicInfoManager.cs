@@ -216,12 +216,6 @@ namespace MatoMusic.Core
 
         }
 
-        private partial bool MediaLibraryAuthorization()
-        {
-            var result = true;
-            return result;
-
-        }
 
         /// <summary>
         /// 获取MusicInfo集合
@@ -233,7 +227,7 @@ namespace MatoMusic.Core
 
             var result = false;
 
-            if (MediaLibraryAuthorization())
+            if (await MediaLibraryAuthorization())
             {
 
                 musicInfos = await Task.Run(() =>
@@ -278,7 +272,7 @@ namespace MatoMusic.Core
             List<AlbumInfo> albumInfo;
             var result = false;
 
-            if (MediaLibraryAuthorization())
+            if (await MediaLibraryAuthorization())
             {
                 var isSucc = await GetMusicInfos();
                 if (!isSucc.IsSucess)
@@ -334,7 +328,7 @@ namespace MatoMusic.Core
         {
             List<ArtistInfo> artistInfo;
             var result = false;
-            if (MediaLibraryAuthorization())
+            if (await MediaLibraryAuthorization())
             {
                 var isSucc = await GetMusicInfos();
                 if (!isSucc.IsSucess)

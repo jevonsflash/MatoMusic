@@ -1,6 +1,8 @@
 <toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:controls="clr-namespace:MatoMusic;assembly=MatoMusic"
+           Size="{x:Static controls:PopupSize.Medium}"
              
    x:Class="MatoMusic.PlaylistChoosePage">
 

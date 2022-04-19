@@ -16,6 +16,8 @@
 
 	<ItemGroup>
 	  <None Remove="appsettings.json" />
+	  <None Remove="Localization\SourceFiles\MatoMusic-zh-Hans.xml" />
+	  <None Remove="Localization\SourceFiles\MatoMusic.xml" />
 	  <None Remove="log4net.config" />
 	  <None Remove="log4net.Production.config" />
 	  <None Remove="mato.db" />
@@ -25,6 +27,8 @@
 	  <EmbeddedResource Include="appsettings.json">
 	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </EmbeddedResource>
+	  <EmbeddedResource Include="Localization\SourceFiles\MatoMusic-zh-Hans.xml" />
+	  <EmbeddedResource Include="Localization\SourceFiles\MatoMusic.xml" />
 	  <EmbeddedResource Include="log4net.config">
 	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 	  </EmbeddedResource>

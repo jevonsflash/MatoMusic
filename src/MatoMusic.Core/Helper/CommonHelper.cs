@@ -31,6 +31,11 @@ namespace MatoMusic.Core.Helper
         {
             throw new NotImplementedException();
         }
+
+        public static void BeginInvokeOnMainThread(Action action)
+        {
+            Application.Current.MainPage.Dispatcher.Dispatch(action);
+        }
     }
 
 

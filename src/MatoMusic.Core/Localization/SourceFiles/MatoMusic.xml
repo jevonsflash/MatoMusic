@@ -1,121 +1,92 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <localizationDictionary culture="en">
-  <texts>
-    <text name="HomePage" value="Home page" />
-    <text name="About" value="About" />
-    <text name="WelcomeMessage" value="Welcome to CAH!" />
-    <text name="FormIsNotValidMessage" value="Form is not valid. Please check and fix errors." />
-    <text name="TenantNameCanNotBeEmpty" value="Tenant name can not be empty" />
-    <text name="InvalidUserNameOrPassword" value="Invalid user name or password" />
-    <text name="ThereIsNoTenantDefinedWithName{0}" value="There is no tenant defined with name {0}" />
-    <text name="TenantIsNotActive" value="Tenant {0} is not active." />
-    <text name="UserIsNotActiveAndCanNotLogin" value="User {0} is not active and can not log in." />
-    <text name="UserEmailIsNotConfirmedAndCanNotLogin">Your email address is not confirmed. You can not login.</text>
-    <text name="UserLockedOutMessage">The user account has been locked out. Please try again later.</text>
-    <text name="PleaseEnterLoginInformation" value="Please enter login information" />
-    <text name="TenancyName" value="Tenancy name" />
-    <text name="UserNameOrEmail" value="User name or email" />
-    <text name="Password" value="Password" />
-    <text name="ResetPassword" value="Reset Password" />
-    <text name="UpdatePassword" value="Update Password" />
-    <text name="RememberMe" value="Remember me" />
-    <text name="LogIn" value="Log in" />
-    <text name="LoginFailed" value="Login failed!" />
-    <text name="NameSurname" value="Name surname" />
-    <text name="UserName" value="User name" />
-    <text name="Name" value="Name" />
-    <text name="Surname" value="Surname" />
-    <text name="EmailAddress" value="Email address" />
-    <text name="Tenants" value="Tenants" />
-    <text name="SavedSuccessfully" value="Saved successfully" />
-    <text name="CreateNewTenant" value="Create new tenant" />
-    <text name="AdminEmailAddress" value="Admin email address" />
-    <text name="AdminPassword" value="Admin password" />
-    <text name="Save" value="Save" />
-    <text name="Cancel" value="Cancel" />
-    <text name="TenantName_Regex_Description" value="Tenant name must be at least 2 chars, starts with a letter and continue with letter, number, dash or underscore." />
-    <text name="DefaultPasswordIs" value="Default password is {0}" />
-    <text name="CanBeEmptyToLoginAsHost" value="Can be empty to login as host." />
-    <text name="Register" value="Register" />
-    <text name="OrLoginWith" value="Or login with" />
-    <text name="WaitingForActivationMessage" value="Your account is waiting to be activated by system admin." />
-    <text name="TenantSelection" value="Tenant Selection" />
-    <text name="TenantSelection_Detail" value="Please select one of the following tenants." />
-    <text name="Logout" value="Logout" />
-    <text name="RegisterFormUserNameInvalidMessage">Please don't enter an email address for username.</text>
-    <text name="DatabaseConnectionString" value="Database connection string" />
-    <text name="Users" value="Users" />
-    <text name="IsActive" value="Is active" />
-    <text name="FullName" value="Full name" />
-    <text name="CreateNewUser" value="Create new user" />
-    <text name="Yes" value="Yes" />
-    <text name="No" value="No" />
-    <text name="Optional" value="Optional" />
-    <text name="LeaveEmptyToSwitchToHost">Leave empty to switch to the host</text>
-    <text name="CurrentTenant">Current tenant</text>
-    <text name="NotSelected">Not selected</text>
-    <text name="Change">Change</text>
-    <text name="ChangeTenant">Change tenant</text>
-    <text name="MultiLevelMenu">Multi Level Menu</text>
-    <text name="Back">Back</text>
-    <text name="SuccessfullyRegistered">Successfully registered</text>
-    <text name="WaitingForEmailActivation">Your email address should be activated</text>
-    <text name="Roles">Roles</text>
-    <text name="DisplayName">Display Name</text>
-    <text name="Edit">Edit</text>
-    <text name="Delete">Delete</text>
-    <text name="CreateNewRole">Create new role</text>
-    <text name="RoleName">Role Name</text>
-    <text name="Actions">Actions</text>
-    <text name="CouldNotCompleteLoginOperation">Could not complete login operation. Please try again later.</text>
-    <text name="CouldNotValidateExternalUser">Could not validate external user</text>
-    <text name="EditRole">Edit role</text>
-    <text name="EditTenant">Edit tenant</text>
-    <text name="EditUser">Edit user</text>
-    <text name="TenantIdIsNotActive{0}">TenantId {0} is not active</text>
-    <text name="UnknownTenantId{0}">Unknown tenantId {0}</text>
-    <text name="ThisFieldIsRequired">This field is required</text>
-    <text name="PleaseWait">Please wait...</text>
-    <text name="Administration">Administration</text>
-    <text name="ClearAll">Clear all</text>
-    <text name="ClearOthers">Clear others</text>
-    <text name="LabelOptions">Label options</text>
-    <text name="Permissions">Permissions</text>
-    <text name="RoleDescription">Role description</text>
-    <text name="Refresh">Refresh</text>
-    <text name="Create">Create</text>
-    <text name="UserDetails">User details</text>
-    <text name="UserRoles">User roles</text>
-    <text name="ConfirmPassword">Confirm password</text>
-    <text name="Version">Version</text>
-    <text name="On">On</text>
-    <text name="Off">Off</text>
-    <text name="AreYouSureWantToDelete">Are you sure want to delete {0}?</text>
-    <text name="SuccessfullyDeleted">Successfully deleted</text>
-    <text name="StartTyping">Start Typing</text>
-    <text name="Skins">Skins</text>
-    <text name="Settings">Settings</text>
-    <text name="Filter">Filter</text>
-    <text name="CurrentPassword">Current Password</text>
-    <text name="NewPassword">New Password</text>
-    <text name="ConfirmNewPassword">Confirm New Password</text>
-    <text name="PasswordsDoNotMatch">Passwords do not match</text>
-    <text name="PasswordsMustBeAtLeast8CharactersContainLowercaseUppercaseNumber">Passwords must be at least 8 characters, contain a lowercase, uppercase, and number</text>
-    <text name="UserDeleteWarningMessage">User {0} will be deleted.</text>
-    <text name="RoleDeleteWarningMessage">Role {0} will be deleted and unassigned from all assigned users.</text>
-    <text name="TenantDeleteWarningMessage">Tenant {0} will be deleted.</text>
-    <text name="SearchWithThreeDot">Search...</text>
-    <text name="PleaseEnterAtLeastNCharacter">Please enter at least {0} characters</text>
-    <text name="PleaseEnterNoMoreThanNCharacter">Please enter no more than {0} characters</text>
-    <text name="InvalidEmailAddress">Invalid email address</text>
-    <text name="InvalidPattern">Invalid</text>
-    <text name="PairsDoNotMatch">Do not match</text>
-    <text name="All">All</text>
-    <text name="TotalRecordsCount">Total: {0}</text>
-    <text name="Search">Search</text>
-    <text name="Clear">Clear</text>
-    <text name="ResetPasswordStepOneInfo">1. Enter your administrator password</text>
-    <text name="ResetPasswordStepTwoInfo">2. Copy this random password so you can send it to the user</text>
-    <text name="UsersActivation">Users activation</text>
-  </texts>
+	<texts>
+		<text name="About">About</text>
+		<text name="AboutContent1">First of all thanks to download and experience, I wish you a good mood</text>
+		<text name="AboutContent2">If you are in doubt during use, you can refer to the following use of help, you can also send e-mail to me. Mail link in the "feedback" column。</text>
+		<text name="AboutContent3">Update content:</text>
+		<text name="AddMusic">Add a track</text>
+		<text name="AddPlaylist">Add song list</text>
+		<text name="AddTo">Add to..</text>
+		<text name="AddToFavourite">Add favorites</text>
+		<text name="AddToQueue">Add to queue</text>
+		<text name="AddToQueue2">Append to queue</text>
+		<text name="Albums">Album</text>
+		<text name="Artists">Artist</text>
+		<text name="Brief">This is a music player that focuses on the local music experience</text>
+		<text name="Cancel">Cancel</text>
+		<text name="Clean">Clean up</text>
+		<text name="CreatePlaylist">Add song list</text>
+		<text name="CreatePlaylistPlaceholder">Please enter the song name</text>
+		<text name="Edit">Edit</text>
+		<text name="EditPlaylist">Edit song list</text>
+		<text name="Feedback">Feedback</text>
+		<text name="FeedBackContent">If you think MatoPlayer is good, please support me!</text>
+		<text name="FeedbackContent1">Likewise, I am very much looking forward to your comments and suggestions. Please send the feedback to the following address:</text>
+		<text name="FeedbackContent2">You can also Subscribe to my Sina Weibo</text>
+		<text name="FliperAlert1">Look around the music library</text>
+		<text name="FliperAlert2">The current track is empty</text>
+		<text name="GivePraise">Scoring and evaluating on AppStore</text>
+		<text name="Help">Help</text>
+		<text name="HelpContent">
+			"1. In the music library, if you just click on the song without adding to the queue, can only play a preview role and can not find this song again
+			2. In the queue and the song can be activated by long press the sort status
+			3. On the home page you can click on the album cover to open the lyrics"
+		</text>
+		<text name="Library">Library</text>
+		<text name="LibraryAlert">Please connect your device to iTunes and sync some songs</text>
+		<text name="LibraryAlert2">Please copy some songs to your Android device</text>
+		<text name="LyricAlert">Please start a song to show the lyrics</text>
+		<text name="LyricAlert2">Auto lyrics have been closed</text>
+		<text name="LyricContent">Click here to load</text>
+		<text name="MatoPlayer">MatoPlayer</text>
+		<text name="Msg_AddFailed">Add failed</text>
+		<text name="Msg_AlreadyExists">Existed</text>
+		<text name="Msg_EditFailed">Save failed</text>
+		<text name="Msg_HasAdded">Added</text>
+		<text name="Msg_HasAddedQueue">Has been added to the queue</text>
+		<text name="Msg_HasAddedQueue2">Has been append to the queue</text>
+		<text name="Msg_HasCreated">Created</text>
+		<text name="Msg_HasEdit">Saved</text>
+		<text name="Msg_HasRemoved">Removed</text>
+		<text name="Msg_Nameillegal">Name illegal</text>
+		<text name="Msg_QueueCleaned">Queue cleaned</text>
+		<text name="Msg_RemoveFailed">Remove failed</text>
+		<text name="Msg_TrunoffSleepMode">Sleep mode has been turned off</text>
+		<text name="Musics">Song</text>
+		<text name="MyFavourite">I love it most</text>
+		<text name="NewPlaylist">New song list</text>
+		<text name="Next">Next</text>
+		<text name="NoItem">Here is empty</text>
+		<text name="NoteAndAppreciation">Statement</text>
+		<text name="NowPlaying">Now Playing</text>
+		<text name="Personalize">Personalise</text>
+		<text name="Play">Play</text>
+		<text name="PlayAll">Play all</text>
+		<text name="Playlist">Song list</text>
+		<text name="PlayNext">Next play</text>
+		<text name="PlayThis">Play this</text>
+		<text name="Queue">Queue</text>
+		<text name="Remove">Remove</text>
+		<text name="Rename">Rename..</text>
+		<text name="Search">Search </text>
+		<text name="SearchPlaceholder">Please enter the name of the song, artist, or album</text>
+		<text name="Setting">Setting</text>
+		<text name="SettingContent1">Sleep mode setting</text>
+		<text name="SettingContent2">Conventional</text>
+		<text name="SettingContent3">Automatically download lyrics</text>
+		<text name="SettingContent4">Assist in improving the product</text>
+		<text name="SleepMode">Sleep mode</text>
+		<text name="SleepModeContent1">Sleep Mode On. Will stop in {0} hours and {1} minutes</text>
+		<text name="SleepModeContent3">Note: Please ensure that the player is running in the foreground, can lock screen</text>
+		<text name="SleepModeOn">Sleep Mode On</text>
+		<text name="Statement">
+			"This App use and follow the terms of each open source framework
+			This App collects usage information to improve the product without involving user privacy
+			"
+		</text>
+		<text name="Submit">Submit</text>
+		<text name="Timer">Timer</text>
+
+	</texts>
 </localizationDictionary>

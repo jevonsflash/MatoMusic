@@ -1,4 +1,5 @@
 using Abp.Dependency;
+using MatoMusic.Core.Services;
 
 namespace MatoMusic;
 
@@ -11,6 +12,13 @@ public partial class MainPage : Shell, ITransientDependency
 		InitializeComponent();
         this.iocManager = iocManager;
         this.Init();
+        Loaded += MainPage_Loaded;
+    }
+
+    private async void MainPage_Loaded(object sender, EventArgs e)
+    {
+        var musicRelatedViewModel = iocManager.Resolve<MusicRelatedService>();
+        await musicRelatedViewModel.InitAll();
     }
 
     private void Init()

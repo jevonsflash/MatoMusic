@@ -2,20 +2,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:MatoMusic;assembly=MatoMusic"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             Size="{x:Static controls:PopupSize.Medium}"
+            
              x:Class="MatoMusic.MusicFunctionPage">
 
-    <Grid VerticalOptions="Center"  
-          Padding="20,10" 
-          HorizontalOptions="FillAndExpand">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto">
-            </RowDefinition>
-            <RowDefinition>
-            </RowDefinition>
-        </Grid.RowDefinitions>
-
+    <StackLayout BackgroundColor="{DynamicResource PhoneContrastBackgroundBrush}">
+      
         <!--TitlePanel 包含应用程序的名称和页标题-->
-        <Grid Grid.Row="0"
+        <Grid Grid.Row="0" HeightRequest="30"
               Padding="{StaticResource DefaultContentPadding}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
@@ -37,23 +31,22 @@
                         Text=""></Button>
             </Grid>
         </Grid>
-        <StackLayout Grid.Row="1"
-                     VerticalOptions="FillAndExpand">
-            <ListView ItemsSource="{Binding  MainMenuCellInfos}"
+        <ListView ItemsSource="{Binding  MainMenuCellInfos}"
                                        ItemSelected="ListView_OnItemSelected"
                                        SelectedItem="{Binding CurrentMenuCellInfo,Mode=TwoWay}"
                                        RowHeight="58">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <controls:MenuCell ContentText="{Binding Title}"
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <controls:MenuCell ContentText="{Binding Title}"
                                            IsEnabled="{Binding Enable}"
                                            IconText="{Binding Icon}"></controls:MenuCell>
 
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </StackLayout>
-    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+      
+    </StackLayout>
 
 
 </toolkit:Popup>

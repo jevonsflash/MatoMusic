@@ -43,18 +43,10 @@ namespace MatoMusic.ViewModels
             }
         }
 
-        private void MusicControlService_OnRebuildMusicInfosFinished()
-        {
-            Device.BeginInvokeOnMainThread(() =>
-            {
-
-            });
-
-        }
 
         private async void PlayAllAction(object obj)
         {
-            await RebuildMusicInfos(MusicControlService_OnRebuildMusicInfosFinished);
+            await RebuildMusicInfos();
 
             var isSucc = await musicInfoManager.GetMusicInfos();
             if (!isSucc.IsSucess)

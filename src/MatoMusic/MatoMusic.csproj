@@ -85,6 +85,8 @@
 
 	<ItemGroup>
 	  <PackageReference Include="CommunityToolkit.Maui" Version="1.0.0-pre9" />
+	  <PackageReference Include="CommunityToolkit.Maui.Core" Version="1.0.0-pre9" />
+	  <PackageReference Include="CommunityToolkit.Maui.Markup" Version="1.0.0-pre9" />
 	</ItemGroup>
 
 	<ItemGroup>
