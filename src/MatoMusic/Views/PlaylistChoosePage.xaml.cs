@@ -5,7 +5,6 @@ using MatoMusic.Common;
 using MatoMusic.Core;
 using MatoMusic.Core.Helper;
 using MatoMusic.Core.Models;
-using MatoMusic.View;
 using Microsoft.Maui.Controls;
 
 

@@ -19,7 +19,7 @@ using MatoMusic.Services;
 using MatoMusic.ViewModel;
 
 
-namespace MatoMusic.View
+namespace MatoMusic
 {
 
 

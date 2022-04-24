@@ -20,10 +20,6 @@ namespace MatoMusic
         {
 
             InitializeComponent();
-
-
-
-
         }
         public MusicFunctionPage(IBasicInfo objInfo, IList<MenuCellInfo> menus)
         {

@@ -15,7 +15,7 @@ using MatoMusic.Services;
 using MatoMusic.ViewModel;
 
 
-namespace MatoMusic.View
+namespace MatoMusic
 {
 
     public partial class MusicCollectionPage : ContentPageBase, ITransientDependency
@@ -27,10 +27,7 @@ namespace MatoMusic.View
 
         }
 
-
         public MusicFunctionManager MusicFunctionManager { get; set; }
-
-        private NavigationPage detailPage;
 
         private PlaylistChoosePage _playlistChoosePage;
 
@@ -115,7 +112,7 @@ namespace MatoMusic.View
                 {
                     if (c != null)
                     {
-                        var result = await MusicInfoManager.CreatePlaylistEntrys(context.MusicsCollectionInfo as MusicCollectionInfo, c.PlaylistId);
+                        var result = await MusicInfoManager.CreatePlaylistEntrys(context.MusicsCollectionInfo as MusicCollectionInfo, c.Id);
                         if (result)
                         {
                             CommonHelper.ShowMsg(string.Format("{0},{1}", L("Msg_HasAdded"), c.Title));

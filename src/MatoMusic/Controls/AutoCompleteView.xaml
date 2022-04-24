@@ -15,8 +15,7 @@
             </StackLayout>
             <ListView x:Name="LstSuggestions"  
                       ItemSelected="LstSuggestions_OnItemSelected"
-                                      RowHeight="64"
-                      >
+                      RowHeight="64">
             </ListView>
         </StackLayout>
     </ContentView.Content>

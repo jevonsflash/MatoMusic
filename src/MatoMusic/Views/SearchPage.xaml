@@ -2,8 +2,8 @@
 <mato:ContentPageBase xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:mato="clr-namespace:MatoMusic;assembly=MatoMusic"
-             xmlns:core="clr-namespace:MatoMusic.Core;assembly=MatoMusic.Core">
-    <Grid>
+             xmlns:core="clr-namespace:MatoMusic.Core;assembly=MatoMusic.Core"
+             x:Class="MatoMusic.SearchPage">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"></RowDefinition>
@@ -81,5 +81,4 @@
                 VerticalOptions="EndAndExpand"
                 x:Name="MiniViewLayout"></mato:MusicMiniView>
         </Grid>
-    </Grid>
 </mato:ContentPageBase>

@@ -22,7 +22,7 @@ namespace MatoMusic.ViewModel
             this.PropertyChanged += PlaylistEntryPageViewModel_PropertyChanged;
 
         }
-        public PlaylistEntryPageViewModel(PlaylistInfo playlist,List<MenuCellInfo> menus) : base(playlist,menus)
+        public PlaylistEntryPageViewModel(PlaylistInfo playlist, List<MenuCellInfo> menus) : base(playlist, menus)
         {
             MusicsCollectionInfo = playlist;
             (MusicsCollectionInfo.Musics as ObservableCollection<MusicInfo>).CollectionChanged += Musics_CollectionChanged;
@@ -30,11 +30,13 @@ namespace MatoMusic.ViewModel
 
         }
 
-        private void PlaylistEntryPageViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private async void PlaylistEntryPageViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(MusicsCollectionInfo))
             {
-                Core.MusicInfoManager.UpdatePlaylist(this.MusicsCollectionInfo as PlaylistInfo);
+                var model = this.MusicsCollectionInfo as PlaylistInfo;
+                var entity = ObjectMapper.Map<Playlist>(model);
+                await MusicInfoManager.UpdatePlaylist(entity);
 
             }
         }
@@ -59,6 +61,6 @@ namespace MatoMusic.ViewModel
             }
 
 
-        }       
+        }
     }
 }

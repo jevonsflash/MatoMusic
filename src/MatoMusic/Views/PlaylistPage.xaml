@@ -3,7 +3,6 @@
              xmlns:mato="clr-namespace:MatoMusic;assembly=MatoMusic"
              x:Class="MatoMusic.PlaylistPage"
              xmlns:core="clr-namespace:MatoMusic.Core;assembly=MatoMusic.Core">
-
     <Grid>
         <Grid Padding="{StaticResource DefaultContentPadding}"
                   Grid.Row="0">

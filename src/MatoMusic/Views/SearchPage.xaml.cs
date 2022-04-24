@@ -7,7 +7,7 @@ using MatoMusic.Core.Interfaces;
 using MatoMusic.Core.Models;
 using MatoMusic.Infrastructure.Common;
 using MatoMusic.Services;
-using ProjectMato.ViewModel;
+using MatoMusic.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -18,14 +18,10 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 
 
-namespace MatoMusic.View
+namespace MatoMusic
 {
-
-
     public partial class SearchPage : ContentPageBase, ITransientDependency
     {
-        private NavigationPage detailPage;
-
         public MusicFunctionManager MusicFunctionManager { get; set; }
         public SearchPage(SearchPageViewModel searchPageViewModel)
         {

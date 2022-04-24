@@ -1,8 +1,6 @@
 ﻿<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MatoMusic.MusicMiniView"
-            >
-
+             x:Class="MatoMusic.MusicMiniView">
     <Grid HeightRequest="62">
         <Grid.GestureRecognizers>
             <TapGestureRecognizer Tapped="TapGestureRecognizer_OnTapped"></TapGestureRecognizer>

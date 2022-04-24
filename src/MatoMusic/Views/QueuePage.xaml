@@ -3,7 +3,6 @@
              xmlns:mato="clr-namespace:MatoMusic;assembly=MatoMusic"
              x:Class="MatoMusic.QueuePage"
              xmlns:core="clr-namespace:MatoMusic.Core;assembly=MatoMusic.Core">
-
     <Grid>
         <Grid>
             <ListView ItemsSource="{Binding Musics,Mode=TwoWay}"

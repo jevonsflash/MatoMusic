@@ -25,9 +25,6 @@ namespace MatoMusic
             this.musicFunctionManager = musicFunctionManager; 
             InitializeComponent();
             this.BindingContext = queuePageViewModel;
-            this.PlayAllLabel.Text = FaIcons.IconRandom;
-            this.AddSongLabel2.Text = FaIcons.IconMusic;
-
         }
 
 

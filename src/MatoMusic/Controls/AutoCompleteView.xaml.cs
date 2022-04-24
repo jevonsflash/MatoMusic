@@ -646,8 +646,8 @@ namespace MatoMusic
         /// Texts the changed.
         /// </summary>
         /// <param name="obj">The object.</param>
-        /// <param name="oldPlaceHolderValue">The old place holder value.</param>
-        /// <param name="newPlaceHolderValue">The new place holder value.</param>
+        /// <param name="oldValue">The old place holder value.</param>
+        /// <param name="newValue">The new place holder value.</param>
         private static async void TextValueChanged(BindableObject obj, object oldValue, object newValue)
         {
 

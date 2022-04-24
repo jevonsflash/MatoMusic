@@ -7,8 +7,6 @@ using System.Threading.Tasks;
 using MatoMusic.Core;
 using MatoMusic.Core.Models;
 using MatoMusic.Core.ViewModel;
-//using OnlineMusic.Server;
-using MatoMusic.View;
 
 
 namespace MatoMusic.ViewModel

@@ -17,7 +17,7 @@ namespace MatoMusic.ViewModels
 {
     public class PlaylistPageViewModel : MusicRelatedViewModel
     {
-        public PlaylistPageViewModel(IMusicInfoManager musicInfoManager, MusicRelatedService musicRelatedService,IMusicControlService musicControlService) : base(musicInfoManager, musicRelatedService, musicControlService)
+        public PlaylistPageViewModel()
         {
             DeleteCommand = new Command(DeleteAction, c => true);
         }
