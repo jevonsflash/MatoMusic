@@ -16,12 +16,45 @@ namespace MatoMusic.Core.ViewModel
 {
     public abstract class MusicRelatedViewModel : ViewModelBase
     {
-        public IMusicInfoManager musicInfoManager { get; }
-
-        private readonly IMusicControlService musicSystem;
-        private readonly MusicRelatedService ms;
-
         private bool _isFastSeeking = false;
+
+        private IMusicInfoManager _musicInfoManager;
+
+        public IMusicInfoManager MusicInfoManager
+        {
+            get { return _musicInfoManager; }
+            set
+            {
+                _musicInfoManager = value;
+            }
+        }
+
+        private IMusicControlService _musicControlService;
+
+        public IMusicControlService MusicControlService
+        {
+            get { return _musicControlService; }
+            set
+            {
+                _musicControlService = value;
+                _musicControlService.OnPlayFinished += MusicControlService_OnMusicChanged;
+
+            }
+        }
+
+        private MusicRelatedService _musicRelatedService;
+
+        public MusicRelatedService MusicRelatedService
+        {
+            get { return _musicRelatedService; }
+            set
+            {
+                _musicRelatedService = value;
+                this._musicRelatedService.PropertyChanged += this.Delegate_PropertyChanged;
+
+            }
+        }
+
 
 
 
@@ -37,8 +70,7 @@ namespace MatoMusic.Core.ViewModel
             public const string IsShuffle = "IsShuffle";
         }
 
-        public MusicRelatedViewModel(
-            IMusicInfoManager musicInfoManager, MusicRelatedService musicRelatedService,IMusicControlService musicControlService)
+        public MusicRelatedViewModel()
         {
 
             this.PlayCommand = new Command(PlayAction, CanPlayExcute);
@@ -48,12 +80,6 @@ namespace MatoMusic.Core.ViewModel
             this.ShuffleCommand = new Command(ShuffleAction, CanPlayExcute);
             this.FavouriteCommand = new Command(FavouriteAction, CanPlayExcute);
             this.PropertyChanged += DetailPageViewModel_PropertyChanged;
-            musicSystem = musicControlService;
-            musicSystem.MusicInfoManager = musicInfoManager;
-            musicSystem.OnPlayFinished += MusicControlService_OnMusicChanged;
-            this.musicInfoManager = musicInfoManager;
-            this.ms = musicRelatedService;
-            this.ms.PropertyChanged += this.Delegate_PropertyChanged;
         }
 
         private void Delegate_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -64,66 +90,66 @@ namespace MatoMusic.Core.ViewModel
 
         public MusicInfo CurrentMusic
         {
-            get => ms.CurrentMusic;
-            set => ms.CurrentMusic = value;
+            get => MusicRelatedService.CurrentMusic;
+            set => MusicRelatedService.CurrentMusic = value;
         }
 
         public MusicInfo NextMusic
         {
-            get => ms.NextMusic;
-            set => ms.NextMusic = value;
+            get => MusicRelatedService.NextMusic;
+            set => MusicRelatedService.NextMusic = value;
         }
 
         public MusicInfo PreviewMusic
         {
-            get => ms.PreviewMusic;
-            set => ms.PreviewMusic = value;
+            get => MusicRelatedService.PreviewMusic;
+            set => MusicRelatedService.PreviewMusic = value;
         }
 
         public List<MusicInfo> Musics
         {
-            get => ms.Musics;
-            set => ms.Musics = value;
+            get => MusicRelatedService.Musics;
+            set => MusicRelatedService.Musics = value;
         }
 
         public bool Canplay
         {
-            get => ms.Canplay;
+            get => MusicRelatedService.Canplay;
         }
 
         public bool IsPlaying
         {
-            get => ms.IsPlaying;
-            set => ms.IsPlaying = value;
+            get => MusicRelatedService.IsPlaying;
+            set => MusicRelatedService.IsPlaying = value;
         }
 
         public bool IsShuffle
         {
-            get => ms.IsShuffle;
-            set => ms.IsShuffle = value;
+            get => MusicRelatedService.IsShuffle;
+            set => MusicRelatedService.IsShuffle = value;
         }
 
         public bool IsRepeatOne
         {
-            get => ms.IsRepeatOne;
-            set => ms.IsRepeatOne = value;
+            get => MusicRelatedService.IsRepeatOne;
+            set => MusicRelatedService.IsRepeatOne = value;
         }
 
         public double CurrentTime
         {
-            get => ms.CurrentTime;
-            set => ms.CurrentTime = value;
+            get => MusicRelatedService.CurrentTime;
+            set => MusicRelatedService.CurrentTime = value;
         }
 
         public double Duration
         {
-            get => ms.Duration;
-            set => ms.Duration = value;
+            get => MusicRelatedService.Duration;
+            set => MusicRelatedService.Duration = value;
         }
 
         public async Task RebuildMusicInfos()
         {
-            await this.musicSystem.RebuildMusicInfos();
+            await this.MusicControlService.RebuildMusicInfos();
         }
 
         public async Task RebuildMusicInfos(Action callback)
@@ -132,7 +158,7 @@ namespace MatoMusic.Core.ViewModel
             callback?.Invoke();
         }
 
-    
+
         private void FavouriteAction(object obj)
         {
             CurrentMusic.IsFavourite = !CurrentMusic.IsFavourite;
@@ -146,13 +172,13 @@ namespace MatoMusic.Core.ViewModel
 
         public bool CanPlayExcute(object obj)
         {
-            var result = ms.Canplay;
+            var result = MusicRelatedService.Canplay;
             return result;
         }
 
         public bool CanPlayAllExcute(object obj)
         {
-            var result = ms.CanplayAll;
+            var result = MusicRelatedService.CanplayAll;
             return result;
         }
 
@@ -167,17 +193,17 @@ namespace MatoMusic.Core.ViewModel
         {
             if (e.PropertyName == Properties.CurrentMusic)
             {
-                if (!Canplay || ms.IsInited == false)
+                if (!Canplay || MusicRelatedService.IsInited == false)
                 {
                     return;
 
                 }
-                await musicSystem.InitPlayer(CurrentMusic);
-                musicSystem.Play(CurrentMusic);
-                ms.DoUpdate();
-                ms.InitPreviewAndNextMusic();
+                await MusicControlService.InitPlayer(CurrentMusic);
+                MusicControlService.Play(CurrentMusic);
+                MusicRelatedService.DoUpdate();
+                MusicRelatedService.InitPreviewAndNextMusic();
                 OnMusicChanged?.Invoke(this, EventArgs.Empty);
-                this.Duration = ms.GetPlatformSpecificTime(musicSystem.Duration());
+                this.Duration = MusicRelatedService.GetPlatformSpecificTime(MusicControlService.Duration());
                 this.SettingManager.ChangeSettingForApplication(CommonSettingNames.BreakPointMusicIndex, Musics.IndexOf(CurrentMusic).ToString());
                 RaiseCanPlayExecuteChanged();
             }
@@ -187,21 +213,21 @@ namespace MatoMusic.Core.ViewModel
                 this.SettingManager.ChangeSettingForApplication(CommonSettingNames.IsShuffle, this.IsShuffle.ToString());
                 if (IsShuffle)
                 {
-                    await musicSystem.UpdateShuffleMap();
-                    ms.InitPreviewAndNextMusic();
+                    await MusicControlService.UpdateShuffleMap();
+                    MusicRelatedService.InitPreviewAndNextMusic();
                 }
                 else
                 {
-                    ms.InitPreviewAndNextMusic();
+                    MusicRelatedService.InitPreviewAndNextMusic();
                 }
             }
 
             else if (e.PropertyName == Properties.IsRepeatOne)
             {
                 this.SettingManager.ChangeSettingForApplication(CommonSettingNames.IsRepeatOne, this.IsRepeatOne.ToString());
-                musicSystem.SetRepeatOneStatus(this.IsRepeatOne);
+                MusicControlService.SetRepeatOneStatus(this.IsRepeatOne);
             }
-                 
+
         }
 
         /// <summary>
@@ -225,7 +251,7 @@ namespace MatoMusic.Core.ViewModel
         /// <param name="obj"></param>
         public void NextAction(object obj)
         {
-            var next = musicSystem.GetNextMusic(this.CurrentMusic, IsShuffle);
+            var next = MusicControlService.GetNextMusic(this.CurrentMusic, IsShuffle);
             if (next != null)
             {
                 this.CurrentMusic = next;
@@ -239,7 +265,7 @@ namespace MatoMusic.Core.ViewModel
         /// <param name="obj"></param>
         public void PreAction(object obj)
         {
-            var pre = musicSystem.GetPreMusic(this.CurrentMusic, IsShuffle);
+            var pre = MusicControlService.GetPreMusic(this.CurrentMusic, IsShuffle);
             if (pre != null)
             {
                 this.CurrentMusic = pre;
@@ -253,7 +279,7 @@ namespace MatoMusic.Core.ViewModel
         /// <param name="obj"></param>
         public void PlayAction(object obj)
         {
-            musicSystem.PauseOrResume();
+            MusicControlService.PauseOrResume();
         }
 
         /// <summary>
@@ -281,9 +307,9 @@ namespace MatoMusic.Core.ViewModel
         /// <param name="progress"></param>
         public void ChangeProgess(double progress)
         {
-            if (Math.Abs(progress - ms.GetPlatformSpecificTime(musicSystem.CurrentTime())) > 2.0)
+            if (Math.Abs(progress - MusicRelatedService.GetPlatformSpecificTime(MusicControlService.CurrentTime())) > 2.0)
             {
-                musicSystem.SeekTo(progress);
+                MusicControlService.SeekTo(progress);
             }
         }
 
@@ -296,7 +322,7 @@ namespace MatoMusic.Core.ViewModel
 
                 while (_isFastSeeking)
                 {
-                    var currentTime = this.musicSystem.CurrentTime();
+                    var currentTime = this.MusicControlService.CurrentTime();
 
                     var seekingSpan = 0;
 
@@ -312,7 +338,7 @@ namespace MatoMusic.Core.ViewModel
                     {
                         seekingSpan = increment * 8;
                     }
-                    this.musicSystem.SeekTo(currentTime + seekingSpan);
+                    this.MusicControlService.SeekTo(currentTime + seekingSpan);
                     Task.Delay(500).Wait();
                     Debug.WriteLine((string)("Fastseeking:" + currentTime + "\n SeekingDuration:" + seekingDuration));
                     seekingDuration++;
@@ -346,8 +372,8 @@ namespace MatoMusic.Core.ViewModel
         {
             this.CurrentMusic = Musics.FirstOrDefault(c => c.Title == title);
         }
-    
-       
+
+
         #endregion
 
         public Command PlayCommand { get; set; }

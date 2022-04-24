@@ -6,7 +6,7 @@ using Abp.Localization;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Controls.Xaml;
 
-namespace MatoMusic.Core.Localization
+namespace MatoMusic.Core
 {
     // You exclude the 'Extension' suffix when using in Xaml markup
     [ContentProperty("Text")]

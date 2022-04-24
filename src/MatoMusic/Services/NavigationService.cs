@@ -16,7 +16,7 @@ namespace MatoMusic.Services
     {
         private readonly IIocManager iocManager;
 
-        private INavigation mainPageNavigation => Application.Current.MainPage.Navigation;
+        private INavigation mainPageNavigation => mainShell.Navigation;
         private Shell mainShell => Shell.Current;
 
         public NavigationService(

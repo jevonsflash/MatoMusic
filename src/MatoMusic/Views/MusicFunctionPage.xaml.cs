@@ -12,7 +12,7 @@ using Microsoft.Maui.Controls;
 
 namespace MatoMusic
 {
-    public partial class MusicFunctionPage:Popup, ITransientDependency
+    public partial class MusicFunctionPage : PopupBase, ITransientDependency
     {
         public event EventHandler<MusicFunctionEventArgs> OnFinished;
 

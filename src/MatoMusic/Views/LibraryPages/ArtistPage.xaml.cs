@@ -16,19 +16,14 @@ using Microsoft.Maui.Controls;
 namespace MatoMusic
 {
 
-    public partial class ArtistPage : ContentPage, ITransientDependency
+    public partial class ArtistPage : ContentPageBase, ITransientDependency
     {
-        private readonly NavigationService navigationService;
-        private readonly ILocalizationManager localizationManager;
         private readonly MusicFunctionManager musicFunctionManager;
 
 
         public ArtistPage(LibraryPageViewModel libraryPageViewModel,
-            NavigationService navigationService,
-            ILocalizationManager localizationManager, MusicFunctionManager musicFunctionManager)
+            MusicFunctionManager musicFunctionManager)
         {
-            this.navigationService = navigationService;
-            this.localizationManager = localizationManager;
             this.musicFunctionManager = musicFunctionManager;
             InitializeComponent();
             this.BindingContext = libraryPageViewModel;
@@ -76,10 +71,10 @@ namespace MatoMusic
             var _mainMenuCellInfos = new List<MenuCellInfo>()
             {
 
-                new MenuCellInfo() {Title = string.Format("{0}{1}",localizationManager.GetString(MatoMusicConsts.LocalizationSourceName,"PlayThis"),localizationManager.GetString(MatoMusicConsts.LocalizationSourceName,"Artists")), Code = "Play", Icon = "cdplay"},
-                new MenuCellInfo() {Title = localizationManager.GetString(MatoMusicConsts.LocalizationSourceName,"AddToQueue2"), Code = "AddMusicCollectionToQueue", Icon = "addtostack"},
-                new MenuCellInfo() {Title = localizationManager.GetString(MatoMusicConsts.LocalizationSourceName,"AddTo"), Code = "AddMusicCollectionToPlaylist", Icon = "addto"},
-                new MenuCellInfo() {Title = localizationManager.GetString(MatoMusicConsts.LocalizationSourceName,"AddToFavourite"), Code = "AddToFavourite", Icon = "favouriteadd"}
+                new MenuCellInfo() {Title = string.Format("{0}{1}",L(MatoMusicConsts.LocalizationSourceName,"PlayThis"),L(MatoMusicConsts.LocalizationSourceName,"Artists")), Code = "Play", Icon = "cdplay"},
+                new MenuCellInfo() {Title = L(MatoMusicConsts.LocalizationSourceName,"AddToQueue2"), Code = "AddMusicCollectionToQueue", Icon = "addtostack"},
+                new MenuCellInfo() {Title = L(MatoMusicConsts.LocalizationSourceName,"AddTo"), Code = "AddMusicCollectionToPlaylist", Icon = "addto"},
+                new MenuCellInfo() {Title = L(MatoMusicConsts.LocalizationSourceName,"AddToFavourite"), Code = "AddToFavourite", Icon = "favouriteadd"}
 
             };
             var musicInfo = (sender as BindableObject).BindingContext;

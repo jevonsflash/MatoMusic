@@ -17,21 +17,15 @@ using CommunityToolkit.Maui.Views;
 
 namespace MatoMusic
 {
-    public partial class PlaylistPage : ContentPage, ITransientDependency
+    public partial class PlaylistPage : ContentPageBase, ITransientDependency
     {
-        private readonly ILocalizationManager localizationManager;
-        private readonly NavigationService navigationService;
         private readonly MusicFunctionManager musicFunctionManager;
 
         public PlaylistPage(
             PlaylistPageViewModel playlistPageViewModel,
-            ILocalizationManager localizationManager,
-            NavigationService navigationService,
             MusicFunctionManager musicFunctionManager
             )
         {
-            this.localizationManager = localizationManager;
-            this.navigationService = navigationService;
             this.musicFunctionManager = musicFunctionManager;
             InitializeComponent();
             this.BindingContext = playlistPageViewModel;
@@ -119,7 +113,7 @@ namespace MatoMusic
 
         private async void CreatePlaylist_OnClicked(object sender, EventArgs e)
         {
-            var currentPlaylist = new PlaylistInfo() { IsHidden = false, IsRemovable = true, Title = localizationManager.GetString(MatoMusicConsts.LocalizationSourceName, "NewPlaylist") };
+            var currentPlaylist = new PlaylistInfo() { IsHidden = false, IsRemovable = true, Title = L(MatoMusicConsts.LocalizationSourceName, "NewPlaylist") };
             currentPlaylist.Title = await CommonHelper.PromptAsync("新建歌单");
             var playlistPageViewModel = this.BindingContext as PlaylistPageViewModel;
             playlistPageViewModel.CreateAction(currentPlaylist);
@@ -142,12 +136,12 @@ namespace MatoMusic
             var _mainMenuCellInfos = new List<MenuCellInfo>()
             {
 
-                new MenuCellInfo() {Title = localizationManager.GetString(MatoMusicConsts.LocalizationSourceName, "Remove"), Code = "Delete", Icon = "remove"},
-                new MenuCellInfo() {Title = localizationManager.GetString(MatoMusicConsts.LocalizationSourceName, "Rename"), Code = "Rename", Icon = "rename"},
-                new MenuCellInfo() {Title = string.Format("{0}{1}",localizationManager.GetString(MatoMusicConsts.LocalizationSourceName, "PlayThis"),localizationManager.GetString(MatoMusicConsts.LocalizationSourceName, "Albums")), Code = "Play", Icon = "cdplay"},
-                new MenuCellInfo() {Title = localizationManager.GetString(MatoMusicConsts.LocalizationSourceName, "AddToQueue2"), Code = "AddMusicCollectionToQueue", Icon = "addtostack"},
-                new MenuCellInfo() {Title = localizationManager.GetString(MatoMusicConsts.LocalizationSourceName, "AddTo"), Code = "AddMusicCollectionToPlaylist", Icon = "addto"},
-                new MenuCellInfo() {Title = localizationManager.GetString(MatoMusicConsts.LocalizationSourceName, "AddToFavourite"), Code = "AddToFavourite", Icon = "favouriteadd"}
+                new MenuCellInfo() {Title = L(MatoMusicConsts.LocalizationSourceName, "Remove"), Code = "Delete", Icon = "remove"},
+                new MenuCellInfo() {Title = L(MatoMusicConsts.LocalizationSourceName, "Rename"), Code = "Rename", Icon = "rename"},
+                new MenuCellInfo() {Title = string.Format("{0}{1}",L(MatoMusicConsts.LocalizationSourceName, "PlayThis"),L(MatoMusicConsts.LocalizationSourceName, "Albums")), Code = "Play", Icon = "cdplay"},
+                new MenuCellInfo() {Title = L(MatoMusicConsts.LocalizationSourceName, "AddToQueue2"), Code = "AddMusicCollectionToQueue", Icon = "addtostack"},
+                new MenuCellInfo() {Title = L(MatoMusicConsts.LocalizationSourceName, "AddTo"), Code = "AddMusicCollectionToPlaylist", Icon = "addto"},
+                new MenuCellInfo() {Title = L(MatoMusicConsts.LocalizationSourceName, "AddToFavourite"), Code = "AddToFavourite", Icon = "favouriteadd"}
 
             };
             var musicInfo = (sender as BindableObject).BindingContext;

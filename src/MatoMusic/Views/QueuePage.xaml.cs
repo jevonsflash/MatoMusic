@@ -14,20 +14,14 @@ using Microsoft.Maui.Controls;
 
 namespace MatoMusic
 {
-    public partial class QueuePage : ContentPage, ITransientDependency
+    public partial class QueuePage : ContentPageBase, ITransientDependency
     {
-        private readonly ILocalizationManager localizationManager;
-        private readonly NavigationService navigationService;
         private readonly MusicFunctionManager musicFunctionManager;
 
         public QueuePage(
             QueuePageViewModel queuePageViewModel,
-            ILocalizationManager localizationManager,
-            NavigationService navigationService,
             MusicFunctionManager musicFunctionManager)
         {
-            this.localizationManager = localizationManager;
-            this.navigationService = navigationService;
             this.musicFunctionManager = musicFunctionManager; 
             InitializeComponent();
             this.BindingContext = queuePageViewModel;
@@ -48,10 +42,10 @@ namespace MatoMusic
             var musicInfo = (sender as BindableObject).BindingContext;
             var _mainMenuCellInfos = new List<MenuCellInfo>()
             {
-                new MenuCellInfo() {Title = localizationManager.GetString(MatoMusicConsts.LocalizationSourceName,"Remove"), Code = "Delete", Icon = "remove"},
-                new MenuCellInfo() {Title = localizationManager.GetString(MatoMusicConsts.LocalizationSourceName,"AddTo"), Code = "AddToPlaylist", Icon = "addto"},
-                new MenuCellInfo() {Title = localizationManager.GetString(MatoMusicConsts.LocalizationSourceName,"PlayNext"), Code = "NextPlay", Icon = "playnext"},
-                //new MenuCellInfo() {Title = localizationManager.GetString(MatoMusicConsts.LocalizationSourceName,"AddToQueue2"), Code = "AddToQueue", Icon = "addtostack"},
+                new MenuCellInfo() {Title = L(MatoMusicConsts.LocalizationSourceName,"Remove"), Code = "Delete", Icon = "remove"},
+                new MenuCellInfo() {Title = L(MatoMusicConsts.LocalizationSourceName,"AddTo"), Code = "AddToPlaylist", Icon = "addto"},
+                new MenuCellInfo() {Title = L(MatoMusicConsts.LocalizationSourceName,"PlayNext"), Code = "NextPlay", Icon = "playnext"},
+                //new MenuCellInfo() {Title = L(MatoMusicConsts.LocalizationSourceName,"AddToQueue2"), Code = "AddToQueue", Icon = "addtostack"},
                 new MenuCellInfo()
                 {
                     Title = (musicInfo as MusicInfo).Artist,

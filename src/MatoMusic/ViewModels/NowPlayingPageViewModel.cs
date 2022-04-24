@@ -11,7 +11,7 @@ namespace MatoMusic.ViewModels
     public class NowPlayingPageViewModel : MusicRelatedViewModel
     {
 
-        public NowPlayingPageViewModel(IMusicInfoManager musicInfoManager, MusicRelatedService musicRelatedService, IMusicControlService musicControlService) : base(musicInfoManager, musicRelatedService, musicControlService)
+        public NowPlayingPageViewModel()
         {
             SwitchPannelCommand = new Command(SwitchPannelAction, c => true);
             PlayAllCommand = new Command(PlayAllAction, c => true);
@@ -48,7 +48,7 @@ namespace MatoMusic.ViewModels
         {
             await RebuildMusicInfos();
 
-            var isSucc = await musicInfoManager.GetMusicInfos();
+            var isSucc = await MusicInfoManager.GetMusicInfos();
             if (!isSucc.IsSucess)
             {
                 CommonHelper.ShowNoAuthorized();
@@ -56,10 +56,10 @@ namespace MatoMusic.ViewModels
             }
             var musicInfos = isSucc.Result;
 
-            var result = await musicInfoManager.CreateQueueEntrys(musicInfos);
+            var result = await MusicInfoManager.CreateQueueEntrys(musicInfos);
             if (result)
             {
-                var currentMusic = await musicInfoManager.GetQueueEntry();
+                var currentMusic = await MusicInfoManager.GetQueueEntry();
                 if (currentMusic.Count > 0)
                 {
                     Random r = new Random();

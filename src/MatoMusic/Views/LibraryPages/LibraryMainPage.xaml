@@ -1,8 +1,8 @@
 ﻿<Shell xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:controls="clr-namespace:MatoMusic;assembly=MatoMusic"
+             xmlns:mato="clr-namespace:MatoMusic;assembly=MatoMusic"
              x:Class="MatoMusic.LibraryMainPage"
-             xmlns:projectMato="clr-namespace:MatoMusic.Core.Localization;assembly=MatoMusic.Core">
+             xmlns:core="clr-namespace:MatoMusic.Core;assembly=MatoMusic.Core">
     <TabBar>
         <ShellContent  Title="歌曲" Icon="tab_map.png"  Route="MusicPage" x:Name="MusicPageShellContent"/>
         <ShellContent  Title="艺术家" Icon="tab_map.png" Route="ArtistPage" x:Name="ArtistPageShellContent"/>

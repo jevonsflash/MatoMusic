@@ -1,8 +1,8 @@
-﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+﻿<mato:ContentPageBase xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:controls="clr-namespace:MatoMusic;assembly=MatoMusic"
+             xmlns:mato="clr-namespace:MatoMusic;assembly=MatoMusic"
              x:Class="MatoMusic.MusicPage"
-             xmlns:projectMato="clr-namespace:MatoMusic.Core.Localization;assembly=MatoMusic.Core">
+             xmlns:core="clr-namespace:MatoMusic.Core;assembly=MatoMusic.Core">
 
     <Grid>
         <Grid>
@@ -45,7 +45,7 @@
                         <ListView.GroupHeaderTemplate>
                             <DataTemplate>
                                 <ViewCell>
-                                    <controls:MusicGroupHeaderView></controls:MusicGroupHeaderView>
+                                    <mato:MusicGroupHeaderView></mato:MusicGroupHeaderView>
                                 </ViewCell>
                             </DataTemplate>
                         </ListView.GroupHeaderTemplate>
@@ -114,19 +114,19 @@
                               VerticalOptions="EndAndExpand"
                               HorizontalOptions="EndAndExpand">
                     <Button Command="{Binding PlayAllCommand}"
-                        Text="{projectMato:Translate PlayAll}"></Button>
+                        Text="{core:Translate PlayAll}"></Button>
                     <Button Command="{Binding QueueAllCommand}"
-                        Text="{projectMato:Translate AddToQueue}"></Button>
+                        Text="{core:Translate AddToQueue}"></Button>
                 </StackLayout>
 
             </Grid>
 
         </Grid>
-        <controls:MusicMiniView
+        <mato:MusicMiniView
           BindingContext="{Binding}"
           HeightRequest="64"
           VerticalOptions="EndAndExpand"
-          x:Name="MiniViewLayout"></controls:MusicMiniView>
+          x:Name="MiniViewLayout"></mato:MusicMiniView>
     </Grid>
 
-</ContentPage>
+</mato:ContentPageBase>

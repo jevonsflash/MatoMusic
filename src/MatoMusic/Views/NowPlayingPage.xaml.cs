@@ -20,25 +20,14 @@ using Microsoft.Maui.Controls;
 
 namespace MatoMusic
 {
-    public partial class NowPlayingPage : ContentPage, ITransientDependency
+    public partial class NowPlayingPage : ContentPageBase, ITransientDependency
     {
-        public IMusicInfoManager MusicInfoManager => (this.BindingContext as NowPlayingPageViewModel).musicInfoManager;
 
         private MusicFunctionPage _musicFunctionPage;
         private PlaylistChoosePage _playlistChoosePage;
-        private readonly NavigationService navigationService;
-        private readonly ISettingManager settingManager;
-        private readonly ILocalizationManager localizationManager;
 
-        public NowPlayingPage(NowPlayingPageViewModel nowPlayingPageViewModel,
-            NavigationService navigationService,
-            ISettingManager settingManager,
-            ILocalizationManager localizationManager
-)
+        public NowPlayingPage(NowPlayingPageViewModel nowPlayingPageViewModel)
         {
-            this.navigationService = navigationService;
-            this.settingManager = settingManager;
-            this.localizationManager = localizationManager; 
             InitializeComponent();
             this.BindingContext = nowPlayingPageViewModel;
             this.Disappearing += NowPlayingPage_Disappearing;
@@ -49,7 +38,7 @@ namespace MatoMusic
 
         private void NowPlayingPage_Appearing(object sender, EventArgs e)
         {
-            var isHideQueueButton = settingManager.GetSettingValueForApplication<bool>(CommonSettingNames.IsHideQueueButton);
+            var isHideQueueButton = SettingManager.GetSettingValueForApplication<bool>(CommonSettingNames.IsHideQueueButton);
             this.QueueControlLayout.IsVisible = !isHideQueueButton;
         }
 
@@ -168,11 +157,11 @@ namespace MatoMusic
                         var result = await MusicInfoManager.CreatePlaylistEntry(e.MusicInfo as MusicInfo, c.Id);
                         if (result)
                         {
-                            CommonHelper.ShowMsg(string.Format("{0}{1}", localizationManager.GetString(MatoMusicConsts.LocalizationSourceName, "Msg_HasAdded"), c.Title));
+                            CommonHelper.ShowMsg(string.Format("{0}{1}", L(MatoMusicConsts.LocalizationSourceName, "Msg_HasAdded"), c.Title));
                         }
                         else
                         {
-                            CommonHelper.ShowMsg(localizationManager.GetString(MatoMusicConsts.LocalizationSourceName, "Msg_AddFaild"));
+                            CommonHelper.ShowMsg(L(MatoMusicConsts.LocalizationSourceName, "Msg_AddFaild"));
                         }
                     }
                     await navigationService.HidePopupAsync(_playlistChoosePage);

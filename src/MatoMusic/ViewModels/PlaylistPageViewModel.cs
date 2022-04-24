@@ -28,7 +28,7 @@ namespace MatoMusic.ViewModels
             {
                 var item = e.OldItems[0] as PlaylistInfo;
 
-                if (await musicInfoManager.DeletePlaylist(item.Id))
+                if (await MusicInfoManager.DeletePlaylist(item.Id))
                 {
                     CommonHelper.ShowMsg(string.Format("{0} {1}", L("Msg_HasRemoved"), item.Title));
 
@@ -43,7 +43,7 @@ namespace MatoMusic.ViewModels
             {
                 var item = ObjectMapper.Map<Playlist>(e.NewItems[0] as PlaylistInfo);
 
-                if (await musicInfoManager.CreatePlaylist(item))
+                if (await MusicInfoManager.CreatePlaylist(item))
                 {
 
                     CommonHelper.ShowMsg(string.Format("{0} {1}", L("Msg_HasCreated"), item.Title));
@@ -58,7 +58,7 @@ namespace MatoMusic.ViewModels
             else if (e.Action == NotifyCollectionChangedAction.Replace)
             {
                 var item = ObjectMapper.Map<Playlist>(e.NewItems[0] as PlaylistInfo);
-                if (await musicInfoManager.UpdatePlaylist(item))
+                if (await MusicInfoManager.UpdatePlaylist(item))
                 {
 
                     CommonHelper.ShowMsg(string.Format("{0} {1}", L("Msg_HasEdit"), item.Title));
@@ -87,7 +87,7 @@ namespace MatoMusic.ViewModels
         {
             if (playlistInfo != null && handlerPlaylist != null && playlistInfo.Title != "我最喜爱" && !string.IsNullOrEmpty(playlistInfo.Title))
             {
-                var restul = await musicInfoManager.GetPlaylist();
+                var restul = await MusicInfoManager.GetPlaylist();
                 if (!restul.Any(c => c.Title == playlistInfo.Title))
                 {
                     handlerPlaylist.Invoke(playlistInfo);
@@ -158,11 +158,11 @@ namespace MatoMusic.ViewModels
 
         private async Task<List<PlaylistInfo>> InitPlaylist()
         {
-            var restul = ObjectMapper.Map<List<PlaylistInfo>>(await musicInfoManager.GetPlaylist());
+            var restul = ObjectMapper.Map<List<PlaylistInfo>>(await MusicInfoManager.GetPlaylist());
             if (restul.Count == 0 || !restul.Any(c => c.Title == "我最喜爱"))
             {
-                await musicInfoManager.CreatePlaylist(new Playlist() { Id = 0, Title = "我最喜爱", IsHidden = false, IsRemovable = false });
-                restul = ObjectMapper.Map<List<PlaylistInfo>>(await musicInfoManager.GetPlaylist());
+                await MusicInfoManager.CreatePlaylist(new Playlist() { Id = 0, Title = "我最喜爱", IsHidden = false, IsRemovable = false });
+                restul = ObjectMapper.Map<List<PlaylistInfo>>(await MusicInfoManager.GetPlaylist());
             }
             return restul;
         }

@@ -1,8 +1,8 @@
-﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+﻿<mato:ContentPageBase xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:controls="clr-namespace:MatoMusic;assembly=MatoMusic"
+             xmlns:mato="clr-namespace:MatoMusic;assembly=MatoMusic"
              x:Class="MatoMusic.QueuePage"
-             xmlns:projectMato="clr-namespace:MatoMusic.Core.Localization;assembly=MatoMusic.Core">
+             xmlns:core="clr-namespace:MatoMusic.Core;assembly=MatoMusic.Core">
 
     <Grid>
         <Grid>
@@ -51,13 +51,13 @@
                                          BackgroundColor="#6F000000"
                                          IsVisible="{Binding IsPlaying}">
                                 </BoxView>
-                                <controls:PlayingMotionView 
+                                <mato:PlayingMotionView 
                                     Grid.Column="1" 
                                     HorizontalOptions="Start"  
                                     IsVisible="{Binding IsPlaying}"
                                     VerticalOptions="CenterAndExpand">
 
-                                </controls:PlayingMotionView>
+                                </mato:PlayingMotionView>
 
 
                                 <Button x:Name="FavouriteButton"
@@ -155,7 +155,7 @@
                     <Button          HorizontalOptions="Center"
                                      VerticalOptions="Center"
                                      Clicked="Button_OnClicked"
-                                     Text="{projectMato:Translate AddMusic}" 
+                                     Text="{core:Translate AddMusic}" 
                                      FontSize="{StaticResource BodyFontSize}">
                     </Button>
 
@@ -165,11 +165,11 @@
         </Grid>
 
 
-        <controls:MusicMiniView  
+        <mato:MusicMiniView  
             BindingContext="{Binding}"
                 HeightRequest="64" 
               VerticalOptions="EndAndExpand"
-                     x:Name="MiniViewLayout"></controls:MusicMiniView>
+                     x:Name="MiniViewLayout"></mato:MusicMiniView>
         <Grid HeightRequest="48" 
               Margin="0,0,0,64"
               VerticalOptions="EndAndExpand" >
@@ -197,12 +197,12 @@
             <Button Command="{Binding PatchupCommand}"
                     Text="打包至歌单"></Button>
             <Button Clicked="Button_OnClicked"
-                    Text="{projectMato:Translate AddMusic}"></Button>
+                    Text="{core:Translate AddMusic}"></Button>
             <Button Command="{Binding CleanQueueCommand}"
-                    Text="{projectMato:Translate Clean}"></Button>
+                    Text="{core:Translate Clean}"></Button>
         </StackLayout>
 
     </Grid>
 
 
-</ContentPage>
+</mato:ContentPageBase>

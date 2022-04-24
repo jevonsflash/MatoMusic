@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<mato:ContentPageBase xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:mato="clr-namespace:MatoMusic;assembly=MatoMusic"
+             xmlns:core="clr-namespace:MatoMusic.Core;assembly=MatoMusic.Core">
+    <Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <BoxView HeightRequest="64"></BoxView>
+            <Grid Padding="{StaticResource DefaultContentPadding}"
+                  Grid.Row="1">
+                <mato:AutoCompleteView Placeholder="{core:Translate SearchPlaceholder}"
+                                       DisplayPath="Title"
+                                           SearchTextColor="{DynamicResource PhoneForegroundBrush}"
+                                           TextColor="{DynamicResource PhoneForegroundBrush}"
+                                           TextBackgroundColor="{DynamicResource PhoneContrastBackgroundBrush}"
+                                           SearchBackgroundColor="{DynamicResource PhoneBackgroundBrush}"
+                                           SelectedCommand="{Binding ItemSelectedCommand}"
+                                           SelectedItem="{Binding SelectedItem}"
+                                           ShowSearchButton="False"
+                                           SuggestionBackgroundColor="{DynamicResource PhoneBackgroundBrush}"
+                                           SelectedItemChanged="AutoCompleteView_OnSelectedItemChanged"
+                                           Suggestions="{Binding Musics,Mode=TwoWay}">
+
+                    <mato:AutoCompleteView.SuggestionItemDataTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Grid VerticalOptions="CenterAndExpand">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Image
+                                                        x:Name="FavouriteButton"
+                                                        HeightRequest="54"
+                                                        WidthRequest="54"
+                                                        Source="{Binding AlbumArt,Converter={StaticResource AlbumArtConverter}}"
+                                                        Grid.Column="0"
+                                                        HorizontalOptions="Center" />
+                                    <StackLayout Grid.Column="1"
+                                                         HorizontalOptions="Start"
+                                                         VerticalOptions="CenterAndExpand">
+                                        <Label Text="{Binding Title}" LineBreakMode="TailTruncation"
+                                                         HorizontalOptions="StartAndExpand"
+                                                         HorizontalTextAlignment="Center"
+                                                         FontSize="{StaticResource BodyFontSize}"
+                                                />
+                                        <Label Margin="0,-5,0,0" LineBreakMode="TailTruncation"
+                                               Text="{Binding Artist}"
+                                               HorizontalOptions="StartAndExpand"
+                                               HorizontalTextAlignment="Center"
+                                               FontSize="{StaticResource BodyFontSize}"
+                                               TextColor="{DynamicResource PhoneChromeBrush}" />
+                                    </StackLayout>
+                                    <Button
+                                                    x:Name="AlbumMoreButton"
+                                                    HeightRequest="64"
+                                                    WidthRequest="48"
+                                                    Text=""
+                                                    Clicked="MoreButton_OnClicked"
+                                                    FontFamily="FontAwesome"
+                                                    Grid.Column="2"
+                                                    HorizontalOptions="Center" />
+                                </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+
+                    </mato:AutoCompleteView.SuggestionItemDataTemplate>
+                </mato:AutoCompleteView>
+
+            </Grid>
+            <mato:MusicMiniView 
+                Grid.Row="2"    
+                BindingContext="{Binding MusicRelatedService}"
+                HeightRequest="64" 
+                VerticalOptions="EndAndExpand"
+                x:Name="MiniViewLayout"></mato:MusicMiniView>
+        </Grid>
+    </Grid>
+</mato:ContentPageBase>

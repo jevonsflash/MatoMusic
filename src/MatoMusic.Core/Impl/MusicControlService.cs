@@ -29,12 +29,6 @@ namespace MatoMusic.Core
         {
 
         }
-        public MusicControlService(IMusicInfoManager musicInfoManager)
-        {
-
-            MusicInfoManager = musicInfoManager;
-        }
-
 
 
         private int[] shuffleMap;

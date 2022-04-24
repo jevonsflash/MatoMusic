@@ -40,6 +40,7 @@ namespace MatoMusic.Core.Interfaces
         Task<List<Playlist>> GetPlaylist();
         Task<List<MusicInfo>> GetPlaylistEntry(long playlistId);
         Task<List<MusicInfo>> GetPlaylistEntryFormMyFavourite();
+        Task<List<PlaylistInfo>> GetPlaylistInfo();
         Task<List<MusicInfo>> GetQueueEntry();
         Task<bool> InsertToEndQueueEntry(MusicInfo musicInfo);
         Task<bool> InsertToEndQueueEntrys(List<MusicInfo> musicInfos);

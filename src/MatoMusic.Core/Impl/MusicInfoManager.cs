@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Abp.Dependency;
 using Abp.Domain.Repositories;
@@ -7,6 +8,7 @@ using MatoMusic.Core.Interfaces;
 using MatoMusic.Core.Models;
 using MatoMusic.Infrastructure;
 using static Microsoft.Maui.ApplicationModel.Permissions;
+using System.Linq;
 
 namespace MatoMusic.Core
 {
@@ -93,7 +95,23 @@ namespace MatoMusic.Core
 
         }
 
-
+        public async Task<List<PlaylistInfo>> GetPlaylistInfo()
+        {
+            return await Task.Run(async () =>
+            {
+                List<Playlist> playlist = await this.GetPlaylist();
+                var playlistInfo = playlist.Select(c => new PlaylistInfo()
+                {
+                    Id = c.Id,
+                    GroupHeader = GetGroupHeader(c.Title),
+                    Title = c.Title,
+                    IsHidden = c.IsHidden,
+                    IsRemovable = c.IsRemovable,
+                    Musics = new ObservableCollection<MusicInfo>(GetPlaylistEntry(c.Id).Result)
+                }).ToList();
+                return playlistInfo;
+            });
+        }
 
         public partial Task ClearQueue();
 

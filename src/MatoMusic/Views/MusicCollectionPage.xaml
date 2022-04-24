@@ -1,0 +1,168 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<mato:ContentPageBase xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MatoMusic.View.MusicCollectionPage"          
+             xmlns:mato="clr-namespace:MatoMusic;assembly=MatoMusic"
+             Title="{Binding MusicsCollectionInfo.Title}"
+             >
+
+    <Grid>
+        <Grid>
+            <Grid Padding="{StaticResource DefaultContentPadding}"
+                  Grid.Row="0">
+                <ListView  RowHeight="64"
+                                           BindingContext="{Binding MusicsCollectionInfo}"
+                                           ItemSelected="MusicListView_OnItemSelected"
+                                           ItemsSource="{Binding Musics,Mode=TwoWay}">
+                    <ListView.Header>
+                        <StackLayout>
+                            <BoxView HeightRequest="76"></BoxView>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition></RowDefinition>
+                                    <RowDefinition Height="72"></RowDefinition>
+                                    <RowDefinition Height="32"></RowDefinition>
+                                </Grid.RowDefinitions>
+
+
+                                <Image HeightRequest="128" Grid.RowSpan="3"
+                                       Aspect="AspectFill" 
+                                       Source="{Binding AlbumArt,Converter={StaticResource AlbumArtConverter}}">
+                                </Image>
+                                <ContentView Grid.Row="0"
+                                    Grid.RowSpan="3"
+                                    StartColor="#7E000000" 
+                                                              EndColor="Black" 
+                                                              Orientation="Vertical"></ContentView>
+                                <Label Text="{Binding Title}" 
+                                       Grid.Row="1"
+                                       VerticalOptions="EndAndExpand"
+                                       HorizontalTextAlignment="Center"
+                                       HorizontalOptions="CenterAndExpand"
+                                       FontSize="{DynamicResource StandOutBodyFontSize}"></Label>
+
+                                <StackLayout VerticalOptions="CenterAndExpand"
+                                             HorizontalOptions="CenterAndExpand"
+                                             Orientation="Horizontal"  
+                                             Grid.Row="2">
+                                    <Label  
+                                        HorizontalTextAlignment="Center"
+                                        FontSize="{StaticResource BodyFontSize}" 
+                                        Text="{Binding Count}"
+                                        TextColor="{DynamicResource PhoneChromeBrush}"></Label>
+                                    <Label  
+                                        HorizontalTextAlignment="Center"
+                                        FontSize="{StaticResource BodyFontSize}" 
+                                        Text="首歌" 
+                                        TextColor="{DynamicResource PhoneChromeBrush}"></Label>
+                                    <Label  
+                                        HorizontalTextAlignment="Center"
+                                        FontSize="{StaticResource BodyFontSize}" 
+                                        Text=" · " 
+                                        TextColor="{DynamicResource PhoneChromeBrush}"></Label>
+                                    <Label  
+                                        HorizontalTextAlignment="Center"
+                                        FontSize="{StaticResource BodyFontSize}" 
+                                        Text="总时长" 
+                                        TextColor="{DynamicResource PhoneChromeBrush}"></Label>
+                                    <Label  
+                                        HorizontalTextAlignment="Center"
+                                        FontSize="{StaticResource BodyFontSize}" 
+                                        Text="{Binding Time}" 
+                                        TextColor="{DynamicResource PhoneChromeBrush}"></Label>
+                                </StackLayout>
+                                
+                            </Grid>
+                        </StackLayout>
+                    </ListView.Header>
+
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Grid x:Name="ModeControlLayout"
+                                                VerticalOptions="CenterAndExpand">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Image
+                                                        x:Name="FavouriteButton"
+                                                        HeightRequest="54"
+                                                        WidthRequest="54"
+                                                        Source="{Binding AlbumArt,Converter={StaticResource AlbumArtConverter}}"
+                                                        Grid.Column="0"
+                                                        HorizontalOptions="Center" />
+                                    <StackLayout Grid.Column="1"
+                                                         HorizontalOptions="Start"
+                                                         VerticalOptions="CenterAndExpand">
+                                        <Label Text="{Binding Title}" LineBreakMode="TailTruncation"
+                                                         HorizontalOptions="StartAndExpand"
+                                                         HorizontalTextAlignment="Center"
+                                                         FontSize="{StaticResource BodyFontSize}"
+                                                />
+                                        <Label Margin="0,-5,0,0" LineBreakMode="TailTruncation"
+                                                         Text="{Binding Artist}"
+                                                         HorizontalOptions="StartAndExpand"
+                                                         HorizontalTextAlignment="Center"
+                                                         FontSize="{StaticResource BodyFontSize}"
+                                                         TextColor="#B3B3B3" />
+                                    </StackLayout>
+                                    <Button
+                                                    x:Name="MusicMoreButton"
+                                                    HeightRequest="64"
+                                                    WidthRequest="48"
+                                                    Text=""
+                                                    Clicked="MusicMoreButton_OnClicked"
+                                                    FontFamily="FontAwesome"
+                                                    Grid.Column="2"
+                                                    HorizontalOptions="Center" />
+                                </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+
+                    <ListView.Footer>
+                        <BoxView HeightRequest="124"></BoxView>
+                    </ListView.Footer>
+
+                </ListView>
+            </Grid>
+
+            <mato:MusicMiniView   
+                Grid.Row="0" 
+                BindingContext="{Binding MusicRelatedService}"
+                HeightRequest="64" 
+                VerticalOptions="EndAndExpand"
+                x:Name="MiniViewLayout"></mato:MusicMiniView>
+            <Grid HeightRequest="48"  
+                  Grid.Row="0" 
+                  Margin="0,0,0,64"
+                  VerticalOptions="EndAndExpand" >
+                <BoxView BackgroundColor="Transparent"                  
+                         x:Name="ButtonLayout">
+                </BoxView>
+            </Grid>
+            <StackLayout  Grid.Row="0" 
+                          Margin="0,0,0,54"
+                          Orientation="Horizontal"
+                          VerticalOptions="EndAndExpand"
+                          HorizontalOptions="EndAndExpand">
+                <mato:HorizontalListView IsScreenWidth="False"
+                                       ItemsSource="{Binding Menus}">
+                    <mato:HorizontalListView.ItemTemplate>
+                        <DataTemplate x:Key="BackgroundFliperViewTemplate">
+                            <ContentView>
+                                <Button Text="{Binding Title}"
+                                        Clicked="Button_OnClicked"></Button>
+                            </ContentView>
+
+                        </DataTemplate>
+
+                    </mato:HorizontalListView.ItemTemplate>
+                </mato:HorizontalListView>
+            </StackLayout>
+
+        </Grid>
+    </Grid>
+</mato:ContentPageBase>

@@ -23,8 +23,7 @@ public class QueuePageViewModel : MusicRelatedViewModel
     private readonly NavigationService navigationService;
 
 
-    public QueuePageViewModel(IMusicInfoManager musicInfoManager,
-            NavigationService navigationService, MusicRelatedService musicRelatedService,IMusicControlService musicControlService) : base(musicInfoManager, musicRelatedService, musicControlService)
+    public QueuePageViewModel() 
     {
         DeleteCommand = new Command(DeleteAction, c => true);
         CleanQueueCommand = new Command(CleanQueueAction, CanPlayAllExcute);
@@ -75,7 +74,7 @@ public class QueuePageViewModel : MusicRelatedViewModel
                 if (c != null)
                 {
 
-                    var result = await musicInfoManager.CreatePlaylistEntrys(Musics.ToList(), c.Id);
+                    var result = await MusicInfoManager.CreatePlaylistEntrys(Musics.ToList(), c.Id);
                     if (result)
                     {
                         CommonHelper.ShowMsg(string.Format("{0}{1}", L("Msg_HasAdded"), c.Title));
@@ -154,15 +153,15 @@ public class QueuePageViewModel : MusicRelatedViewModel
         {
             var oldIndex = e.OldStartingIndex;
             var newIndex = e.NewStartingIndex;
-            musicInfoManager.ReorderQueue(Musics[oldIndex], Musics[newIndex]);
+            MusicInfoManager.ReorderQueue(Musics[oldIndex], Musics[newIndex]);
         }
         else if (e.Action == NotifyCollectionChangedAction.Remove)
         {
-            await musicInfoManager.DeleteMusicInfoFormQueueEntry(e.OldItems[0] as MusicInfo);
+            await MusicInfoManager.DeleteMusicInfoFormQueueEntry(e.OldItems[0] as MusicInfo);
         }
         else if (e.Action == NotifyCollectionChangedAction.Reset)
         {
-            await musicInfoManager.ClearQueue();
+            await MusicInfoManager.ClearQueue();
         }
         //await RebuildMusicInfos();
 
@@ -223,7 +222,7 @@ public class QueuePageViewModel : MusicRelatedViewModel
 
         await RebuildMusicInfos(MusicControlService_OnRebuildMusicInfosFinished);
 
-        var isSucc = await musicInfoManager.GetMusicInfos();
+        var isSucc = await MusicInfoManager.GetMusicInfos();
         if (!isSucc.IsSucess)
         {
             CommonHelper.ShowNoAuthorized();
@@ -232,10 +231,10 @@ public class QueuePageViewModel : MusicRelatedViewModel
         var musicInfos = isSucc.Result;
         Musics = new ObservableCollection<MusicInfo>(musicInfos);
         Musics.CollectionChanged += Musics_CollectionChanged;
-        var result = await musicInfoManager.CreateQueueEntrys(musicInfos);
+        var result = await MusicInfoManager.CreateQueueEntrys(musicInfos);
         if (result)
         {
-            var currentMusic = await musicInfoManager.GetQueueEntry();
+            var currentMusic = await MusicInfoManager.GetQueueEntry();
             if (currentMusic.Count > 0)
             {
                 Random r = new Random();

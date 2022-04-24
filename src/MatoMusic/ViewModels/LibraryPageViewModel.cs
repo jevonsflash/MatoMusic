@@ -15,7 +15,7 @@ namespace MatoMusic.ViewModels
 {
     public class LibraryPageViewModel : MusicRelatedViewModel
     {
-        public LibraryPageViewModel(IMusicInfoManager musicInfoManager, MusicRelatedService musicRelatedService, IMusicControlService musicControlService) : base(musicInfoManager, musicRelatedService, musicControlService)
+        public LibraryPageViewModel()
         {
             PlayAllCommand = new Command(PlayAllAction, CanPlayAllExcute);
             QueueAllCommand = new Command(QueueAllAction, CanPlayAllExcute);
@@ -35,8 +35,8 @@ namespace MatoMusic.ViewModels
 
         private async void QueueAllAction(object obj)
         {
-            await musicInfoManager.ClearQueue();
-            var result = await musicInfoManager.CreateQueueEntrys(Musics);
+            await MusicInfoManager.ClearQueue();
+            var result = await MusicInfoManager.CreateQueueEntrys(Musics);
             if (result)
             {
                 //await RebuildMusicInfos();
@@ -51,13 +51,13 @@ namespace MatoMusic.ViewModels
 
         private async void PlayAllAction(object obj)
         {
-            await musicInfoManager.ClearQueue();
-            var result = await musicInfoManager.CreateQueueEntrys(Musics);
+            await MusicInfoManager.ClearQueue();
+            var result = await MusicInfoManager.CreateQueueEntrys(Musics);
             if (result)
             {
                 //await RebuildMusicInfos();
 
-                var CurrentMusics = await musicInfoManager.GetQueueEntry();
+                var CurrentMusics = await MusicInfoManager.GetQueueEntry();
                 CurrentMusic = CurrentMusics[0];
             }
             else
@@ -151,25 +151,25 @@ namespace MatoMusic.ViewModels
         }
         private Task<AlphaGroupedObservableCollection<ArtistInfo>> InitArtists()
         {
-            var aGArtists = musicInfoManager.GetAlphaGroupedArtistInfo();
+            var aGArtists = MusicInfoManager.GetAlphaGroupedArtistInfo();
             return aGArtists;
         }
 
         private Task<AlphaGroupedObservableCollection<AlbumInfo>> InitAlbums()
         {
-            var aGAlbums = musicInfoManager.GetAlphaGroupedAlbumInfo();
+            var aGAlbums = MusicInfoManager.GetAlphaGroupedAlbumInfo();
             return aGAlbums;
         }
 
         private Task<AlphaGroupedObservableCollection<MusicInfo>> InitMusics()
         {
-            var aGMusics = musicInfoManager.GetAlphaGroupedMusicInfo();
+            var aGMusics = MusicInfoManager.GetAlphaGroupedMusicInfo();
             return aGMusics;
         }
 
         public override async void ChangeMusic(MusicInfo musicInfo)
         {
-            await musicInfoManager.InsertToEndQueueEntry(musicInfo);
+            await MusicInfoManager.InsertToEndQueueEntry(musicInfo);
 
             //await RebuildMusicInfos();
 
