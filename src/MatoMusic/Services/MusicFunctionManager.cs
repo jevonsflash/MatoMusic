@@ -34,6 +34,8 @@ namespace MatoMusic.Services
             this.navigationService = navigationService;
             this.musicInfoManager = musicInfoManager;
             this.musicRelatedViewModel = musicRelatedViewModel;
+            LocalizationSourceName = MatoMusicConsts.LocalizationSourceName;
+
         }
 
         /// <summary>

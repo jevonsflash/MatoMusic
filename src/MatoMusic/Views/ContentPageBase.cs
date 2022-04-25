@@ -3,6 +3,7 @@ using Abp.Configuration;
 using Abp.Localization;
 using Abp.Localization.Sources;
 using Abp.ObjectMapping;
+using MatoMusic.Core;
 using MatoMusic.Core.Interfaces;
 using MatoMusic.Core.Services;
 using MatoMusic.Core.ViewModel;
@@ -74,6 +75,7 @@ namespace MatoMusic
         /// </summary>
         protected ContentPageBase()
         {
+            LocalizationSourceName = MatoMusicConsts.LocalizationSourceName;
             ObjectMapper = NullObjectMapper.Instance;
             LocalizationManager = NullLocalizationManager.Instance;
         }

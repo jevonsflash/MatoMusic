@@ -96,9 +96,9 @@ namespace MatoMusic
             musicFunctionManager.OnMusicFunctionFinished(e);
         }
 
-        private void SearchButton_OnClicked(object sender, EventArgs e)
+        private async void SearchButton_OnClicked(object sender, EventArgs e)
         {
-            navigationService.GoNavigate("SearchPage");
+           await navigationService.GoPageAsync("SearchPage");
         }
 
     }

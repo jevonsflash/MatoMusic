@@ -4,6 +4,7 @@ using Abp.Localization;
 using Abp.Localization.Sources;
 using Abp.ObjectMapping;
 using CommunityToolkit.Maui.Views;
+using MatoMusic.Core;
 using MatoMusic.Core.Interfaces;
 using MatoMusic.Core.Services;
 using MatoMusic.Core.ViewModel;
@@ -68,6 +69,7 @@ namespace MatoMusic
 
         public PopupBase()
         {
+            LocalizationSourceName = MatoMusicConsts.LocalizationSourceName;
             ObjectMapper = NullObjectMapper.Instance;
             LocalizationManager = NullLocalizationManager.Instance;
         }

@@ -157,11 +157,11 @@ namespace MatoMusic
                         var result = await MusicInfoManager.CreatePlaylistEntry(e.MusicInfo as MusicInfo, c.Id);
                         if (result)
                         {
-                            CommonHelper.ShowMsg(string.Format("{0}{1}", L(MatoMusicConsts.LocalizationSourceName, "Msg_HasAdded"), c.Title));
+                            CommonHelper.ShowMsg(string.Format("{0}{1}", L("Msg_HasAdded"), c.Title));
                         }
                         else
                         {
-                            CommonHelper.ShowMsg(L(MatoMusicConsts.LocalizationSourceName, "Msg_AddFaild"));
+                            CommonHelper.ShowMsg(L("Msg_AddFaild"));
                         }
                     }
                     await navigationService.HidePopupAsync(_playlistChoosePage);

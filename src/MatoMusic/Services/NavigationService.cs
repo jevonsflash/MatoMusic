@@ -7,7 +7,9 @@ using System.Threading.Tasks;
 using Abp;
 using Abp.Dependency;
 using Abp.Domain.Services;
+using Castle.MicroKernel;
 using CommunityToolkit.Maui.Views;
+using MatoMusic.Core;
 using Microsoft.Maui.Controls;
 
 namespace MatoMusic.Services
@@ -24,6 +26,8 @@ namespace MatoMusic.Services
             )
         {
             this.iocManager = iocManager;
+            LocalizationSourceName = MatoMusicConsts.LocalizationSourceName;
+
         }
 
         public void GoNavigate(string pageName, object[] args = null)
@@ -66,11 +70,11 @@ namespace MatoMusic.Services
 
         public async Task ShowPopupAsync(Popup popupPage)
         {
-           await Shell.Current.CurrentPage.ShowPopupAsync(popupPage);
+            await Shell.Current.CurrentPage.ShowPopupAsync(popupPage);
         }
         public async Task HidePopupAsync(Popup popupPage)
         {
-           popupPage.Close();
+            popupPage.Close();
         }
         private Page GetPageInstance(string obj, object[] args, IList<ToolbarItem> barItem = null)
         {
@@ -81,7 +85,31 @@ namespace MatoMusic.Services
             {
                 try
                 {
-                    var pageObj = iocManager.Resolve(pageType) as Page;
+
+
+
+                    var ctorInfo = pageType.GetConstructors()
+                                          .Select(m => new
+                                          {
+                                              Method = m,
+                                              Params = m.GetParameters(),
+                                          }).Where(c => c.Params.Length == args.Length)
+                                          .FirstOrDefault();
+
+                    if (ctorInfo==null)
+                    {
+                        throw new Exception("找不到对应的构造函数");
+                    }
+
+                    var argsDict = new Arguments();
+
+                    for (int i = 0; i < ctorInfo.Params.Length; i++)
+                    {
+                        var arg = ctorInfo.Params[i];
+                        argsDict.Add(arg.Name, args[i]);
+                    }
+
+                    var pageObj = iocManager.IocContainer.Resolve(pageType, argsDict) as Page; 
 
                     if (barItem != null && barItem.Count > 0)
                     {
