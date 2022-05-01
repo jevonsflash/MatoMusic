@@ -71,10 +71,10 @@ namespace MatoMusic
             var _mainMenuCellInfos = new List<MenuCellInfo>()
             {
 
-                new MenuCellInfo() {Title = string.Format("{0}{1}",L(MatoMusicConsts.LocalizationSourceName,"PlayThis"),L(MatoMusicConsts.LocalizationSourceName,"Artists")), Code = "Play", Icon = "cdplay"},
-                new MenuCellInfo() {Title = L(MatoMusicConsts.LocalizationSourceName,"AddToQueue2"), Code = "AddMusicCollectionToQueue", Icon = "addtostack"},
-                new MenuCellInfo() {Title = L(MatoMusicConsts.LocalizationSourceName,"AddTo"), Code = "AddMusicCollectionToPlaylist", Icon = "addto"},
-                new MenuCellInfo() {Title = L(MatoMusicConsts.LocalizationSourceName,"AddToFavourite"), Code = "AddToFavourite", Icon = "favouriteadd"}
+                new MenuCellInfo() {Title = string.Format("{0}{1}",L("PlayThis"),L("Artists")), Code = "Play", Icon = "cdplay"},
+                new MenuCellInfo() {Title = L("AddToQueue2"), Code = "AddMusicCollectionToQueue", Icon = "addtostack"},
+                new MenuCellInfo() {Title = L("AddTo"), Code = "AddMusicCollectionToPlaylist", Icon = "addto"},
+                new MenuCellInfo() {Title = L("AddToFavourite"), Code = "AddToFavourite", Icon = "favouriteadd"}
 
             };
             var musicInfo = (sender as BindableObject).BindingContext;

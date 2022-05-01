@@ -8,8 +8,11 @@ using Abp.Dependency;
 using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
 using Abp.EntityFrameworkCore.Repositories;
+using Android.Content;
 using Android.Database;
+using Android.Graphics;
 using Android.Provider;
+using Java.IO;
 using MatoMusic.Core.Helper;
 using MatoMusic.Core.Interfaces;
 using MatoMusic.Core.Models;
@@ -97,22 +100,67 @@ namespace MatoMusic.Core
                         {
                             genre = string.Empty;
                         }
+                        //https://stackoverflow.com/questions/63181820/why-is-album-art-the-only-field-that-returns-null-from-mediastore-when-others-ar
 
-                        albumCursor = Application.Context.ContentResolver.Query(
-                            MediaStore.Audio.Albums.ExternalContentUri,
-                            _albumProjections,
-                            $"{MediaStore.Audio.Albums.InterfaceConsts.Id}=?",
-                            new string[] { artworkId },
-                            null);
-                        int artworkColumn = albumCursor.GetColumnIndex(MediaStore.Audio.Media.InterfaceConsts.AlbumArt);
-                        if (albumCursor.MoveToFirst())
+                        ImageSource artworkImage = null;
+
+                        if (DeviceInfo.Version.Major < 10)
                         {
-                            artwork = albumCursor.GetString(artworkColumn) ?? string.Empty;
+                            albumCursor = Application.Context.ContentResolver.Query(
+                             MediaStore.Audio.Albums.ExternalContentUri,
+                             _albumProjections,
+                             $"{MediaStore.Audio.Albums.InterfaceConsts.Id}=?",
+                             new string[] { artworkId },
+                             null);
+                            int artworkColumn = albumCursor.GetColumnIndex(MediaStore.Audio.Media.InterfaceConsts.AlbumArt);
+                            if (albumCursor.MoveToFirst())
+                            {
+                                artwork = albumCursor.GetString(artworkColumn) ?? string.Empty;
+                            }
+                            else
+                            {
+                                artwork = String.Empty;
+                            }
+
+                            albumCursor?.Close();
+                            artworkImage = artwork;
+
                         }
                         else
                         {
-                            artwork = string.Empty;
+                            var extUrl = MediaStore.Audio.Albums.ExternalContentUri;
+                            var albumArtUri = ContentUris.WithAppendedId(extUrl, long.Parse(artworkId));
+
+                            try
+                            {
+                                //var art = System.IO.Path.Combine (Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "albumart" + artworkId + ".jpg");
+                                var art = System.IO.Path.Combine(Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDocuments).AbsolutePath, "albumart" + artworkId + ".jpg");
+
+                                var bitmap = Application.Context.ContentResolver.LoadThumbnail(albumArtUri, new Android.Util.Size(1024, 1024), null);
+                                var h = bitmap.Height;
+                                var w = bitmap.Width;
+                                var bb = bitmap.ByteCount;
+
+                                using (Stream ms = new FileStream(art, FileMode.Create))
+                                {
+                                    bitmap.Compress(Bitmap.CompressFormat.Png, 100, ms);
+                                    bitmap.Recycle();
+                                }
+
+
+                                artworkImage = art;
+
+
+
+                            }
+                            catch (Exception e)
+                            {
+                                System.Console.WriteLine(e.Message);
+                            }
                         }
+
+
+
 
                         songs.Add(new MusicInfo()
                         {
@@ -123,10 +171,9 @@ namespace MatoMusic.Core
                             Genre = genre,
                             Duration = duration / 1000,
                             Url = uri,
-                            AlbumArt = artwork
+                            AlbumArt = artworkImage
                         });
                         genreCursor?.Close();
-                        albumCursor?.Close();
                     }
                 } while (mediaCursor.MoveToNext());
             }
@@ -816,8 +863,8 @@ namespace MatoMusic.Core
         {
             return await playlistRepository.GetAllListAsync();
         }
-        
-    
+
+
         /// <summary>
         /// 创建Playlist
         /// </summary>

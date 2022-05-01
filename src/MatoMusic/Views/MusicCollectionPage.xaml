@@ -14,8 +14,7 @@
                                            ItemsSource="{Binding Musics,Mode=TwoWay}">
                 <ListView.Header>
                     <StackLayout>
-                        <BoxView HeightRequest="76"></BoxView>
-                        <Grid>
+                        <Grid >
                             <Grid.RowDefinitions>
                                 <RowDefinition></RowDefinition>
                                 <RowDefinition Height="72"></RowDefinition>
@@ -23,7 +22,7 @@
                             </Grid.RowDefinitions>
 
 
-                            <Image HeightRequest="128" Grid.RowSpan="3"
+                            <Image HeightRequest="98" Grid.RowSpan="3"
                                        Aspect="AspectFill" 
                                        Source="{Binding AlbumArt,Converter={StaticResource AlbumArtConverter}}">
                             </Image>
@@ -139,7 +138,7 @@
                          x:Name="ButtonLayout">
             </BoxView>
         </Grid>
-        <StackLayout  Grid.Row="0" 
+        <StackLayout  Grid.Row="0" IsVisible="false"
                           Margin="0,0,0,54"
                           Orientation="Horizontal"
                           VerticalOptions="EndAndExpand"

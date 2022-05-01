@@ -65,7 +65,12 @@
 	  <None Remove="Platforms\Windows\Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
 	  <None Remove="Platforms\Windows\Assets\StoreLogo.png" />
 	  <None Remove="Platforms\Windows\Assets\Wide310x150Logo.scale-200.png" />
+	  <None Remove="Resources\albumart_placeholder.png" />
 	  <None Remove="Resources\Fonts\FontAwesome.ttf" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiImage Include="Resources\albumart_placeholder.png" />
 	</ItemGroup>
 
 	<ItemGroup>
