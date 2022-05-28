@@ -47,8 +47,8 @@
 
 	<ItemGroup Condition="$(TargetFramework.Contains('-windows'))">
 		<!-- Required - WinUI does not yet have buildTransitive for everything -->
-		<PackageReference Include="Microsoft.Graphics.Win2D" Version="1.0.1" />
-		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.1.0-preview1" />
+		<PackageReference Include="Microsoft.Graphics.Win2D" Version="1.0.3.1" />
+		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.1.0-preview3" />
 	</ItemGroup>
 
 	<PropertyGroup Condition="$(TargetFramework.Contains('-windows'))">
@@ -89,9 +89,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="CommunityToolkit.Maui" Version="1.0.0-pre9" />
-	  <PackageReference Include="CommunityToolkit.Maui.Core" Version="1.0.0-pre9" />
-	  <PackageReference Include="CommunityToolkit.Maui.Markup" Version="1.0.0-pre9" />
+	  <PackageReference Include="CommunityToolkit.Maui" Version="1.0.0" />
+	  <PackageReference Include="CommunityToolkit.Maui.Core" Version="1.0.0" />
+	  <PackageReference Include="CommunityToolkit.Maui.Markup" Version="1.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
