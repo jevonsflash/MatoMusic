@@ -30,37 +30,43 @@
                         <ColumnDefinition Width="1*">
                         </ColumnDefinition>
                     </Grid.ColumnDefinitions>
-
                     <Grid Grid.Column="1">
                         <Image HorizontalOptions="Fill"
                                                x:Name="PreAlbumArt"
-                                                   HeightRequest="260"
-                                                   WidthRequest="260"
+                                                HeightRequest="{Binding Source={x:Reference Name=RefBox}, Path=Height}"
+                                                   WidthRequest="{Binding Source={x:Reference Name=RefBox}, Path=Width}"
                                                    VerticalOptions="Fill"
                                        TranslationX="-320"
                                        Source="{Binding PreviewMusic.AlbumArt,Converter={StaticResource AlbumArtConverter}}">
                         </Image>
 
                         <Image 
+                                           HeightRequest="{Binding Source={x:Reference Name=RefBox}, Path=Height}"
+                                                   WidthRequest="{Binding Source={x:Reference Name=RefBox}, Path=Width}"
+                                       HorizontalOptions="Fill"
+                                       VerticalOptions="Fill"
+                                       Source="{Binding CurrentMusic.AlbumArt,Converter={StaticResource AlbumArtConverter}}">
+                            <Image.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding SwitchPannelCommand}"></TapGestureRecognizer>
+                            </Image.GestureRecognizers>
+                        </Image>
+
+                        <Image 
+                             x:Name="NextAlbumArt"
                                     HeightRequest="260"
                                     WidthRequest="260"
                                        HorizontalOptions="Fill"
                                        VerticalOptions="Fill"
-                                       Source="{Binding CurrentMusic.AlbumArt,Converter={StaticResource AlbumArtConverter}}">
-                        </Image>
-
-                        <Image HorizontalOptions="Fill"
-                                               x:Name="NextAlbumArt"
-                                                   HeightRequest="260"
-                                                   WidthRequest="260"
-                                           
-                                       VerticalOptions="Fill"
-                                       TranslationX="320"
+                                       TranslationX="320"                           
                                        Source="{Binding NextMusic.AlbumArt,Converter={StaticResource AlbumArtConverter}}">
                         </Image>
+
+                     
                     </Grid>
+                    <Grid Grid.Column="1" Margin="11" x:Name="RefBox" ></Grid>
+
                 </Grid>
-                <Button Command="{Binding SwitchPannelCommand}"></Button>
+                <!--<Button Command="{Binding SwitchPannelCommand}"></Button>-->
             </Grid>
             <Grid IsVisible="{Binding IsLrcPanel}">
                 <!--<view:LyricView CurrentMusicInfo="{Binding CurrentMusic}"

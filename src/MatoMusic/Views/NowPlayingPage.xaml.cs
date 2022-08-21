@@ -31,7 +31,6 @@ namespace MatoMusic
             InitializeComponent();
             this.BindingContext = nowPlayingPageViewModel;
             this.Disappearing += NowPlayingPage_Disappearing;
-            this.SizeChanged += NowPlayingPage_SizeChanged;
             this.Appearing += NowPlayingPage_Appearing;
 
         }
@@ -41,46 +40,7 @@ namespace MatoMusic
             var isHideQueueButton = SettingManager.GetSettingValueForApplication<bool>(CommonSettingNames.IsHideQueueButton);
             this.QueueControlLayout.IsVisible = !isHideQueueButton;
         }
-
-
-        private async void NowPlayingPage_SizeChanged(object sender, EventArgs e)
-        {
-            await Task.Delay(500);
-            if (this.Width > 0
-                && this.Height > 0
-                && PreAlbumArt.Width > 0
-                && PreAlbumArt.Height > 0)
-            {
-
-                Debug.WriteLine("W:" + this.Width);
-                Debug.WriteLine("H:" + this.Height);
-
-                InitPreAlbumArtEdgeThickness();
-                InitNextAlbumArtEdgeThickness();
-            }
-
-
-        }
-
-        private void InitNextAlbumArtEdgeThickness()
-        {
-            int edgeThickness = 22;
-            var nextRefwidth = Math.Min(NextAlbumArt.Width, NextAlbumArt.Height);
-            var nextTransWidth = (this.Width + nextRefwidth) / 2 - edgeThickness;
-            this.NextAlbumArt.TranslateTo(nextTransWidth, this.NextAlbumArt.Y);
-            //this.NextAlbumArt.TranslationX = nextTransWidth;
-        }
-
-        private void InitPreAlbumArtEdgeThickness()
-        {
-            var edgeThickness = 22;
-            var preRefwidth = Math.Min(PreAlbumArt.Width, PreAlbumArt.Height);
-            var preTransWidth = -(this.Width + preRefwidth) / 2 + edgeThickness;
-            this.PreAlbumArt.TranslateTo(preTransWidth, this.PreAlbumArt.Y);
-            //mthis.PreAlbumArt.TranslationX = preTransWidth;
-        }
-
-
+  
         private void NowPlayingPage_Disappearing(object sender, EventArgs e)
         {
             var viewModel = BindingContext as NowPlayingPageViewModel;
