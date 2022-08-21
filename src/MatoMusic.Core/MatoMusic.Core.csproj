@@ -2,47 +2,40 @@
 
 	<PropertyGroup>
 		<TargetFrameworks>net6.0-android;net6.0-ios</TargetFrameworks>
-		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows')) and '$(MSBuildRuntimeType)' == 'Full'">$(TargetFrameworks);net6.0-windows10.0.19041</TargetFrameworks>
+		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net6.0-windows10.0.19041.0</TargetFrameworks>
+		<!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
+		<!-- <TargetFrameworks>$(TargetFrameworks);net6.0-tizen</TargetFrameworks> -->
 		<UseMaui>true</UseMaui>
 		<SingleProject>true</SingleProject>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<SupportedOSPlatformVersion Condition="'$(TargetFramework)' == 'net6.0-ios'">14.2</SupportedOSPlatformVersion>
-		<SupportedOSPlatformVersion Condition="'$(TargetFramework)' == 'net6.0-maccatalyst'">14.0</SupportedOSPlatformVersion>
-		<SupportedOSPlatformVersion Condition="'$(TargetFramework)' == 'net6.0-android'">21.0</SupportedOSPlatformVersion>
-		<SupportedOSPlatformVersion Condition="$(TargetFramework.Contains('-windows'))">10.0.17763.0</SupportedOSPlatformVersion>
-		<TargetPlatformMinVersion Condition="$(TargetFramework.Contains('-windows'))">10.0.17763.0</TargetPlatformMinVersion>
-		<Platforms>AnyCPU;x64</Platforms>
+
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">14.2</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">14.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
+		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
 	  <None Remove="appsettings.json" />
-	  <None Remove="Localization\SourceFiles\MatoMusic-zh-Hans.xml" />
-	  <None Remove="Localization\SourceFiles\MatoMusic.xml" />
 	  <None Remove="log4net.config" />
 	  <None Remove="log4net.Production.config" />
 	  <None Remove="mato.db" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <EmbeddedResource Include="appsettings.json">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </EmbeddedResource>
-	  <EmbeddedResource Include="Localization\SourceFiles\MatoMusic-zh-Hans.xml" />
-	  <EmbeddedResource Include="Localization\SourceFiles\MatoMusic.xml" />
-	  <EmbeddedResource Include="log4net.config">
-	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-	  </EmbeddedResource>
-	  <EmbeddedResource Include="log4net.Production.config">
-	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-	  </EmbeddedResource>
-	  <EmbeddedResource Include="mato.db">
-	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </EmbeddedResource>
+	  <EmbeddedResource Include="appsettings.json" />
+	  <EmbeddedResource Include="log4net.config" />
+	  <EmbeddedResource Include="log4net.Production.config" />
+	  <EmbeddedResource Include="mato.db" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <PackageReference Include="Castle.Windsor.MsDependencyInjection" Version="3.4.0" />
 	  <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
+	  <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />
+	  <PackageReference Include="Microsoft.PinYinConverter" Version="1.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -51,19 +44,6 @@
 	  <ProjectReference Include="..\..\abp\Abp.EntityFrameworkCore\Abp.EntityFrameworkCore.csproj" />
 	  <ProjectReference Include="..\..\abp\Abp\Abp.csproj" />
 	  <ProjectReference Include="..\MatoMusic.Infrastructure\MatoMusic.Infrastructure.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Reference Include="ChnCharInfo">
-	    <HintPath>..\..\libs\ChnCharInfo.dll</HintPath>
-	  </Reference>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <PackageReference Update="Microsoft.SourceLink.GitHub" Version="1.1.1">
-	    <PrivateAssets>all</PrivateAssets>
-	    <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-	  </PackageReference>
 	</ItemGroup>
 
 </Project>
