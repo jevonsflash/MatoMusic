@@ -13,14 +13,14 @@ namespace MatoMusic
 		{
 			var builder = MauiApp.CreateBuilder();
 			builder
+				.UseMatoMusic<MatoMusicModule>()
 				.UseMauiApp<App>()
 				.UseMauiCommunityToolkit()
 				.ConfigureFonts(fonts =>
 				{
 					fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 					fonts.AddFont("FontAwesome.ttf", "FontAwesome");
-				})
-				.UseMatoMusic<MatoMusicModule>();
+				});
 			return builder.Build();
 		}
 	}

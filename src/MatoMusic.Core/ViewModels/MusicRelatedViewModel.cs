@@ -17,46 +17,15 @@ namespace MatoMusic.Core.ViewModel
     public abstract class MusicRelatedViewModel : ViewModelBase
     {
         private bool _isFastSeeking = false;
+        private readonly Lazy<IMusicControlService> MusicControlServiceLazy;
+        private readonly Lazy<MusicRelatedService> MusicRelatedServiceLazy;
+        private readonly Lazy<IMusicInfoManager> MusicInfoManagerLazy;
 
-        private IMusicInfoManager _musicInfoManager;
+        public IMusicInfoManager MusicInfoManager => MusicInfoManagerLazy.Value;
 
-        public IMusicInfoManager MusicInfoManager
-        {
-            get { return _musicInfoManager; }
-            set
-            {
-                _musicInfoManager = value;
-            }
-        }
+        public IMusicControlService MusicControlService => MusicControlServiceLazy.Value;
 
-        private IMusicControlService _musicControlService;
-
-        public IMusicControlService MusicControlService
-        {
-            get { return _musicControlService; }
-            set
-            {
-                _musicControlService = value;
-                _musicControlService.OnPlayFinished += MusicControlService_OnMusicChanged;
-
-            }
-        }
-
-        private MusicRelatedService _musicRelatedService;
-
-        public MusicRelatedService MusicRelatedService
-        {
-            get { return _musicRelatedService; }
-            set
-            {
-                _musicRelatedService = value;
-                this._musicRelatedService.PropertyChanged += this.Delegate_PropertyChanged;
-
-            }
-        }
-
-
-
+        public MusicRelatedService MusicRelatedService => MusicRelatedServiceLazy.Value;
 
         public event EventHandler OnMusicChanged;
         public static class Properties
@@ -72,6 +41,22 @@ namespace MatoMusic.Core.ViewModel
 
         public MusicRelatedViewModel()
         {
+            this.MusicInfoManagerLazy=new Lazy<IMusicInfoManager>(() => IocManager.Instance.Resolve<IMusicInfoManager>());
+
+
+            this.MusicControlServiceLazy=new Lazy<IMusicControlService>(() =>
+            {
+                var _musicControlService = IocManager.Instance.Resolve<IMusicControlService>();
+                _musicControlService.OnPlayFinished += MusicControlService_OnMusicChanged;
+                return _musicControlService;
+
+            });
+            this.MusicRelatedServiceLazy=new Lazy<MusicRelatedService>(() =>
+            {
+                var _musicRelatedService = IocManager.Instance.Resolve<MusicRelatedService>();
+                _musicRelatedService.PropertyChanged += this.Delegate_PropertyChanged;
+                return _musicRelatedService;
+            });
 
             this.PlayCommand = new Command(PlayAction, CanPlayExcute);
             this.PreCommand = new Command(PreAction, CanPlayExcute);
@@ -147,16 +132,11 @@ namespace MatoMusic.Core.ViewModel
             set => MusicRelatedService.Duration = value;
         }
 
-        public async Task RebuildMusicInfos()
+        public async Task RebuildMusicInfos(Action callback=null)
         {
-            await this.MusicControlService.RebuildMusicInfos();
+            await this.MusicControlService.RebuildMusicInfos(callback);
         }
 
-        public async Task RebuildMusicInfos(Action callback)
-        {
-            await RebuildMusicInfos();
-            callback?.Invoke();
-        }
 
 
         private void FavouriteAction(object obj)

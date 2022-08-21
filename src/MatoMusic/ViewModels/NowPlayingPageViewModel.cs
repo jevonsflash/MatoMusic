@@ -11,11 +11,13 @@ namespace MatoMusic.ViewModels
     public class NowPlayingPageViewModel : MusicRelatedViewModel
     {
 
-        public NowPlayingPageViewModel()
+        private readonly IocManager iocManager;
+        public NowPlayingPageViewModel(IocManager iocManager)
         {
             SwitchPannelCommand = new Command(SwitchPannelAction, c => true);
             PlayAllCommand = new Command(PlayAllAction, c => true);
             IsLrcPanel = false;
+            this.iocManager=iocManager;
         }
 
 
@@ -44,37 +46,9 @@ namespace MatoMusic.ViewModels
         }
 
 
-        private async void PlayAllAction(object obj)
+        private void PlayAllAction(object obj)
         {
-            await RebuildMusicInfos();
-
-            var isSucc = await MusicInfoManager.GetMusicInfos();
-            if (!isSucc.IsSucess)
-            {
-                CommonHelper.ShowNoAuthorized();
-
-            }
-            var musicInfos = isSucc.Result;
-
-            var result = await MusicInfoManager.CreateQueueEntrys(musicInfos);
-            if (result)
-            {
-                var currentMusic = await MusicInfoManager.GetQueueEntry();
-                if (currentMusic.Count > 0)
-                {
-                    Random r = new Random();
-                    var randomIndex = r.Next(currentMusic.Count);
-                    IsShuffle = true;
-                    CurrentMusic = currentMusic[randomIndex];
-
-                }
-                CommonHelper.ShowMsg("随机播放中");
-
-            }
-            else
-            {
-                CommonHelper.ShowMsg("失败");
-            }
+            iocManager.Resolve<QueuePageViewModel>().PlayAllCommand.Execute(obj);
         }
 
         public Command SwitchPannelCommand { get; set; }

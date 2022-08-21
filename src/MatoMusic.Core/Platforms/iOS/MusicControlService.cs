@@ -32,17 +32,10 @@ namespace MatoMusic.Core
         private AVAudioPlayer CurrentIosPlayer;
 
 
-
-        public partial async Task RebuildMusicInfos()
+        public partial async Task RebuildMusicInfos(Action callback)
         {
             musicInfos = await MusicInfoManager.GetQueueEntry();
             OnRebuildMusicInfosFinished?.Invoke(this, EventArgs.Empty);
-
-        }
-
-        public partial async Task RebuildMusicInfos(Action callback)
-        {
-            await RebuildMusicInfos();
             callback?.Invoke();
         }
 

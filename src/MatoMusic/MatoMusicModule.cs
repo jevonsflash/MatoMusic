@@ -7,7 +7,9 @@ using MatoMusic.ViewModels;
 
 namespace MatoMusic
 {
-    [DependsOn(typeof(MatoMusicEntityFrameworkCoreModule))]
+    [DependsOn(
+        typeof(MatoMusicCoreModule),
+        typeof(MatoMusicEntityFrameworkCoreModule))]
     public class MatoMusicModule : AbpModule
     {
         public override void Initialize()

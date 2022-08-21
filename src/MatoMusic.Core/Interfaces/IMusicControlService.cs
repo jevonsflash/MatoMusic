@@ -18,7 +18,6 @@ namespace MatoMusic.Core.Interfaces
         int[] ShuffleMap { get; }
         List<MusicInfo> MusicInfos { get; }
         int LastIndex { get; }
-        Task RebuildMusicInfos();
         Task RebuildMusicInfos(Action callback);
         void SeekTo(double position);
         MusicInfo GetNextMusic(MusicInfo current, bool isShuffle);

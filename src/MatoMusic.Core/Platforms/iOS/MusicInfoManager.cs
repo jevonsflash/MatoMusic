@@ -18,7 +18,7 @@ using MatoMusic.Core.Interfaces;
 
 namespace MatoMusic.Core
 {
-    public partial class MusicInfoManager : IMusicInfoManager, ISingletonDependency
+    public partial class MusicInfoManager : IMusicInfoManager
     {
         private MPMediaQuery _mediaQuery;
 
@@ -302,6 +302,7 @@ namespace MatoMusic.Core
         /// </summary>
         /// <param name="musicInfos">需要进行操作的MusicInfo集合</param>
         /// <returns></returns>
+        [UnitOfWork]
         public partial async Task<bool> CreateQueueEntrys(List<MusicInfo> musicInfos)
         {
             var entrys = musicInfos.Select(c => new Queue(c.Title, 0, c.Id));
@@ -491,6 +492,7 @@ namespace MatoMusic.Core
         /// <param name="musics"></param>
         /// <param name="playlistId"></param>
         /// <returns></returns>
+        [UnitOfWork]
         public partial async Task<bool> CreatePlaylistEntrys(List<MusicInfo> musics, long playlistId)
         {
             var entrys = musics.Select(c => new PlaylistItem(playlistId, c.Title, 0));

@@ -23,16 +23,24 @@ public class QueuePageViewModel : MusicRelatedViewModel
     private readonly NavigationService navigationService;
 
 
-    public QueuePageViewModel() 
+    public QueuePageViewModel(NavigationService navigationService)
     {
         DeleteCommand = new Command(DeleteAction, c => true);
         CleanQueueCommand = new Command(CleanQueueAction, CanPlayAllExcute);
         FlyBackCommand = new Command(FlyBackAction, CanPlayAllExcute);
-        PlayAllCommand = new Command(PlayAllAction, CanPlayAllExcute);
+        PlayAllCommand = new Command(PlayAllAction, (e) => true);
         PatchupCommand = new Command(PatchupAction, CanPlayAllExcute);
         PropertyChanged += QueuePageViewModel_PropertyChanged;
         this.navigationService = navigationService;
         this.OnMusicChanged += MusicRelatedViewModel_OnMusicChanged;
+        this.MusicRelatedService.OnBuildMusicInfosFinished+=MusicRelatedService_OnBuildMusicInfosFinished;
+    }
+
+    private void MusicRelatedService_OnBuildMusicInfosFinished(object sender, EventArgs e)
+    {
+        var musicInfos = base.Musics;
+        Musics = new ObservableCollection<MusicInfo>(musicInfos);
+        Musics.CollectionChanged += Musics_CollectionChanged;
     }
 
     private void MusicRelatedViewModel_OnMusicChanged(object sender, EventArgs e)
@@ -91,7 +99,7 @@ public class QueuePageViewModel : MusicRelatedViewModel
         }
     }
 
-    private async void QueuePageViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    private void QueuePageViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(Musics) && Musics != null)
         {
@@ -107,36 +115,8 @@ public class QueuePageViewModel : MusicRelatedViewModel
                 {
                     ChangeMusic(CurrentMusic);
                 }
-            }          
+            }
         }
-    }
-
-    private void MusicControlService_OnRebuildMusicInfosFinished()
-    {
-        CommonHelper.BeginInvokeOnMainThread(() =>
-        {
-            InitMusics();
-            foreach (var c in Musics)
-            {
-                if (c.IsPlaying)
-                {
-                    c.IsPlaying = false;
-                    break;
-                }
-            }
-            if (Canplay)
-            {
-                var playingMusicId = CurrentMusic.Id;
-
-                CurrentMusic = Musics.FirstOrDefault(c => c.Id == playingMusicId);
-                if (CurrentMusic != null)
-                {
-                    CurrentMusic.IsPlaying = true;
-                }
-
-            }
-        });
-
     }
 
     private void CleanQueueAction(object obj)
@@ -211,7 +191,6 @@ public class QueuePageViewModel : MusicRelatedViewModel
         }
     }
 
-
     private void InitMusics()
     {
         Musics = new ObservableCollection<MusicInfo>(base.Musics);
@@ -220,7 +199,6 @@ public class QueuePageViewModel : MusicRelatedViewModel
     private async void PlayAllAction(object obj)
     {
 
-        await RebuildMusicInfos(MusicControlService_OnRebuildMusicInfosFinished);
 
         var isSucc = await MusicInfoManager.GetMusicInfos();
         if (!isSucc.IsSucess)
@@ -229,21 +207,24 @@ public class QueuePageViewModel : MusicRelatedViewModel
 
         }
         var musicInfos = isSucc.Result;
-        Musics = new ObservableCollection<MusicInfo>(musicInfos);
-        Musics.CollectionChanged += Musics_CollectionChanged;
         var result = await MusicInfoManager.CreateQueueEntrys(musicInfos);
         if (result)
         {
-            var currentMusic = await MusicInfoManager.GetQueueEntry();
-            if (currentMusic.Count > 0)
+            await RebuildMusicInfos(async () =>
             {
-                Random r = new Random();
-                var randomIndex = r.Next(currentMusic.Count);
-                IsShuffle = true;
-                CurrentMusic = currentMusic[randomIndex];
+                var currentQueueMusics= await MusicInfoManager.GetQueueEntry();
+                Musics = new ObservableCollection<MusicInfo>(currentQueueMusics);
+                Musics.CollectionChanged += Musics_CollectionChanged;
+                if (currentQueueMusics.Count > 0)
+                {
+                    Random r = new Random();
+                    var randomIndex = r.Next(currentQueueMusics.Count);
+                    IsShuffle = true;
+                    CurrentMusic = currentQueueMusics[randomIndex];
 
-            }
-            CommonHelper.ShowMsg("随机播放中");
+                }
+                CommonHelper.ShowMsg("随机播放中");
+            });
 
         }
         else

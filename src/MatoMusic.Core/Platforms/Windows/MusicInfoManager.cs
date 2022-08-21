@@ -547,6 +547,7 @@ namespace MatoMusic.Core
         /// <param name="musics"></param>
         /// <param name="playlistId"></param>
         /// <returns></returns>
+        [UnitOfWork]
         public partial async Task<bool> CreatePlaylistEntrys(List<MusicInfo> musics, long playlistId)
         {
             var entrys = musics.Select(c => new PlaylistItem(playlistId, c.Title, 0));

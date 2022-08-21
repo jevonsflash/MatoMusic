@@ -22,7 +22,7 @@ namespace MatoMusic.Services
         private PlaylistChoosePage _playlistChoosePage;
         private readonly NavigationService navigationService;
         private readonly IMusicInfoManager musicInfoManager;
-        private readonly MusicRelatedService musicRelatedViewModel;
+        private readonly MusicRelatedService musicRelatedService;
 
 
         public MusicFunctionManager(
@@ -33,7 +33,7 @@ namespace MatoMusic.Services
         {
             this.navigationService = navigationService;
             this.musicInfoManager = musicInfoManager;
-            this.musicRelatedViewModel = musicRelatedViewModel;
+            this.musicRelatedService = musicRelatedViewModel;
             LocalizationSourceName = MatoMusicConsts.LocalizationSourceName;
 
         }
@@ -73,11 +73,11 @@ namespace MatoMusic.Services
             }
             else if (musicFunctionEventArgs.MenuCellInfo.Code == "NextPlay")
             {
-                var result = await musicInfoManager.InsertToNextQueueEntry(musicFunctionEventArgs.MusicInfo as MusicInfo, this.musicRelatedViewModel.CurrentMusic);
+                var result = await musicInfoManager.InsertToNextQueueEntry(musicFunctionEventArgs.MusicInfo as MusicInfo, this.musicRelatedService.CurrentMusic);
                 if (result)
                 {
                     CommonHelper.ShowMsg(string.Format("{0},{1}", L("PlayNext"), musicFunctionEventArgs.MusicInfo.Title));
-                    await musicRelatedViewModel.RebuildMusicInfos();
+                    await musicRelatedService.RebuildMusicInfos();
                 }
                 else
                 {
@@ -90,7 +90,7 @@ namespace MatoMusic.Services
                 if (result)
                 {
                     CommonHelper.ShowMsg(L("Msg_HasAddedQueue"));
-                    await musicRelatedViewModel.RebuildMusicInfos();
+                    await musicRelatedService.RebuildMusicInfos();
                 }
                 else
                 {
@@ -174,7 +174,7 @@ namespace MatoMusic.Services
 
                     if (result)
                     {
-                        await musicRelatedViewModel.RebuildMusicInfos();
+                        await musicRelatedService.RebuildMusicInfos();
 
                         CommonHelper.ShowMsg(L("Msg_HasAddedQueue2"));
 
@@ -195,10 +195,10 @@ namespace MatoMusic.Services
                     var result = await musicInfoManager.CreateQueueEntrys(musicCollectionInfo);
                     if (result)
                     {
-                        await musicRelatedViewModel.RebuildMusicInfos();
+                        await musicRelatedService.RebuildMusicInfos();
 
                         var CurrentMusic = await musicInfoManager.GetQueueEntry();
-                        musicRelatedViewModel.CurrentMusic = CurrentMusic[0];
+                        musicRelatedService.CurrentMusic = CurrentMusic[0];
 
                         CommonHelper.ShowMsg("成功添加并播放");
 

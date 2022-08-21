@@ -62,7 +62,6 @@ namespace MatoMusic.Core
         }
 
 
-        public partial Task RebuildMusicInfos();
 
 
         public partial Task RebuildMusicInfos(Action callback);

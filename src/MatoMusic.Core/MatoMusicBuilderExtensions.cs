@@ -39,7 +39,7 @@ namespace MatoMusic.Core
             InitDataBase(dbName, dbPath);
             var _bootstrapper = AbpBootstrapper.Create<TStartupModule>(options =>
             {
-                options.IocManager = new IocManager();
+                options.IocManager = IocManager.Instance;
             });
             _bootstrapper.IocManager.IocContainer.AddFacility<LoggingFacility>(f => f.UseAbpLog4Net().WithConfig(documentsPath));
 
