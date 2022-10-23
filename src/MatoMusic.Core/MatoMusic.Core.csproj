@@ -32,6 +32,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <PackageReference Include="Abp" Version="7.4.0" />
+	  <PackageReference Include="Abp.AutoMapper" Version="7.4.0" />
+	  <PackageReference Include="Abp.Castle.Log4Net" Version="7.4.0" />
+	  <PackageReference Include="Abp.EntityFrameworkCore" Version="7.4.0" />
 	  <PackageReference Include="Castle.Windsor.MsDependencyInjection" Version="3.4.0" />
 	  <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
 	  <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />
@@ -39,10 +43,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\abp\Abp.AutoMapper\Abp.AutoMapper.csproj" />
-	  <ProjectReference Include="..\..\abp\Abp.Castle.Log4Net\Abp.Castle.Log4Net.csproj" />
-	  <ProjectReference Include="..\..\abp\Abp.EntityFrameworkCore\Abp.EntityFrameworkCore.csproj" />
-	  <ProjectReference Include="..\..\abp\Abp\Abp.csproj" />
 	  <ProjectReference Include="..\MatoMusic.Infrastructure\MatoMusic.Infrastructure.csproj" />
 	</ItemGroup>
 

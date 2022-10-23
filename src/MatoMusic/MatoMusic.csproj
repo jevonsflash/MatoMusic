@@ -49,13 +49,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="CommunityToolkit.Maui" Version="1.2.0" />
+	  <PackageReference Include="Abp" Version="7.4.0" />
+	  <PackageReference Include="Abp.AutoMapper" Version="7.4.0" />
+	  <PackageReference Include="Abp.Castle.Log4Net" Version="7.4.0" />
+	  <PackageReference Include="CommunityToolkit.Maui" Version="1.3.0" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\..\abp\Abp.AutoMapper\Abp.AutoMapper.csproj" />
-	  <ProjectReference Include="..\..\abp\Abp.Castle.Log4Net\Abp.Castle.Log4Net.csproj" />
-	  <ProjectReference Include="..\..\abp\Abp\Abp.csproj" />
 	  <ProjectReference Include="..\MatoMusic.Core\MatoMusic.Core.csproj" />
 	  <ProjectReference Include="..\MatoMusic.EntityFrameworkCore\MatoMusic.EntityFrameworkCore.csproj" />
 	  <ProjectReference Include="..\MatoMusic.Infrastructure\MatoMusic.Infrastructure.csproj" />
