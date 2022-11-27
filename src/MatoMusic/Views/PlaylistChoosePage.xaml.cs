@@ -4,6 +4,7 @@ using CommunityToolkit.Maui.Views;
 using MatoMusic.Common;
 using MatoMusic.Core;
 using MatoMusic.Core.Helper;
+using MatoMusic.Core.Interfaces;
 using MatoMusic.Core.Models;
 using Microsoft.Maui.Controls;
 
@@ -15,24 +16,27 @@ namespace MatoMusic
     public partial class PlaylistChoosePage : PopupBase, ITransientDependency
     {
         private PlaylistFunctionPage _editPlaylistFunctionPage;
+        private readonly IMusicInfoManager musicInfoManager;
 
         public event EventHandler<Playlist> OnFinished;
-        public PlaylistChoosePage()
+        public PlaylistChoosePage(IMusicInfoManager musicInfoManager)
         {
+            this.musicInfoManager=musicInfoManager;
+
             InitializeComponent();
             Init();
         }
 
         private async void Init()
         {
-            var restul = await MusicInfoManager.GetPlaylistInfo();
+            var restul = await musicInfoManager.GetPlaylistInfo();
             if (restul.Count == 0 || !restul.Any(c => c.Title == "我最喜爱"))
             {
                 var model = new PlaylistInfo() { Id = 0, Title = "我最喜爱", IsHidden = false, IsRemovable = false };
-              var entity = ObjectMapper.Map<Playlist>(model);
-                await MusicInfoManager.CreatePlaylist(entity);
+                var entity = ObjectMapper.Map<Playlist>(model);
+                await musicInfoManager.CreatePlaylist(entity);
             }
-            this.BindingContext = MusicInfoManager.GetPlaylist();
+            this.BindingContext = await musicInfoManager.GetPlaylist();
         }
 
         private void ListView_OnItemSelected(object sender, SelectedItemChangedEventArgs e)
@@ -59,14 +63,14 @@ namespace MatoMusic
 
             if (playlistInfo != null && playlistInfo.Title != "我最喜爱" && !string.IsNullOrEmpty(playlistInfo.Title))
             {
-                var restul = await MusicInfoManager.GetPlaylistInfo();
+                var restul = await musicInfoManager.GetPlaylistInfo();
                 if (!restul.Any(c => c.Title == playlistInfo.Title))
                 {
                     if (e.Code == "Create")
                     {
                         var entity = ObjectMapper.Map<Playlist>(playlistInfo);
 
-                        if (await MusicInfoManager.CreatePlaylist(entity))
+                        if (await musicInfoManager.CreatePlaylist(entity))
                         {
 
                             CommonHelper.ShowMsg(string.Format("{0} {1}", L("Msg_HasCreated"), playlistInfo.Title));

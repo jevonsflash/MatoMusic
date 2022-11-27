@@ -40,7 +40,7 @@ namespace MatoMusic
             var isHideQueueButton = SettingManager.GetSettingValueForApplication<bool>(CommonSettingNames.IsHideQueueButton);
             this.QueueControlLayout.IsVisible = !isHideQueueButton;
         }
-  
+
         private void NowPlayingPage_Disappearing(object sender, EventArgs e)
         {
             var viewModel = BindingContext as NowPlayingPageViewModel;
@@ -109,8 +109,10 @@ namespace MatoMusic
             await navigationService.PopToRootAsync();
             if (e.MenuCellInfo.Code == "AddToPlaylist")
             {
-                _playlistChoosePage = new PlaylistChoosePage();
-                _playlistChoosePage.OnFinished += async (o, c) =>
+                using (var playlistChoosePageWrapper = IocManager.Instance.ResolveAsDisposable<PlaylistChoosePage>(new { musicInfoManager = MusicInfoManager }))
+                {
+                    _playlistChoosePage = playlistChoosePageWrapper.Object;
+                    _playlistChoosePage.OnFinished += async (o, c) =>
                 {
                     if (c != null)
                     {
@@ -126,8 +128,9 @@ namespace MatoMusic
                     }
                     await navigationService.HidePopupAsync(_playlistChoosePage);
                 };
-                await navigationService.ShowPopupAsync(_playlistChoosePage);
+                    await navigationService.ShowPopupAsync(_playlistChoosePage);
 
+                }
             }
 
             else if (e.MenuCellInfo.Code == "GoAlbumPage")

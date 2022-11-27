@@ -21,10 +21,6 @@ namespace MatoMusic
     public class PopupBase : Popup
     {
 
-        public IMusicInfoManager MusicInfoManager => (this.BindingContext as MusicRelatedViewModel)?.MusicInfoManager;
-        public MusicRelatedService MusicRelatedService => (this.BindingContext as MusicRelatedViewModel)?.MusicRelatedService;
-        public IMusicControlService MusicControlService => (this.BindingContext as MusicRelatedViewModel)?.MusicControlService;
-
         public NavigationService navigationService { get; set; }
         /// <summary>
         /// Reference to the setting manager.

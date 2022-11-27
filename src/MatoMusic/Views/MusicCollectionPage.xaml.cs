@@ -107,8 +107,10 @@ namespace MatoMusic
             else if (MenuCellInfo.Code == "AddMusicCollectionToPlaylist")
             {
 
-                _playlistChoosePage = new PlaylistChoosePage();
-                _playlistChoosePage.OnFinished += async (o, c) =>
+                using (var playlistChoosePageWrapper = IocManager.Instance.ResolveAsDisposable<PlaylistChoosePage>(new { musicInfoManager = MusicInfoManager }))
+                {
+                    _playlistChoosePage = playlistChoosePageWrapper.Object;
+                    _playlistChoosePage.OnFinished += async (o, c) =>
                 {
                     if (c != null)
                     {
@@ -127,8 +129,9 @@ namespace MatoMusic
                     }
                     await navigationService.HidePopupAsync(_playlistChoosePage);
                 };
-                await navigationService.ShowPopupAsync(_playlistChoosePage);
+                    await navigationService.ShowPopupAsync(_playlistChoosePage);
 
+                }
             }
             else if (MenuCellInfo.Code == "AddToFavourite")
             {

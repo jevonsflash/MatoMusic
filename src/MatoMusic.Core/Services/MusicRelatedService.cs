@@ -22,7 +22,45 @@ namespace MatoMusic.Core.Services
         {
             this.musicControlService = musicControlService;
             Device.StartTimer(new TimeSpan(0, 0, 0, 0, 100), DoUpdate);
+            this.PropertyChanged+=MusicRelatedService_PropertyChangedAsync;
 
+        }
+
+        private async void MusicRelatedService_PropertyChangedAsync(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(CurrentMusic))
+            {
+                if (!Canplay || IsInited == false)
+                {
+                    return;
+
+                }
+                await musicControlService.InitPlayer(CurrentMusic);
+                musicControlService.Play(CurrentMusic);
+                DoUpdate();
+                InitPreviewAndNextMusic();
+                Duration = GetPlatformSpecificTime(musicControlService.Duration());
+                SettingManager.ChangeSettingForApplication(CommonSettingNames.BreakPointMusicIndex, Musics.IndexOf(CurrentMusic).ToString());
+
+            }
+
+            else if (e.PropertyName == nameof(IsShuffle))
+            {
+                if (IsShuffle)
+                {
+                    await musicControlService.UpdateShuffleMap();
+                    InitPreviewAndNextMusic();
+                }
+                else
+                {
+                    InitPreviewAndNextMusic();
+                }
+            }
+
+            else if (e.PropertyName == nameof(IsRepeatOne))
+            {
+                musicControlService.SetRepeatOneStatus(this.IsRepeatOne);
+            }
         }
 
         private MusicInfo _currentMusic;

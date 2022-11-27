@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Abp;
 using Abp.Dependency;
 using Abp.Domain.Services;
+using Abp.Domain.Uow;
 using MatoMusic.Common;
 using MatoMusic.Core;
 using MatoMusic.Core.Helper;
@@ -51,25 +52,29 @@ namespace MatoMusic.Services
             await navigationService.PopToRootAsync();
             if (musicFunctionEventArgs.MenuCellInfo.Code == "AddToPlaylist")
             {
-                _playlistChoosePage = new PlaylistChoosePage();
-                _playlistChoosePage.OnFinished += async (o, c) =>
+                using (var playlistChoosePageWrapper = IocManager.Instance.ResolveAsDisposable<PlaylistChoosePage>(new { musicInfoManager }))
                 {
-                    if (c != null)
+                    _playlistChoosePage = playlistChoosePageWrapper.Object;
+                    _playlistChoosePage.BindingContext=this.musicRelatedService;
+                    _playlistChoosePage.OnFinished += async (o, c) =>
                     {
-                        var result = await musicInfoManager.CreatePlaylistEntry((musicFunctionEventArgs.MusicInfo as MusicInfo), c.Id);
-                        if (result)
+                        if (c != null)
                         {
-                            CommonHelper.ShowMsg(string.Format("{0}{1}", L("Msg_HasAdded"), c.Title));
-                        }
-                        else
-                        {
-                            CommonHelper.ShowMsg(L("Msg_AddFaild"));
-                        }
+                            var result = await musicInfoManager.CreatePlaylistEntry((musicFunctionEventArgs.MusicInfo as MusicInfo), c.Id);
+                            if (result)
+                            {
+                                CommonHelper.ShowMsg(string.Format("{0}{1}", L("Msg_HasAdded"), c.Title));
+                            }
+                            else
+                            {
+                                CommonHelper.ShowMsg(L("Msg_AddFaild"));
+                            }
 
-                    }
-                    await navigationService.HidePopupAsync(_playlistChoosePage);
-                };
-                await navigationService.ShowPopupAsync(_playlistChoosePage);
+                        }
+                        await navigationService.HidePopupAsync(_playlistChoosePage);
+                    };
+                    await navigationService.ShowPopupAsync(_playlistChoosePage);
+                }
             }
             else if (musicFunctionEventArgs.MenuCellInfo.Code == "NextPlay")
             {
@@ -127,8 +132,10 @@ namespace MatoMusic.Services
             else if (musicFunctionEventArgs.MenuCellInfo.Code == "AddMusicCollectionToPlaylist")
             {
 
-                _playlistChoosePage = new PlaylistChoosePage();
-                _playlistChoosePage.OnFinished += async (o, c) =>
+                using (var playlistChoosePageWrapper = IocManager.Instance.ResolveAsDisposable<PlaylistChoosePage>(new { musicInfoManager }))
+                {
+                    _playlistChoosePage = playlistChoosePageWrapper.Object;
+                    _playlistChoosePage.OnFinished += async (o, c) =>
                 {
                     if (c != null)
                     {
@@ -145,8 +152,9 @@ namespace MatoMusic.Services
                     await navigationService.HidePopupAsync(_playlistChoosePage);
                 };
 
-                await navigationService.ShowPopupAsync(_playlistChoosePage);
+                    await navigationService.ShowPopupAsync(_playlistChoosePage);
 
+                }
             }
             else if (musicFunctionEventArgs.MenuCellInfo.Code == "AddToFavourite")
             {

@@ -169,43 +169,24 @@ namespace MatoMusic.Core.ViewModel
         }
 
 
-        private async void DetailPageViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void DetailPageViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == Properties.CurrentMusic)
             {
-                if (!Canplay || MusicRelatedService.IsInited == false)
-                {
-                    return;
-
-                }
-                await MusicControlService.InitPlayer(CurrentMusic);
-                MusicControlService.Play(CurrentMusic);
-                MusicRelatedService.DoUpdate();
-                MusicRelatedService.InitPreviewAndNextMusic();
+                
                 OnMusicChanged?.Invoke(this, EventArgs.Empty);
-                this.Duration = MusicRelatedService.GetPlatformSpecificTime(MusicControlService.Duration());
-                this.SettingManager.ChangeSettingForApplication(CommonSettingNames.BreakPointMusicIndex, Musics.IndexOf(CurrentMusic).ToString());
                 RaiseCanPlayExecuteChanged();
             }
 
             else if (e.PropertyName == Properties.IsShuffle)
             {
                 this.SettingManager.ChangeSettingForApplication(CommonSettingNames.IsShuffle, this.IsShuffle.ToString());
-                if (IsShuffle)
-                {
-                    await MusicControlService.UpdateShuffleMap();
-                    MusicRelatedService.InitPreviewAndNextMusic();
-                }
-                else
-                {
-                    MusicRelatedService.InitPreviewAndNextMusic();
-                }
+
             }
 
             else if (e.PropertyName == Properties.IsRepeatOne)
             {
                 this.SettingManager.ChangeSettingForApplication(CommonSettingNames.IsRepeatOne, this.IsRepeatOne.ToString());
-                MusicControlService.SetRepeatOneStatus(this.IsRepeatOne);
             }
 
         }

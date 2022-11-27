@@ -76,8 +76,10 @@ public class QueuePageViewModel : MusicRelatedViewModel
         if (Musics != null && Musics.Count > 0)
         {
 
-            _playlistChoosePage = new PlaylistChoosePage();
-            _playlistChoosePage.OnFinished += async (o, c) =>
+            using (var playlistChoosePageWrapper = IocManager.Instance.ResolveAsDisposable<PlaylistChoosePage>(new { musicInfoManager=MusicInfoManager }))
+            {
+                _playlistChoosePage = playlistChoosePageWrapper.Object;
+                _playlistChoosePage.OnFinished += async (o, c) =>
             {
                 if (c != null)
                 {
@@ -95,7 +97,8 @@ public class QueuePageViewModel : MusicRelatedViewModel
                 await navigationService.HidePopupAsync(_playlistChoosePage);
             };
 
-            await navigationService.ShowPopupAsync(_playlistChoosePage);
+                await navigationService.ShowPopupAsync(_playlistChoosePage);
+            }
         }
     }
 

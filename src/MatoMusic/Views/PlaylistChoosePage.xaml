@@ -36,7 +36,7 @@
                         <ViewCell>
 
                             <StackLayout>
-                                <Label Text="{Binding Name}"
+                                <Label Text="{Binding Title}"
                                        VerticalOptions="CenterAndExpand"
                                        TextColor="{DynamicResource PhoneContrastForegroundBrush}"
                                        FontSize="{StaticResource BodyFontSize}">
