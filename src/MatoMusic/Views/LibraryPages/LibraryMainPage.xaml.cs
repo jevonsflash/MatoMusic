@@ -33,8 +33,8 @@ namespace MatoMusic
             var artistPage = iocManager.Resolve<ArtistPage>();
 
             this.MusicPageShellContent.Content = musicPage;
-            this.ArtistPageShellContent.Content = albumPage;
-            this.AlbumPageShellContent.Content = artistPage;
+            this.ArtistPageShellContent.Content = artistPage;
+            this.AlbumPageShellContent.Content = albumPage;
         }
     }
 }

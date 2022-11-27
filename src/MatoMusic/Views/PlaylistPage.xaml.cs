@@ -138,10 +138,10 @@ namespace MatoMusic
 
                 new MenuCellInfo() {Title = L("Remove"), Code = "Delete", Icon = "remove"},
                 new MenuCellInfo() {Title = L("Rename"), Code = "Rename", Icon = "rename"},
-                new MenuCellInfo() {Title = string.Format("{0}{1}",L("PlayThis"),L("Albums")), Code = "Play", Icon = "cdplay"},
-                new MenuCellInfo() {Title = L("AddToQueue2"), Code = "AddMusicCollectionToQueue", Icon = "addtostack"},
-                new MenuCellInfo() {Title = L("AddTo"), Code = "AddMusicCollectionToPlaylist", Icon = "addto"},
-                new MenuCellInfo() {Title = L("AddToFavourite"), Code = "AddToFavourite", Icon = "favouriteadd"}
+                new MenuCellInfo() {Title = string.Format("{0}{1}",L("PlayThis"),L("Albums")), Code = "Play", Icon = ""},
+                new MenuCellInfo() {Title = L("AddToQueue2"), Code = "AddMusicCollectionToQueue", Icon = ""},
+                new MenuCellInfo() {Title = L("AddTo"), Code = "AddMusicCollectionToPlaylist", Icon = ""},
+                new MenuCellInfo() {Title = L("AddToFavourite"), Code = "AddToFavourite", Icon = ""}
 
             };
             var musicInfo = (sender as BindableObject).BindingContext;

@@ -4,7 +4,6 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
-using MatoMusic.Core;
 using Abp.Dependency;
 using Microsoft.Maui.Controls;
 using MatoMusic.Core.Models;
@@ -12,6 +11,7 @@ using MatoMusic.Core.ViewModel;
 using MatoMusic.Core.Helper;
 using MatoMusic.Core.Services;
 using MatoMusic.Core.Interfaces;
+using MatoMusic.Core.Models.Entities;
 
 namespace MatoMusic.ViewModels
 {

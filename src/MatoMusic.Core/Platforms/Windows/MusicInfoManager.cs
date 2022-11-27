@@ -9,6 +9,7 @@ using Abp.Domain.Uow;
 using Abp.EntityFrameworkCore.Repositories;
 using MatoMusic.Core.Interfaces;
 using MatoMusic.Core.Models;
+using MatoMusic.Core.Models.Entities;
 using MatoMusic.Core.ViewModel;
 using MatoMusic.Infrastructure;
 using Microsoft.International.Converters.PinYinConverter;

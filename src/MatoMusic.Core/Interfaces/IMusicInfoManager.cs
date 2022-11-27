@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Abp.Dependency;
 using MatoMusic.Core.Models;
+using MatoMusic.Core.Models.Entities;
 using MatoMusic.Infrastructure;
 
 namespace MatoMusic.Core.Interfaces

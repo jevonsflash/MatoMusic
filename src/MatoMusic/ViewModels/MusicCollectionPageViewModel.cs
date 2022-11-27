@@ -53,10 +53,10 @@ namespace MatoMusic.ViewModel
                 Menus = new List<MenuCellInfo>()
                 {
 
-                    new MenuCellInfo() {Title = L("Play"), Code = "Play", Icon = "cdplay"},
-                    new MenuCellInfo() {Title = L("AddToQueue2"), Code = "AddMusicCollectionToQueue", Icon = "addtostack"},
-                    new MenuCellInfo() {Title = L("AddTo"), Code = "AddMusicCollectionToPlaylist", Icon = "addto"},
-                    new MenuCellInfo() {Title = L("AddToFavourite"), Code = "AddToFavourite", Icon = "favouriteadd"}
+                    new MenuCellInfo() {Title = L("Play"), Code = "Play", Icon = ""},
+                    new MenuCellInfo() {Title = L("AddToQueue2"), Code = "AddMusicCollectionToQueue", Icon = ""},
+                    new MenuCellInfo() {Title = L("AddTo"), Code = "AddMusicCollectionToPlaylist", Icon = ""},
+                    new MenuCellInfo() {Title = L("AddToFavourite"), Code = "AddToFavourite", Icon = ""}
 
                 };
             }

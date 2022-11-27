@@ -40,20 +40,20 @@ namespace MatoMusic
             var _mainMenuCellInfos = new List<MenuCellInfo>()
             {
                 new MenuCellInfo() {Title = L("Remove"), Code = "Delete", Icon = "remove"},
-                new MenuCellInfo() {Title = L("AddTo"), Code = "AddToPlaylist", Icon = "addto"},
-                new MenuCellInfo() {Title = L("PlayNext"), Code = "NextPlay", Icon = "playnext"},
-                //new MenuCellInfo() {Title = L("AddToQueue2"), Code = "AddToQueue", Icon = "addtostack"},
+                new MenuCellInfo() {Title = L("AddTo"), Code = "AddToPlaylist", Icon = ""},
+                new MenuCellInfo() {Title = L("PlayNext"), Code = "NextPlay", Icon = ""},
+                //new MenuCellInfo() {Title = L("AddToQueue2"), Code = "AddToQueue", Icon = ""},
                 new MenuCellInfo()
                 {
                     Title = (musicInfo as MusicInfo).Artist,
                     Code = "GoArtistPage",
-                    Icon = "microphone2"
+                    Icon = ""
                 },
                 new MenuCellInfo()
                 {
                     Title = (musicInfo as MusicInfo).AlbumTitle,
                     Code = "GoAlbumPage",
-                    Icon = "cd2"
+                    Icon = ""
                 },
 
 
@@ -80,7 +80,7 @@ namespace MatoMusic
 
         private async void Button_OnClicked(object sender, EventArgs e)
         {
-            await navigationService.GoPageAsync("LibraryPage");
+            await navigationService.GoPageAsync("LibraryMainPage");
         }
 
         private void FavouriteButton_OnClicked(object sender, EventArgs e)

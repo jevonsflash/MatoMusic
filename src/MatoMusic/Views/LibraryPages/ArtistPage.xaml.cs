@@ -71,10 +71,10 @@ namespace MatoMusic
             var _mainMenuCellInfos = new List<MenuCellInfo>()
             {
 
-                new MenuCellInfo() {Title = string.Format("{0}{1}",L("PlayThis"),L("Artists")), Code = "Play", Icon = "cdplay"},
-                new MenuCellInfo() {Title = L("AddToQueue2"), Code = "AddMusicCollectionToQueue", Icon = "addtostack"},
-                new MenuCellInfo() {Title = L("AddTo"), Code = "AddMusicCollectionToPlaylist", Icon = "addto"},
-                new MenuCellInfo() {Title = L("AddToFavourite"), Code = "AddToFavourite", Icon = "favouriteadd"}
+                new MenuCellInfo() {Title = string.Format("{0}{1}",L("PlayThis"),L("Artists")), Code = "Play", Icon = ""},
+                new MenuCellInfo() {Title = L("AddToQueue2"), Code = "AddMusicCollectionToQueue", Icon = ""},
+                new MenuCellInfo() {Title = L("AddTo"), Code = "AddMusicCollectionToPlaylist", Icon = ""},
+                new MenuCellInfo() {Title = L("AddToFavourite"), Code = "AddToFavourite", Icon = ""}
 
             };
             var musicInfo = (sender as BindableObject).BindingContext;
@@ -87,7 +87,7 @@ namespace MatoMusic
 
         private async void SearchButton_OnClicked(object sender, EventArgs e)
         {
-           await navigationService.GoPageAsync("SearchPage");
+           //await navigationService.GoPageAsync("SearchPage");
         }
 
     }

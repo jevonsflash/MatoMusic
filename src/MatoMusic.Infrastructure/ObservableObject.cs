@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace MatoMusic.Core
+namespace MatoMusic.Infrastructure
 {
     public class ObservableObject : INotifyPropertyChanged
     {

@@ -16,6 +16,7 @@ using Java.IO;
 using MatoMusic.Core.Helper;
 using MatoMusic.Core.Interfaces;
 using MatoMusic.Core.Models;
+using MatoMusic.Core.Models.Entities;
 using MatoMusic.Core.ViewModel;
 using MatoMusic.Infrastructure;
 using Microsoft.International.Converters.PinYinConverter;

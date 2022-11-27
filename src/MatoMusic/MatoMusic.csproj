@@ -49,6 +49,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\Images\cd2.png" />
+	  <None Remove="Resources\Images\headphone.png" />
+	  <None Remove="Resources\Images\microphone2.png" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <PackageReference Include="Abp" Version="7.4.0" />
 	  <PackageReference Include="Abp.AutoMapper" Version="7.4.0" />
 	  <PackageReference Include="Abp.Castle.Log4Net" Version="7.4.0" />

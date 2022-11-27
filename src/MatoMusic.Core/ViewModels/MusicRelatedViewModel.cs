@@ -28,16 +28,6 @@ namespace MatoMusic.Core.ViewModel
         public MusicRelatedService MusicRelatedService => MusicRelatedServiceLazy.Value;
 
         public event EventHandler OnMusicChanged;
-        public static class Properties
-        {
-            public const string CurrentMusic = "CurrentMusic";
-            public const string IsPlaying = "IsPlaying";
-            public const string CurrentTime = "CurrentTime";
-            public const string Duration = "Duration";
-            public const string Musics = "Musics";
-            public const string IsRepeatOne = "IsRepeatOne";
-            public const string IsShuffle = "IsShuffle";
-        }
 
         public MusicRelatedViewModel()
         {
@@ -171,20 +161,20 @@ namespace MatoMusic.Core.ViewModel
 
         private void DetailPageViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == Properties.CurrentMusic)
+            if (e.PropertyName == nameof(CurrentMusic))
             {
                 
                 OnMusicChanged?.Invoke(this, EventArgs.Empty);
                 RaiseCanPlayExecuteChanged();
             }
 
-            else if (e.PropertyName == Properties.IsShuffle)
+            else if (e.PropertyName == nameof(IsShuffle))
             {
                 this.SettingManager.ChangeSettingForApplication(CommonSettingNames.IsShuffle, this.IsShuffle.ToString());
 
             }
 
-            else if (e.PropertyName == Properties.IsRepeatOne)
+            else if (e.PropertyName == nameof(IsRepeatOne))
             {
                 this.SettingManager.ChangeSettingForApplication(CommonSettingNames.IsRepeatOne, this.IsRepeatOne.ToString());
             }

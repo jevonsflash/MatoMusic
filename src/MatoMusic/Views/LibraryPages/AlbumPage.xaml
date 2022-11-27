@@ -123,11 +123,6 @@
             </Grid>
 
         </Grid>
-        <mato:MusicMiniView
-          BindingContext="{Binding}"
-          HeightRequest="64"
-          VerticalOptions="EndAndExpand"
-          x:Name="MiniViewLayout"></mato:MusicMiniView>
     </Grid>
 
 </mato:ContentPageBase>

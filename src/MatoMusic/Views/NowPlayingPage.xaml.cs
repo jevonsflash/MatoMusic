@@ -77,18 +77,18 @@ namespace MatoMusic
             var musicInfo = (imageButton.BindingContext as MusicRelatedViewModel).CurrentMusic;
             var mainMenuCellInfos = new List<MenuCellInfo>()
             {
-                new MenuCellInfo() {Title = "添加到..", Code = "AddToPlaylist", Icon = "addto"},
+                new MenuCellInfo() {Title = "添加到..", Code = "AddToPlaylist", Icon = ""},
                 new MenuCellInfo()
                 {
                     Title = (musicInfo as MusicInfo).Artist,
                     Code = "GoArtistPage",
-                    Icon = "microphone2"
+                    Icon = ""
                 },
                 new MenuCellInfo()
                 {
                     Title = (musicInfo as MusicInfo).AlbumTitle,
                     Code = "GoAlbumPage",
-                    Icon = "cd2"
+                    Icon = ""
                 },
 
 
@@ -170,7 +170,7 @@ namespace MatoMusic
 
         private async void GoLibrary_OnClicked(object sender, EventArgs e)
         {
-            await navigationService.GoPageAsync("LibraryPage");
+            await navigationService.GoPageAsync("LibraryMainPage");
         }
 
         private void BindableObject_OnPropertyChanged(object sender, PropertyChangedEventArgs e)

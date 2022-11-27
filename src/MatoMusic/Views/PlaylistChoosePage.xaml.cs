@@ -2,10 +2,10 @@
 using Abp.Dependency;
 using CommunityToolkit.Maui.Views;
 using MatoMusic.Common;
-using MatoMusic.Core;
 using MatoMusic.Core.Helper;
 using MatoMusic.Core.Interfaces;
 using MatoMusic.Core.Models;
+using MatoMusic.Core.Models.Entities;
 using Microsoft.Maui.Controls;
 
 

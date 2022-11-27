@@ -17,8 +17,8 @@ namespace MatoMusic.ViewModels
     {
         public LibraryPageViewModel()
         {
-            PlayAllCommand = new Command(PlayAllAction, CanPlayAllExcute);
-            QueueAllCommand = new Command(QueueAllAction, CanPlayAllExcute);
+            PlayAllCommand = new Command(PlayAllAction);
+            QueueAllCommand = new Command(QueueAllAction);
             GoUriCommand = new Command(GoUrlAction, c => true);
             this.PropertyChanged += LibraryPageViewModel_PropertyChanged;
         }

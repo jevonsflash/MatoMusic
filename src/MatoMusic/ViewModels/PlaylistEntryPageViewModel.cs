@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using MatoMusic.Core;
 using MatoMusic.Core.Models;
+using MatoMusic.Core.Models.Entities;
 
 namespace MatoMusic.ViewModel
 {

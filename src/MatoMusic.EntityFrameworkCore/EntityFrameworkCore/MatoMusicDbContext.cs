@@ -1,8 +1,7 @@
 ﻿using Abp.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using MatoMusic.Core;
 using MatoMusic.Core.Theme;
-
+using MatoMusic.Core.Models.Entities;
 
 namespace MatoMusic.EntityFrameworkCore
 {

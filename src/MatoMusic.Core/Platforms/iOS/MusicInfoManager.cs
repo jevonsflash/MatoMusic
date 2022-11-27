@@ -15,6 +15,7 @@ using Microsoft.Maui.Controls;
 using MatoMusic.Core.Models;
 using MatoMusic.Core.ViewModel;
 using MatoMusic.Core.Interfaces;
+using MatoMusic.Core.Models.Entities;
 
 namespace MatoMusic.Core
 {

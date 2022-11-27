@@ -1,4 +1,5 @@
 ﻿using Abp.AutoMapper;
+using MatoMusic.Core.Models.Entities;
 using Microsoft.Maui.Controls;
 
 namespace MatoMusic.Core.Models

@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MatoMusic.Core
+namespace MatoMusic.Core.Models.Entities
 {
     public class PlaylistItem : FullAuditedEntity<long>
     {

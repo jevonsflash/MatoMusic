@@ -55,13 +55,13 @@ namespace MatoMusic
                 {
                     Title = (musicInfo as MusicInfo).Artist,
                     Code = "GoArtistPage",
-                    Icon = "microphone2"
+                    Icon = ""
                 },
                 new MenuCellInfo()
                 {
                     Title = (musicInfo as MusicInfo).AlbumTitle,
                     Code = "GoAlbumPage",
-                    Icon = "cd2"
+                    Icon = ""
                 },
 
 

@@ -9,6 +9,7 @@ using MatoMusic.Core.Models;
 using MatoMusic.Infrastructure;
 using static Microsoft.Maui.ApplicationModel.Permissions;
 using System.Linq;
+using MatoMusic.Core.Models.Entities;
 
 namespace MatoMusic.Core
 {

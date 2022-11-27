@@ -4,9 +4,9 @@
              x:Class="MatoMusic.LibraryMainPage"
              xmlns:core="clr-namespace:MatoMusic.Core;assembly=MatoMusic.Core">
     <TabBar>
-        <ShellContent  Title="歌曲" Icon="tab_map.png"  Route="MusicPage" x:Name="MusicPageShellContent"/>
-        <ShellContent  Title="艺术家" Icon="tab_map.png" Route="ArtistPage" x:Name="ArtistPageShellContent"/>
-        <ShellContent  Title="专辑" Icon="tab_map.png" Route="AlbumPage"  x:Name="AlbumPageShellContent"/>
+        <ShellContent  Title="歌曲" Icon="headphone.png"  Route="MusicPage" x:Name="MusicPageShellContent"/>
+        <ShellContent  Title="艺术家" Icon="microphone2.png" Route="ArtistPage" x:Name="ArtistPageShellContent"/>
+        <ShellContent  Title="专辑" Icon="cd2.png" Route="AlbumPage"  x:Name="AlbumPageShellContent"/>
 
     </TabBar>
 </Shell>
