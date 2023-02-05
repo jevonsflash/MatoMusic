@@ -139,9 +139,9 @@
 
             <Button Command="{Binding FavouriteCommand}"      
                     x:Name="FavouriteButton"
-                    TextColor="{Binding CurrentMusic.IsFavourite,Converter={StaticResource Bool2StringConverter},ConverterParameter=Red|Gray}"
                     FontFamily="FontAwesome"
-                    Text=""
+                    Text="{Binding CurrentMusic.IsFavourite,Converter={StaticResource Bool2StringConverter},ConverterParameter=|}"
+                    Style="{StaticResource TextButton}"
                     Grid.Column="0" 
                     HorizontalOptions="Center" />
             <StackLayout Grid.Column="1" HorizontalOptions="Center">
@@ -162,6 +162,7 @@
                 x:Name="MoreButton"
                 FontFamily="FontAwesome"
                 Text=""
+                Style="{StaticResource TextButton}"
                 Clicked="MoreButton_OnClicked"
                 Grid.Column="2" 
                 HorizontalOptions="Center" />
@@ -183,11 +184,12 @@
                                 HorizontalOptions="End" />
             </StackLayout>
             <Slider                       
-                        Maximum="{Binding Duration,Converter={StaticResource SliderMaxValueConverter}}"
-                            Minimum="0.0"
-                            IsEnabled="{Binding Canplay}"
-                            ValueChanged="OnValueChanged"
-                            Value="{Binding CurrentTime,Mode=TwoWay} ">
+                Maximum="{Binding Duration,Converter={StaticResource SliderMaxValueConverter}}"
+                Minimum="0.0"              
+                MinimumTrackColor="{DynamicResource PhoneAccentBrush}"
+                IsEnabled="{Binding Canplay}"
+                ValueChanged="OnValueChanged"
+                Value="{Binding CurrentTime,Mode=TwoWay} ">
             </Slider>
         </Grid>
         <!--播放控制按钮-->
@@ -226,6 +228,8 @@
                     VerticalOptions="Center"  
                     Grid.Column="1"
                     Command="{Binding PlayCommand}" 
+                    Style="{StaticResource PrimaryButton}"
+
                     FontFamily="FontAwesome"
                     FontSize="{StaticResource StandOutBodyFontSize}"
                     Text="{Binding IsPlaying,Converter={StaticResource Bool2StringConverter},ConverterParameter=|} "/>

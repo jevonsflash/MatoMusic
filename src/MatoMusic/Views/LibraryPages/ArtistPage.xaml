@@ -49,7 +49,7 @@
                                         <Image
                                                               x:Name="FavouriteButton"
                                                               HeightRequest="54"
-                                                              WidthRequest="54"
+                                                              WidthRequest="54"                                           
                                                         Source="{Binding AlbumArt,Converter={StaticResource AlbumArtConverter}}"
                                                               Grid.Column="0"
                                                               HorizontalOptions="Center" />
@@ -66,14 +66,10 @@
                                          Margin="0,-5,0,0">
                                                 <Label
                                   Text="{Binding Count}"
-                                  HorizontalOptions="StartAndExpand"
-                                  HorizontalTextAlignment="Center"
                                   FontSize="{StaticResource BodyFontSize}"
                                   TextColor="{DynamicResource PhoneChromeBrush}" />
                                                 <Label
                                   Text="首"
-                                  HorizontalOptions="StartAndExpand"
-                                  HorizontalTextAlignment="Center"
                                   FontSize="{StaticResource BodyFontSize}"
                                   TextColor="{DynamicResource PhoneChromeBrush}" />
                                             </StackLayout>
@@ -83,6 +79,7 @@
                                                           HeightRequest="64"
                                                           WidthRequest="48"
                                                           Text=""
+                                                          Style="{StaticResource TextButton}"
                                                           Clicked="ArtistMoreButton_OnClicked"
                                                           FontFamily="FontAwesome"
                                                           Grid.Column="2"

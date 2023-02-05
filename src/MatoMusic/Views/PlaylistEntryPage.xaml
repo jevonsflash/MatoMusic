@@ -81,6 +81,7 @@
                                                     HeightRequest="64"
                                                     WidthRequest="48"
                                                     Text=""
+                                                    Style="{StaticResource TextButton}"
                                                     Clicked="MusicMoreButton_OnClicked"
                                                     FontFamily="FontAwesome"
                                                     Grid.Column="2"

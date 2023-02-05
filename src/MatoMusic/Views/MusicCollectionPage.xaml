@@ -105,14 +105,15 @@
                                                          TextColor="#B3B3B3" />
                                 </StackLayout>
                                 <Button
-                                                    x:Name="MusicMoreButton"
-                                                    HeightRequest="64"
-                                                    WidthRequest="48"
-                                                    Text=""
-                                                    Clicked="MusicMoreButton_OnClicked"
-                                                    FontFamily="FontAwesome"
-                                                    Grid.Column="2"
-                                                    HorizontalOptions="Center" />
+                                    x:Name="MusicMoreButton"
+                                    HeightRequest="64"
+                                    WidthRequest="48"
+                                    Style="{StaticResource TextButton}"
+                                    Text=""
+                                    Clicked="MusicMoreButton_OnClicked"
+                                    FontFamily="FontAwesome"
+                                    Grid.Column="2"
+                                    HorizontalOptions="Center" />
                             </Grid>
                         </ViewCell>
                     </DataTemplate>

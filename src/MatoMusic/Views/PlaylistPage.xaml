@@ -44,6 +44,7 @@
                                                     HeightRequest="64"
                                                     WidthRequest="48"
                                                     Text=""
+                                                    Style="{StaticResource TextButton}"
                                                     Clicked="AlbumMoreButton_OnClicked"
                                                     FontFamily="FontAwesome"
                                                     Grid.Column="2"

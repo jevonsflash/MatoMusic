@@ -66,14 +66,10 @@
                                          Margin="0,-5,0,0">
                                                 <Label
                                     Text="{Binding Count}"
-                                    HorizontalOptions="StartAndExpand"
-                                    HorizontalTextAlignment="Center"
                                     FontSize="{StaticResource BodyFontSize}"
                                     TextColor="{DynamicResource PhoneChromeBrush}" />
                                                 <Label
                                   Text="首"
-                                  HorizontalOptions="StartAndExpand"
-                                  HorizontalTextAlignment="Center"
                                   FontSize="{StaticResource BodyFontSize}"
                                   TextColor="{DynamicResource PhoneChromeBrush}" />
                                             </StackLayout>
@@ -82,7 +78,8 @@
                                                           x:Name="AlbumMoreButton"
                                                           HeightRequest="64"
                                                           WidthRequest="48"
-                                                          Text=""
+                                                          Text=""                                  
+                                                          Style="{StaticResource TextButton}"
                                                           Clicked="AlbumMoreButton_OnClicked"
                                                           FontFamily="FontAwesome"
                                                           Grid.Column="2"

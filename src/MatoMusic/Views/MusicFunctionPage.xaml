@@ -26,8 +26,12 @@
                         FontFamily="FontAwesome"
                         Margin="0"
                         FontSize="{StaticResource StandOutBodyFontSize}"
-                        TextColor="{Binding MusicInfo.IsFavourite,Converter={StaticResource Bool2StringConverter},ConverterParameter=Red|Gray}"
-                        Text=""></Button>
+                        Text="{Binding IsFavourite,Converter={StaticResource Bool2StringConverter},ConverterParameter=|}"
+                        Style="{StaticResource TextButton}"
+                        >
+                    
+                    
+                </Button>
             </Grid>
         </Grid>
         <ListView ItemsSource="{Binding  MainMenuCellInfos}"

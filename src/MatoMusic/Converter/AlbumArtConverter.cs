@@ -12,7 +12,7 @@ namespace MatoMusic.Converter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return (value as ImageSource) == null ? "AlbumArtPlaceholder" : value;
+            return (value as ImageSource) == null ? "albumart_placeholder.png" : value;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

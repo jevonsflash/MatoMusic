@@ -2,23 +2,36 @@
 <Shell xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MatoMusic.MainPage"
-            FlyoutBackgroundColor="Teal">
+            FlyoutBackgroundColor="{DynamicResource PhoneAccentBrush}">
     <Shell.FlyoutHeaderTemplate>
         <DataTemplate>
-            <BoxView HeightRequest="68" BackgroundColor="Green"/>
+            <StackLayout Orientation="Vertical">
+                <Label 
+                    Text="MATO_MUSIC" 
+                    FontSize="50"
+                    FontAttributes="Bold"
+                    TextColor="Teal"
+                    Margin="0,20"
+                    HorizontalOptions="Center"></Label>
+
+
+
+            </StackLayout>
         </DataTemplate>
     </Shell.FlyoutHeaderTemplate>
-    <Shell.MenuItemTemplate>
+    <Shell.FlyoutFooterTemplate>
         <DataTemplate>
+            <StackLayout Orientation="Vertical">
+                <Image Source="dotnet_bot.svg"></Image>
+                <Label Text="This app is build with .NET MAUI"
+                    TextColor="Teal"
+                    Margin="0,20"
+                    HorizontalOptions="Center">
 
+                </Label>
+            </StackLayout>
         </DataTemplate>
-    </Shell.MenuItemTemplate>
-    <!--<Shell.FlyoutFooterTemplate>
-                <DataTemplate>
-                    <BoxView HeightRequest="68" BackgroundColor="Red"/>
-                </DataTemplate>
-            </Shell.FlyoutFooterTemplate>-->
-
+    </Shell.FlyoutFooterTemplate>
     <!-- Desktop/Tablet-->
     <FlyoutItem Route="NowPlayingPage" Title="正在播放" Icon="tab_home.png">
         <ShellContent x:Name="NowPlayingPageShellContent"/>

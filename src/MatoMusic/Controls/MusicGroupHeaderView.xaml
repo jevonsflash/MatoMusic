@@ -8,15 +8,16 @@
             <ColumnDefinition>
             </ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <BoxView Color="{DynamicResource PhoneContrastBackgroundBrush}"
+        <BoxView Color="{DynamicResource PhoneAccentBrush}"
                      Margin="0,5"
                      WidthRequest="54">
         </BoxView>
         <Label VerticalTextAlignment="Center"
-                   HorizontalTextAlignment="Center"
-                   Text="{Binding Title}"
-                   TextColor="{DynamicResource PhoneForegroundBrush}"
-                   FontSize="{StaticResource BodyFontSize}">
+               HorizontalTextAlignment="Center"
+               Text="{Binding Title}"
+               FontAttributes="Bold"
+               TextColor="{DynamicResource PhoneForegroundBrush}"
+               FontSize="{StaticResource BodyFontSize}">
         </Label>
     </Grid>
 

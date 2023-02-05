@@ -8,7 +8,7 @@
     <Color x:Key="PhoneForegroundBrush">White</Color>
     <Color x:Key="PhoneContrastBackgroundBrush">#222326</Color>
     <Color x:Key="PhoneContrastForegroundBrush">#DFD8F7</Color>
-    <Color x:Key="PhoneAccentBrush">#512bdf</Color>
+    <Color x:Key="PhoneAccentBrush">Teal</Color>
     <Color x:Key="PhoneChromeBrush">#A5A5A5</Color>
     <Color x:Key="White">#FFFFFF</Color>
     <Color x:Key="Black">#000000</Color>

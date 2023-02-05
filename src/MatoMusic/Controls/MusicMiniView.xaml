@@ -67,7 +67,7 @@
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Button Command="{Binding PlayCommand}"
-                    Style="{StaticResource PrimaryButton}"
+                    Style="{StaticResource TextButton}"
                     FontFamily="FontAwesome"
                     Margin="0"
                     FontSize="{StaticResource BodyFontSize}"
@@ -77,7 +77,7 @@
             <Button Command="{Binding NextCommand}"
                     Grid.Column="1"
                     Margin="0"
-                    Style="{StaticResource PrimaryButton}"
+                    Style="{StaticResource TextButton}"
                     FontFamily="FontAwesome"
                     FontSize="{StaticResource BodyFontSize}"
                     Text="">

@@ -48,11 +48,12 @@
 
 
                                 <Button x:Name="FavouriteButton"
-                                        Text=""
+                                        Text="{Binding IsFavourite,Converter={StaticResource Bool2StringConverter},ConverterParameter=|}"
+                                        Style="{StaticResource TextButton}"
+
                                         FontFamily="FontAwesome"
                                         HeightRequest="64" 
                                         WidthRequest="48"
-                                        TextColor="{Binding IsFavourite,Converter={StaticResource Bool2StringConverter},ConverterParameter=Red|Gray}"
                                         Clicked="FavouriteButton_OnClicked"
                                         Grid.Column="0" 
                                         HorizontalOptions="Center" />
@@ -77,6 +78,7 @@
                                         HeightRequest="64" 
                                         WidthRequest="48"
                                         Text=""
+                                        Style="{StaticResource TextButton}"
                                         Clicked="MusicMoreButton_OnClicked"
                                         FontFamily="FontAwesome"
                                         Grid.Column="2" 
