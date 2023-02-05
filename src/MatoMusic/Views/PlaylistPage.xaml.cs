@@ -136,7 +136,7 @@ namespace MatoMusic
             var _mainMenuCellInfos = new List<MenuCellInfo>()
             {
 
-                new MenuCellInfo() {Title = L("Remove"), Code = "Delete", Icon = "remove"},
+                new MenuCellInfo() {Title = L("Remove"), Code = "Delete", Icon = ""},
                 new MenuCellInfo() {Title = L("Rename"), Code = "Rename", Icon = "rename"},
                 new MenuCellInfo() {Title = string.Format("{0}{1}",L("PlayThis"),L("Albums")), Code = "Play", Icon = ""},
                 new MenuCellInfo() {Title = L("AddToQueue2"), Code = "AddMusicCollectionToQueue", Icon = ""},

@@ -14,40 +14,13 @@ using MatoMusic.Core.Interfaces;
 
 namespace MatoMusic.Core.ViewModel
 {
-    public abstract class MusicRelatedViewModel : ViewModelBase
+    public abstract class MusicRelatedViewModel : ViewModelBase, ISingletonDependency
     {
         private bool _isFastSeeking = false;
-        private readonly Lazy<IMusicControlService> MusicControlServiceLazy;
-        private readonly Lazy<MusicRelatedService> MusicRelatedServiceLazy;
-        private readonly Lazy<IMusicInfoManager> MusicInfoManagerLazy;
-
-        public IMusicInfoManager MusicInfoManager => MusicInfoManagerLazy.Value;
-
-        public IMusicControlService MusicControlService => MusicControlServiceLazy.Value;
-
-        public MusicRelatedService MusicRelatedService => MusicRelatedServiceLazy.Value;
-
         public event EventHandler OnMusicChanged;
 
         public MusicRelatedViewModel()
         {
-            this.MusicInfoManagerLazy=new Lazy<IMusicInfoManager>(() => IocManager.Instance.Resolve<IMusicInfoManager>());
-
-
-            this.MusicControlServiceLazy=new Lazy<IMusicControlService>(() =>
-            {
-                var _musicControlService = IocManager.Instance.Resolve<IMusicControlService>();
-                _musicControlService.OnPlayFinished += MusicControlService_OnMusicChanged;
-                return _musicControlService;
-
-            });
-            this.MusicRelatedServiceLazy=new Lazy<MusicRelatedService>(() =>
-            {
-                var _musicRelatedService = IocManager.Instance.Resolve<MusicRelatedService>();
-                _musicRelatedService.PropertyChanged += this.Delegate_PropertyChanged;
-                return _musicRelatedService;
-            });
-
             this.PlayCommand = new Command(PlayAction, CanPlayExcute);
             this.PreCommand = new Command(PreAction, CanPlayExcute);
             this.NextCommand = new Command(NextAction, CanPlayExcute);
@@ -66,7 +39,12 @@ namespace MatoMusic.Core.ViewModel
         public MusicInfo CurrentMusic
         {
             get => MusicRelatedService.CurrentMusic;
-            set => MusicRelatedService.CurrentMusic = value;
+            set
+            {
+                MusicRelatedService.CurrentMusic = value;
+                MusicControlService.Play(MusicRelatedService.CurrentMusic);
+
+            }
         }
 
         public MusicInfo NextMusic
@@ -122,7 +100,7 @@ namespace MatoMusic.Core.ViewModel
             set => MusicRelatedService.Duration = value;
         }
 
-        public async Task RebuildMusicInfos(Action callback=null)
+        public async Task RebuildMusicInfos(Action callback = null)
         {
             await this.MusicControlService.RebuildMusicInfos(callback);
         }
@@ -163,7 +141,7 @@ namespace MatoMusic.Core.ViewModel
         {
             if (e.PropertyName == nameof(CurrentMusic))
             {
-                
+
                 OnMusicChanged?.Invoke(this, EventArgs.Empty);
                 RaiseCanPlayExecuteChanged();
             }
@@ -326,7 +304,52 @@ namespace MatoMusic.Core.ViewModel
 
 
         #endregion
+        private IMusicInfoManager _musicInfoManager;
 
+        public IMusicInfoManager MusicInfoManager
+        {
+            get
+            {
+                if (_musicInfoManager==null)
+                {
+                    _musicInfoManager=IocManager.Instance.Resolve<IMusicInfoManager>();
+                }
+                return _musicInfoManager;
+            }
+
+        }
+
+        private IMusicControlService _musicControlService;
+
+        public IMusicControlService MusicControlService
+        {
+            get
+            {
+                if (_musicControlService==null)
+                {
+                    _musicControlService = IocManager.Instance.Resolve<IMusicControlService>();
+                    _musicControlService.OnPlayFinished += MusicControlService_OnMusicChanged;
+                }
+                return _musicControlService;
+            }
+
+        }
+
+        private MusicRelatedService _musicRelatedService;
+
+        public MusicRelatedService MusicRelatedService
+        {
+            get
+            {
+                if (_musicRelatedService==null)
+                {
+                    _musicRelatedService = IocManager.Instance.Resolve<MusicRelatedService>();
+                    _musicRelatedService.PropertyChanged += this.Delegate_PropertyChanged;
+                }
+                return _musicRelatedService;
+            }
+
+        }
         public Command PlayCommand { get; set; }
 
         public Command PreCommand { get; set; }

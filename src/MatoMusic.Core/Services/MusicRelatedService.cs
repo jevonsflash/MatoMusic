@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Abp.Dependency;
 using MatoMusic.Core.Helper;
 using MatoMusic.Core.Interfaces;
 using MatoMusic.Core.Settings;
@@ -11,7 +12,7 @@ using Microsoft.Maui.Controls;
 
 namespace MatoMusic.Core.Services
 {
-    public class MusicRelatedService : ViewModelBase
+    public class MusicRelatedService : ViewModelBase, ISingletonDependency
     {
         public event EventHandler OnBuildMusicInfosFinished;
         private readonly IMusicControlService musicControlService;
@@ -36,7 +37,6 @@ namespace MatoMusic.Core.Services
 
                 }
                 await musicControlService.InitPlayer(CurrentMusic);
-                musicControlService.Play(CurrentMusic);
                 DoUpdate();
                 InitPreviewAndNextMusic();
                 Duration = GetPlatformSpecificTime(musicControlService.Duration());

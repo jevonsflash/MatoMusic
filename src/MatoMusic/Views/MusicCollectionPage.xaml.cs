@@ -39,6 +39,8 @@ namespace MatoMusic
             {
                 MusicInfoManager.InsertToEndQueueEntry(musicInfo);
                 MusicRelatedService.CurrentMusic = musicInfo;
+                MusicControlService.Play(musicInfo);
+
                 (sender as ListView).SelectedItem = null;
 
             }
@@ -94,6 +96,8 @@ namespace MatoMusic
                     {
                         var CurrentMusic = await MusicInfoManager.GetQueueEntry();
                         MusicRelatedService.CurrentMusic = CurrentMusic[0];
+                        MusicControlService.Play(MusicRelatedService.CurrentMusic);
+
                         CommonHelper.ShowMsg("成功添加并播放");
 
                     }

@@ -9,26 +9,31 @@ using System.Collections.ObjectModel;
 using MatoMusic.Core;
 using MatoMusic.Core.Models;
 using MatoMusic.Core.Models.Entities;
+using Abp.Dependency;
+using MatoMusic.Core.Interfaces;
 
 namespace MatoMusic.ViewModel
 {
-    public class PlaylistEntryPageViewModel : MusicCollectionPageViewModel
+    public class PlaylistEntryPageViewModel : MusicCollectionPageViewModel, ITransientDependency
     {
-
-
         public PlaylistEntryPageViewModel(PlaylistInfo playlist) : base(playlist)
         {
             MusicsCollectionInfo = playlist;
-            (MusicsCollectionInfo.Musics as ObservableCollection<MusicInfo>).CollectionChanged += Musics_CollectionChanged;
-            this.PropertyChanged += PlaylistEntryPageViewModel_PropertyChanged;
+            Init();
 
         }
         public PlaylistEntryPageViewModel(PlaylistInfo playlist, List<MenuCellInfo> menus) : base(playlist, menus)
         {
             MusicsCollectionInfo = playlist;
-            (MusicsCollectionInfo.Musics as ObservableCollection<MusicInfo>).CollectionChanged += Musics_CollectionChanged;
-            this.PropertyChanged += PlaylistEntryPageViewModel_PropertyChanged;
+            Init();
+        }
+        public async void Init()
+        {
 
+            var musics = await MusicInfoManager.GetPlaylistEntry(MusicsCollectionInfo.Id);
+            MusicsCollectionInfo.Musics=new ObservableCollection<MusicInfo>(musics);
+            MusicsCollectionInfo.Musics.CollectionChanged += Musics_CollectionChanged;
+            this.PropertyChanged += PlaylistEntryPageViewModel_PropertyChanged;
         }
 
         private async void PlaylistEntryPageViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -63,5 +68,8 @@ namespace MatoMusic.ViewModel
 
 
         }
+
+        public IMusicInfoManager MusicInfoManager => IocManager.Instance.Resolve<IMusicInfoManager>();
+
     }
 }

@@ -30,14 +30,6 @@ namespace MatoMusic.Core.Models.Entities
 
         public bool IsRemovable { get; set; }
 
-
-        /* 项目“MatoMusic.Core (net6.0-windows10.0.19041)”的未合并的更改
-        在此之前:
-                public ICollection<PlaylistItem.PlaylistItem> PlaylistItems { get; set; }
-        在此之后:
-                public ICollection<PlaylistItem> PlaylistItems { get; set; }
-        */
         public ICollection<PlaylistItem> PlaylistItems { get; set; }
-
     }
 }

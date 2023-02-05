@@ -12,7 +12,6 @@
                                            ItemsSource="{Binding Musics,Mode=TwoWay}">
                 <ListView.Header>
                     <StackLayout>
-                        <BoxView HeightRequest="76"></BoxView>
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition></RowDefinition>
@@ -98,14 +97,11 @@
             </ListView>
         </Grid>
 
-        <mato:MusicMiniView   
-                Grid.Row="0" 
-                BindingContext="{Binding MusicRelatedService}"
+        <mato:MusicMiniView  
                 HeightRequest="64" 
                 VerticalOptions="EndAndExpand"
                 x:Name="MiniViewLayout"></mato:MusicMiniView>
-        <Grid HeightRequest="48"  
-                  Grid.Row="0" 
+        <Grid HeightRequest="48" 
                   Margin="0,0,0,64"
                   VerticalOptions="EndAndExpand" >
             <BoxView BackgroundColor="Transparent"                  
@@ -113,7 +109,8 @@
             </BoxView>
         </Grid>
         <StackLayout  Grid.Row="0" 
-                          Margin="0,0,0,54"
+                          Margin="0,0,0,64"
+                      HeightRequest="48"
                           Orientation="Horizontal"
                           VerticalOptions="EndAndExpand"
                           HorizontalOptions="EndAndExpand">

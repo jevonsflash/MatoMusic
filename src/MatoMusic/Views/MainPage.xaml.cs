@@ -26,11 +26,17 @@ public partial class MainPage : Shell, ITransientDependency
         var nowPlayingPage = iocManager.Resolve<NowPlayingPage>();
         var queuePage = iocManager.Resolve<QueuePage>();
         var playlistPage = iocManager.Resolve<PlaylistPage>();
-        var libraryMainPage = iocManager.Resolve<LibraryMainPage>();
         this.NowPlayingPageShellContent.Content = nowPlayingPage;
         this.QueuePageShellContent.Content = queuePage;
-        this.LibraryMainPageShellContent.Content = libraryMainPage;
         this.PlaylistPageShellContent.Content = playlistPage;
+
+        var musicPage = iocManager.Resolve<MusicPage>();
+        var albumPage = iocManager.Resolve<AlbumPage>();
+        var artistPage = iocManager.Resolve<ArtistPage>();
+
+        this.MusicPageShellContent.Content = musicPage;
+        this.ArtistPageShellContent.Content = artistPage;
+        this.AlbumPageShellContent.Content = albumPage;
     }
 
 }

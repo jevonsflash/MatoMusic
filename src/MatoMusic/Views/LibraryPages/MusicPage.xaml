@@ -34,14 +34,6 @@
                                         ItemsSource="{Binding AGMusics.Root,Mode=TwoWay}"
                                         ItemSelected="MusicListView_OnItemSelected"
                                         SelectedItem="{Binding CurrentMusic,Mode=TwoWay}">
-                        <ListView.Header>
-                            <Button  HeightRequest="44"
-                             Text="搜索"
-                             Clicked="SearchButton_OnClicked"
-                            ></Button>
-
-                        </ListView.Header>
-
                         <ListView.GroupHeaderTemplate>
                             <DataTemplate>
                                 <ViewCell>

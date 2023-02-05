@@ -37,19 +37,7 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <Image  Margin="-5,0"
-                                                    Aspect="AspectFill"
-                                                   Grid.Column="0" 
-                                                   Grid.ColumnSpan="3"
-                                       IsVisible="{Binding IsPlaying}"
-                                       Source="{Binding AlbumArt}">
-
-                                </Image>
-                                <BoxView Grid.ColumnSpan="3"
-                                         Grid.Column="0" 
-                                         BackgroundColor="#6F000000"
-                                         IsVisible="{Binding IsPlaying}">
-                                </BoxView>
+                               
                                 <mato:PlayingMotionView 
                                     Grid.Column="1" 
                                     HorizontalOptions="Start"  
@@ -165,10 +153,10 @@
 
 
         <mato:MusicMiniView  
-            BindingContext="{Binding}"
                 HeightRequest="64" 
-              VerticalOptions="EndAndExpand"
-                     x:Name="MiniViewLayout"></mato:MusicMiniView>
+                VerticalOptions="EndAndExpand"
+                x:Name="MiniViewLayout"></mato:MusicMiniView>
+
         <Grid HeightRequest="48" 
               Margin="0,0,0,64"
               VerticalOptions="EndAndExpand" >
@@ -177,19 +165,7 @@
             </BoxView>
         </Grid>
         <StackLayout  Grid.Row="0" 
-                      Margin="0,0,0,54"
-                      Orientation="Horizontal"
-                      VerticalOptions="EndAndExpand"
-                      HorizontalOptions="Start">
-            <Button Command="{Binding FlyBackCommand}"
-                    Text="定位"
-                    x:Name="FlyBackButton">
-
-            </Button>
-
-        </StackLayout>
-        <StackLayout  Grid.Row="0" 
-                      Margin="0,0,0,54"
+                      Margin="0,0,0,64"
                       Orientation="Horizontal"
                       VerticalOptions="EndAndExpand"
                       HorizontalOptions="End">

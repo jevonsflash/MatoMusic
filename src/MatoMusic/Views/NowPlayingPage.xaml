@@ -1,7 +1,8 @@
 ﻿<mato:ContentPageBase xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:mato="clr-namespace:MatoMusic;assembly=MatoMusic"
-             x:Class="MatoMusic.NowPlayingPage">
+             xmlns:core="clr-namespace:MatoMusic.Core;assembly=MatoMusic.Core"
+    x:Class="MatoMusic.NowPlayingPage">
     <Grid RowSpacing="0">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -10,16 +11,9 @@
             <RowDefinition Height="128" />
             <RowDefinition Height="38" />
         </Grid.RowDefinitions>
-        <Grid Grid.RowSpan="5">
-            <Image HeightRequest="800" 
-                                       Scale="1.2"
-                                   x:Name="BackgroundAlbumArtImage"
-                                   Aspect="AspectFill"
-                                   Source="{Binding  MusicRelatedService.CurrentMusic.AlbumArt}">
-            </Image>
-        </Grid>
+
         <Grid Grid.Row="0"
-                      IsVisible="{Binding Canplay}">
+              IsVisible="{Binding Canplay}">
             <Grid IsVisible="{Binding IsLrcPanel ,Converter={StaticResource True2FalseConverter}}" >
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -32,20 +26,20 @@
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="1">
                         <Image HorizontalOptions="Fill"
-                                               x:Name="PreAlbumArt"
-                                                HeightRequest="{Binding Source={x:Reference Name=RefBox}, Path=Height}"
-                                                   WidthRequest="{Binding Source={x:Reference Name=RefBox}, Path=Width}"
-                                                   VerticalOptions="Fill"
-                                       TranslationX="-320"
-                                       Source="{Binding PreviewMusic.AlbumArt,Converter={StaticResource AlbumArtConverter}}">
+                               x:Name="PreAlbumArt"
+                               HeightRequest="{Binding Source={x:Reference Name=RefBox}, Path=Height}"
+                               WidthRequest="{Binding Source={x:Reference Name=RefBox}, Path=Width}"
+                               VerticalOptions="Fill"
+                               TranslationX="-320"
+                               Source="{Binding PreviewMusic.AlbumArt,Converter={StaticResource AlbumArtConverter}}">
                         </Image>
 
                         <Image 
-                                           HeightRequest="{Binding Source={x:Reference Name=RefBox}, Path=Height}"
-                                                   WidthRequest="{Binding Source={x:Reference Name=RefBox}, Path=Width}"
-                                       HorizontalOptions="Fill"
-                                       VerticalOptions="Fill"
-                                       Source="{Binding CurrentMusic.AlbumArt,Converter={StaticResource AlbumArtConverter}}">
+                            HeightRequest="{Binding Source={x:Reference Name=RefBox}, Path=Height}"
+                            WidthRequest="{Binding Source={x:Reference Name=RefBox}, Path=Width}"
+                            HorizontalOptions="Fill"
+                            VerticalOptions="Fill"
+                            Source="{Binding CurrentMusic.AlbumArt,Converter={StaticResource AlbumArtConverter}}">
                             <Image.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding SwitchPannelCommand}"></TapGestureRecognizer>
                             </Image.GestureRecognizers>
@@ -53,43 +47,20 @@
 
                         <Image 
                              x:Name="NextAlbumArt"
-                                    HeightRequest="260"
-                                    WidthRequest="260"
-                                       HorizontalOptions="Fill"
-                                       VerticalOptions="Fill"
-                                       TranslationX="320"                           
-                                       Source="{Binding NextMusic.AlbumArt,Converter={StaticResource AlbumArtConverter}}">
+                             HeightRequest="{Binding Source={x:Reference Name=RefBox}, Path=Height}"
+                             WidthRequest="{Binding Source={x:Reference Name=RefBox}, Path=Width}"
+                             HorizontalOptions="Fill"
+                             VerticalOptions="Fill"
+                             TranslationX="320"                           
+                             Source="{Binding NextMusic.AlbumArt,Converter={StaticResource AlbumArtConverter}}">
                         </Image>
 
-                     
+
                     </Grid>
                     <Grid Grid.Column="1" Margin="11" x:Name="RefBox" ></Grid>
 
                 </Grid>
                 <!--<Button Command="{Binding SwitchPannelCommand}"></Button>-->
-            </Grid>
-            <Grid IsVisible="{Binding IsLrcPanel}">
-                <!--<view:LyricView CurrentMusicInfo="{Binding CurrentMusic}"
-                                        IsVisible="{Binding IsLrcPanel}"
-                                        PropertyChanged="BindableObject_OnPropertyChanged"
-                                    OnClosed="LyricView_OnOnClosed"
-                                    ElapsedTime="{Binding CurrentTime}"></view:LyricView>-->
-                <Grid 
-                            HeightRequest="32" 
-                            VerticalOptions="StartAndExpand" >
-                    <BoxView 
-                                BackgroundColor="Transparent"                  
-                                x:Name="ButtonLayout">
-                    </BoxView>
-                </Grid>
-                <Grid  Grid.Row="0" 
-                                  VerticalOptions="StartAndExpand"
-                                  HorizontalOptions="CenterAndExpand">
-                    <Button Command="{Binding SwitchPannelCommand}"
-                                    HeightRequest="32"
-                                    Margin="0"
-                                    Text="关闭歌词"></Button>
-                </Grid>
             </Grid>
         </Grid>
         <Grid 
@@ -105,7 +76,7 @@
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
             <Label Text="目前您的队列是空的，您可以："
-                       FontSize="{StaticResource BodyFontSize}">
+                   FontSize="{StaticResource BodyFontSize}">
             </Label>
             <StackLayout 
                     Grid.Row="1"
@@ -117,35 +88,39 @@
                            FontSize="{StaticResource BodyFontSize}"  
                            FontFamily="FontAwesome">
                 </Label>
-                <Button          HorizontalOptions="Center"
-                                     VerticalOptions="Center"
-                                     Command="{Binding PlayAllCommand}"
-                                     Text="随机播放全部" 
-                                     FontSize="{StaticResource BodyFontSize}">
+                <Button         
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                    Command="{Binding PlayAllCommand}"
+                    Text="随机播放全部" 
+                    FontSize="{StaticResource BodyFontSize}">
                 </Button>
 
             </StackLayout>
             <Label Text="或" 
-                       Grid.Row="2"
-                       HorizontalOptions="Center"
-                       VerticalOptions="Center"
-                       FontSize="{StaticResource BodyFontSize}">
+                   Grid.Row="2"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   FontSize="{StaticResource BodyFontSize}">
             </Label>
-            <StackLayout Grid.Row="3"  
-                             Orientation="Horizontal" 
-                             HorizontalOptions="CenterAndExpand"                    
-                             VerticalOptions="CenterAndExpand">
+            <StackLayout 
+                Grid.Row="3"  
+                Orientation="Horizontal" 
+                HorizontalOptions="CenterAndExpand"                    
+                VerticalOptions="CenterAndExpand">
 
-                <Label x:Name="AddSongLabel2" 
-                           VerticalOptions="Center"
-                           FontSize="{StaticResource BodyFontSize}"  
-                           FontFamily="FontAwesome">
+                <Label 
+                    x:Name="AddSongLabel2" 
+                    VerticalOptions="Center"
+                    FontSize="{StaticResource BodyFontSize}"  
+                    FontFamily="FontAwesome">
                 </Label>
-                <Button          HorizontalOptions="Center"
-                                     VerticalOptions="Center"
-                                     Clicked="GoLibrary_OnClicked"
-                                     Text="" 
-                                     FontSize="{StaticResource BodyFontSize}">
+                <Button          
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                    Clicked="GoLibrary_OnClicked"
+                    Text="{core:Translate AddMusic}" 
+                    FontSize="{StaticResource BodyFontSize}">
                 </Button>
 
             </StackLayout>
@@ -153,22 +128,22 @@
 
         <!--模式控制区域-->
         <Grid 
-                      Grid.Row="1"
-                      x:Name="ModeControlLayout"
-                      BindingContext="{Binding}">
+            Grid.Row="1"
+            x:Name="ModeControlLayout"
+            BindingContext="{Binding}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <Button Command="{Binding FavouriteCommand}"
-                            x:Name="FavouriteButton"
-                            TextColor="{Binding CurrentMusic.IsFavourite,Converter={StaticResource Bool2StringConverter},ConverterParameter=Red|Gray}"
-                            FontFamily="FontAwesome"
-
-                        Grid.Column="0" 
-                        HorizontalOptions="Center" />
+            <Button Command="{Binding FavouriteCommand}"      
+                    x:Name="FavouriteButton"
+                    TextColor="{Binding CurrentMusic.IsFavourite,Converter={StaticResource Bool2StringConverter},ConverterParameter=Red|Gray}"
+                    FontFamily="FontAwesome"
+                    Text=""
+                    Grid.Column="0" 
+                    HorizontalOptions="Center" />
             <StackLayout Grid.Column="1" HorizontalOptions="Center">
                 <Label Text="{Binding CurrentMusic.Title}" 
                                HorizontalOptions="FillAndExpand" 
@@ -183,12 +158,13 @@
                                FontSize="{StaticResource BodyFontSize}" 
                                TextColor="{DynamicResource PhoneChromeBrush}" />
             </StackLayout>
-            <Button 
-                        x:Name="MoreButton"
-                        FontFamily="FontAwesome"
-                            Clicked="MoreButton_OnClicked"
-                           Grid.Column="2" 
-                           HorizontalOptions="Center" />
+            <Button         
+                x:Name="MoreButton"
+                FontFamily="FontAwesome"
+                Text=""
+                Clicked="MoreButton_OnClicked"
+                Grid.Column="2" 
+                HorizontalOptions="Center" />
         </Grid>
 
         <!--进度控制区域-->
@@ -225,13 +201,12 @@
                 <ColumnDefinition Width="1*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Button VerticalOptions="Center"
-                            HorizontalOptions="StartAndExpand"
-                            Grid.Column="0"
-                            Command="{Binding ShuffleCommand}" 
-                            FontFamily="FontAwesome"
-                            FontSize="{StaticResource BodyFontSize}"
-                            TextColor="{Binding IsShuffle,Converter={StaticResource Bool2StringConverter},ConverterParameter=White|Gray}"
-                            Text=""/>
+                    HorizontalOptions="StartAndExpand"
+                    Grid.Column="0"
+                    Command="{Binding ShuffleCommand}" 
+                    FontFamily="FontAwesome"
+                    FontSize="{StaticResource BodyFontSize}"
+                    Text="{Binding IsShuffle,Converter={StaticResource Bool2StringConverter},ConverterParameter=|}"/>
             <Grid Grid.Column="1"  HorizontalOptions="Center" WidthRequest="216">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*"></ColumnDefinition>
@@ -239,30 +214,29 @@
                     <ColumnDefinition Width="1*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Button 
-                            VerticalOptions="Center" 
-                            Grid.Column="0"
-                            Margin="0,10"
-                            Command="{Binding PreCommand}" 
-                            FontFamily="FontAwesome"
-                            FontSize="{StaticResource BodyFontSize}"
-                            Text=""
-                            />
+                    
+                    VerticalOptions="Center" 
+                    Grid.Column="0"
+                    Command="{Binding PreCommand}" 
+                    FontFamily="FontAwesome"
+                    FontSize="{StaticResource BodyFontSize}"
+                    Text=""
+                    />
                 <Button 
-                            VerticalOptions="Center"  
-                            Grid.Column="1"
-                            Margin="0"
-                            Command="{Binding PlayCommand}" 
-                            FontFamily="FontAwesome"
-                            FontSize="{StaticResource StandOutBodyFontSize}"
-                            Text="{Binding IsPlaying,Converter={StaticResource Bool2StringConverter},ConverterParameter=|} "/>
+                    VerticalOptions="Center"  
+                    Grid.Column="1"
+                    Command="{Binding PlayCommand}" 
+                    FontFamily="FontAwesome"
+                    FontSize="{StaticResource StandOutBodyFontSize}"
+                    Text="{Binding IsPlaying,Converter={StaticResource Bool2StringConverter},ConverterParameter=|} "/>
 
-                <Button VerticalOptions="Center" 
-                                Margin="0,10"
-                                Grid.Column="2"
-                            Command="{Binding NextCommand}" 
-                                FontFamily="FontAwesome"
-                            FontSize="{StaticResource BodyFontSize}"
-                                Text=""/>
+                <Button 
+                    VerticalOptions="Center"       
+                    Grid.Column="2"
+                    Command="{Binding NextCommand}"
+                    FontFamily="FontAwesome"
+                    FontSize="{StaticResource BodyFontSize}"
+                    Text=""/>
             </Grid>
             <Button VerticalOptions="Center" 
                             HorizontalOptions="EndAndExpand"
@@ -270,14 +244,13 @@
                             Command="{Binding RepeatOneCommand}" 
                             FontFamily="FontAwesome"
                             FontSize="{StaticResource BodyFontSize}"
-                            TextColor="{Binding IsRepeatOne,Converter={StaticResource Bool2StringConverter},ConverterParameter=White|Gray}"
-                            Text="" />
+                            Text="{Binding IsRepeatOne,Converter={StaticResource Bool2StringConverter},ConverterParameter=|}" />
         </Grid>
 
 
         <!--队列按钮-->
         <Grid Grid.Row="4"
-                      x:Name="QueueControlLayout">
+              x:Name="QueueControlLayout">
             <Button VerticalOptions="CenterAndExpand" 
                         HorizontalOptions="CenterAndExpand"
                         Clicked="Button_OnClicked" 

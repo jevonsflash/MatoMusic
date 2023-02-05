@@ -56,6 +56,7 @@ namespace MatoMusic
         {
 
             OnFinished?.Invoke(this, new MusicFunctionEventArgs(_objInfo, e.SelectedItem as MenuCellInfo));
+            this.Close();
         }
 
     }

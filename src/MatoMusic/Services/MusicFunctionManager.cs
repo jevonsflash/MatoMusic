@@ -24,17 +24,19 @@ namespace MatoMusic.Services
         private readonly NavigationService navigationService;
         private readonly IMusicInfoManager musicInfoManager;
         private readonly MusicRelatedService musicRelatedService;
-
+        private readonly IMusicControlService musicControlService;
 
         public MusicFunctionManager(
             NavigationService navigationService,
             IMusicInfoManager musicInfoManager,
-            MusicRelatedService musicRelatedViewModel
+            MusicRelatedService musicRelatedViewModel,
+            IMusicControlService musicControlService
             )
         {
             this.navigationService = navigationService;
             this.musicInfoManager = musicInfoManager;
             this.musicRelatedService = musicRelatedViewModel;
+            this.musicControlService=musicControlService;
             LocalizationSourceName = MatoMusicConsts.LocalizationSourceName;
 
         }
@@ -207,6 +209,7 @@ namespace MatoMusic.Services
 
                         var CurrentMusic = await musicInfoManager.GetQueueEntry();
                         musicRelatedService.CurrentMusic = CurrentMusic[0];
+                        musicControlService.Play(musicRelatedService.CurrentMusic);
 
                         CommonHelper.ShowMsg("成功添加并播放");
 

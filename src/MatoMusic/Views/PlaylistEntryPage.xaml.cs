@@ -26,9 +26,9 @@ namespace MatoMusic
     public partial class PlaylistEntryPage : ContentPageBase, ITransientDependency
     {
 
-        
+
         public MusicFunctionManager MusicFunctionManager { get; set; }
-        
+
         private PlaylistFunctionPage _editPlaylistFunctionPage;
 
         private string pathStr = "ms-appx:///Assets/Images/{0}.png";
@@ -45,8 +45,13 @@ namespace MatoMusic
                     new MenuCellInfo() {Title = L("AddToQueue2"), Code = "AddMusicCollectionToQueue", Icon = string.Format(pathStr,"addtostack")},
                     new MenuCellInfo() {Title = "编辑歌单", Code = "Edit", Icon = ""},
                 };
-            this.BindingContext = new PlaylistEntryPageViewModel(playlist, menus);
-            
+            using (var source =
+                  IocManager.Instance.ResolveAsDisposable<PlaylistEntryPageViewModel>(new { playlist, menus }))
+            { 
+                this.BindingContext = source.Object;
+
+            }
+
 
         }
 
@@ -55,7 +60,7 @@ namespace MatoMusic
             var musicInfo = (sender as BindableObject).BindingContext;
             var _mainMenuCellInfos = new List<MenuCellInfo>()
             {
-                new MenuCellInfo() {Title = L("Remove"), Code = "Delete", Icon = "remove"},
+                new MenuCellInfo() {Title = L("Remove"), Code = "Delete", Icon = ""},
                 new MenuCellInfo() {Title = L("AddTo"), Code = "AddToPlaylist", Icon = ""},
                 new MenuCellInfo() {Title = L("PlayNext"), Code = "NextPlay", Icon = ""},
                 new MenuCellInfo() {Title = L("AddToQueue2"), Code = "AddToQueue", Icon = ""},
@@ -105,7 +110,7 @@ namespace MatoMusic
                 playlistEntryViewModel.MusicsCollectionInfo = e.Info as PlaylistInfo;
             }
 
-            await navigationService.HidePopupAsync(this._musicFunctionPage);
+            await navigationService.HidePopupAsync(this._editPlaylistFunctionPage);
         }
 
         private void MusicListView_OnItemSelected(object sender, SelectedItemChangedEventArgs e)
@@ -115,9 +120,11 @@ namespace MatoMusic
             {
                 MusicInfoManager.InsertToEndQueueEntry(musicInfo);
                 MusicRelatedService.CurrentMusic=musicInfo;
+                MusicControlService.Play(MusicRelatedService.CurrentMusic);
+
                 (sender as ListView).SelectedItem = null;
 
-            }         
+            }
         }
 
         private async void Button_OnClicked(object sender, EventArgs e)
@@ -132,12 +139,13 @@ namespace MatoMusic
                 {
 
 
-                   await MusicInfoManager.ClearQueue();
+                    await MusicInfoManager.ClearQueue();
                     var result = await MusicInfoManager.CreateQueueEntrys(context.MusicsCollectionInfo.Musics.ToList());
                     if (result)
                     {
                         var CurrentMusic = await MusicInfoManager.GetQueueEntry();
                         MusicRelatedService.CurrentMusic = CurrentMusic[0];//CommonHelper.ShowMsg("成功添加并播放");
+                        MusicControlService.Play(MusicRelatedService.CurrentMusic);
 
                     }
                     else

@@ -12,7 +12,7 @@ using Abp.Domain.Services;
 
 namespace MatoMusic.Core.ViewModel
 {
-    public abstract class ViewModelBase : AbpServiceBase, ISingletonDependency, INotifyPropertyChanged
+    public abstract class ViewModelBase : AbpServiceBase, INotifyPropertyChanged
     {
 
         public ViewModelBase()

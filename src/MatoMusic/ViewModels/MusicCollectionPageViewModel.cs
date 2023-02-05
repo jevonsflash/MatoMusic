@@ -11,7 +11,7 @@ using MatoMusic.Core.ViewModel;
 
 namespace MatoMusic.ViewModel
 {
-    public class MusicCollectionPageViewModel : MusicRelatedViewModel
+    public class MusicCollectionPageViewModel : ViewModelBase
     {
         //private OnlineMusicManager _onlineMusicManager;
 
@@ -27,18 +27,7 @@ namespace MatoMusic.ViewModel
 
         private async void Init(MusicCollectionInfo musicsCollectionInfo, List<MenuCellInfo> menus = null)
         {
-            if (musicsCollectionInfo is BillboardInfo && 
-                (musicsCollectionInfo.Musics == null ||
-                musicsCollectionInfo.Musics.Count == 0))
-            {
-                //_onlineMusicManager = new OnlineMusicManager();
-                //var onlineMusicId = (musicsCollectionInfo as BillboardInfo).OnlineId;
-                //var musicList = await _onlineMusicManager.GetToplistAsync(int.Parse(onlineMusicId));
-                //musicsCollectionInfo.Musics = new ObservableCollection<MusicInfo>(musicList);
-            }
-
             this.MusicsCollectionInfo = musicsCollectionInfo;
-
             this.MusicCollectionArtPath = musicsCollectionInfo?.AlbumArtPath;
 
             if (menus != null)
@@ -48,16 +37,12 @@ namespace MatoMusic.ViewModel
             }
             else
             {
-
-
                 Menus = new List<MenuCellInfo>()
                 {
 
                     new MenuCellInfo() {Title = L("Play"), Code = "Play", Icon = ""},
                     new MenuCellInfo() {Title = L("AddToQueue2"), Code = "AddMusicCollectionToQueue", Icon = ""},
                     new MenuCellInfo() {Title = L("AddTo"), Code = "AddMusicCollectionToPlaylist", Icon = ""},
-                    new MenuCellInfo() {Title = L("AddToFavourite"), Code = "AddToFavourite", Icon = ""}
-
                 };
             }
         }

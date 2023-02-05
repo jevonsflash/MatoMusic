@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Abp.Dependency;
 using MatoMusic.Common;
 using MatoMusic.Core.Helper;
 using MatoMusic.Core.Models;
@@ -10,7 +11,7 @@ using MatoMusic.Core.ViewModel;
 
 namespace MatoMusic.ViewModel
 {
-    class PlaylistFunctionPageViewModel: ViewModelBase
+    public class PlaylistFunctionPageViewModel: ViewModelBase
     {
         public PlaylistFunctionPageViewModel()
         {
@@ -18,8 +19,9 @@ namespace MatoMusic.ViewModel
 			this.PlaylistInfo = new PlaylistInfo() { IsHidden = false, IsRemovable = true, Title = L("NewPlaylist") };
         }
 
-        public PlaylistFunctionPageViewModel(PlaylistInfo playlistInfo) : this()
+        public PlaylistFunctionPageViewModel(PlaylistInfo playlistInfo)
         {
+            this.SubmitCommand = new Command(new Action<object>(SubmitAction));
             this.PlaylistInfo = playlistInfo;
         }
         private PlaylistInfo _playlistInfo;

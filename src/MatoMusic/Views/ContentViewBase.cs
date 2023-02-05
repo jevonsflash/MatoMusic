@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 
 namespace MatoMusic
 {
-    public class ContentPageBase : ContentPage
+    public class ContentViewBase : ContentView
     {
 
         public IMusicInfoManager MusicInfoManager => IocManager.Instance.Resolve<IMusicInfoManager>();
@@ -76,7 +76,7 @@ namespace MatoMusic
         /// <summary>
         /// Constructor.
         /// </summary>
-        protected ContentPageBase()
+        protected ContentViewBase()
         {
             LocalizationSourceName = MatoMusicConsts.LocalizationSourceName;
             ObjectMapper = NullObjectMapper.Instance;

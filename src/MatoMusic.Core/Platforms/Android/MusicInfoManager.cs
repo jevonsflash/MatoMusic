@@ -81,12 +81,12 @@ namespace MatoMusic.Core
                     isMusic = int.Parse(mediaCursor.GetString(isMusicColumn));
                     if (isMusic != 0)
                     {
+                        ulong.TryParse(mediaCursor.GetString(durationColumn),out duration);
                         artist = mediaCursor.GetString(artistColumn);
                         album = mediaCursor.GetString(albumColumn);
                         title = mediaCursor.GetString(titleColumn);
-                        duration = ulong.Parse(mediaCursor.GetString(durationColumn));
                         uri = mediaCursor.GetString(uriColumn);
-                        id = ulong.Parse(mediaCursor.GetString(idColumn));
+                        ulong.TryParse(mediaCursor.GetString(idColumn), out id);
                         artworkId = mediaCursor.GetString(albumIdColumn);
 
                         genreCursor = Application.Context.ContentResolver.Query(
@@ -865,6 +865,7 @@ namespace MatoMusic.Core
         public partial async Task<List<Playlist>> GetPlaylist()
         {
             return await playlistRepository.GetAllListAsync();
+
         }
 
 

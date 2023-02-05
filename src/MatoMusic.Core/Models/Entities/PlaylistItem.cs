@@ -28,17 +28,11 @@ namespace MatoMusic.Core.Models.Entities
 
         public long PlaylistId { get; set; }
         [ForeignKey("PlaylistId")]
-
-        /* 项目“MatoMusic.Core (net6.0-windows10.0.19041)”的未合并的更改
-        在此之前:
-                public Playlist.Playlist Playlist { get; set; }
-        在此之后:
-                public Playlist Playlist { get; set; }
-        */
+       
         public Playlist Playlist { get; set; }
         public string MusicTitle { get; set; }
 
-        public int MusicInfoId { get; set; }
+        public long MusicInfoId { get; set; }
 
 
     }

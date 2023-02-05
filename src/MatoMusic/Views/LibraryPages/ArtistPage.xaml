@@ -29,14 +29,6 @@
                                        GroupShortNameBinding="{Binding Title}"
                                        ItemsSource="{Binding AGArtists.Root,Mode=TwoWay}"
                                        ItemSelected="ListView_OnItemSelected">
-                        <ListView.Header>
-                            <Button  HeightRequest="44"
-                             Text="搜索"
-                             Clicked="SearchButton_OnClicked"
-                           ></Button>
-
-                        </ListView.Header>
-
                         <ListView.GroupHeaderTemplate>
                             <DataTemplate>
                                 <ViewCell>

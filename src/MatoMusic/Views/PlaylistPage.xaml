@@ -38,22 +38,6 @@
                                                          HorizontalTextAlignment="Center"
                                                          FontSize="{StaticResource BodyFontSize}"
                                                 />
-                                    <StackLayout Orientation="Horizontal" 
-                                   HorizontalOptions="StartAndExpand"
-                                   Margin="0,-5,0,0">
-                                        <Label
-                              Text="{Binding Count}"
-                              HorizontalOptions="StartAndExpand"
-                              HorizontalTextAlignment="Center"
-                              FontSize="{StaticResource BodyFontSize}"
-                              TextColor="{DynamicResource PhoneChromeBrush}" />
-                                        <Label
-                            Text="首"
-                            HorizontalOptions="StartAndExpand"
-                            HorizontalTextAlignment="Center"
-                            FontSize="{StaticResource BodyFontSize}"
-                            TextColor="{DynamicResource PhoneChromeBrush}" />
-                                    </StackLayout>
                                 </StackLayout>
                                 <Button
                                                     x:Name="AlbumMoreButton"
@@ -75,7 +59,6 @@
             </ListView>
         </Grid>
         <mato:MusicMiniView  
-                BindingContext="{Binding}"
                 HeightRequest="64" 
                 VerticalOptions="EndAndExpand"
                 x:Name="MiniViewLayout"></mato:MusicMiniView>
@@ -87,7 +70,7 @@
             </BoxView>
         </Grid>
         <StackLayout  Grid.Row="0" 
-                          Margin="0,0,0,54"
+                          Margin="0,0,0,64"
                           Orientation="Horizontal"
                           VerticalOptions="EndAndExpand"
                           HorizontalOptions="EndAndExpand">

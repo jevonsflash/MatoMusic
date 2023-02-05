@@ -27,7 +27,6 @@ public class QueuePageViewModel : MusicRelatedViewModel
     {
         DeleteCommand = new Command(DeleteAction, c => true);
         CleanQueueCommand = new Command(CleanQueueAction, CanPlayAllExcute);
-        FlyBackCommand = new Command(FlyBackAction, CanPlayAllExcute);
         PlayAllCommand = new Command(PlayAllAction, (e) => true);
         PatchupCommand = new Command(PatchupAction, CanPlayAllExcute);
         PropertyChanged += QueuePageViewModel_PropertyChanged;
@@ -65,11 +64,6 @@ public class QueuePageViewModel : MusicRelatedViewModel
         }
     }
 
-    private void FlyBackAction(object obj)
-    {
-        var playingMusicId = CurrentMusic.Id;
-        CurrentMusic = Musics.FirstOrDefault(c => c.Id == playingMusicId);
-    }
 
     private async void PatchupAction(object obj)
     {
@@ -242,11 +236,9 @@ public class QueuePageViewModel : MusicRelatedViewModel
         PlayAllCommand.ChangeCanExecute();
         CleanQueueCommand.ChangeCanExecute();
         PatchupCommand.ChangeCanExecute();
-        FlyBackCommand.ChangeCanExecute();
         IsEmpty = !CanPlayAllExcute(null);
     }
 
-    public Command FlyBackCommand { get; set; }
 
     public Command DeleteCommand { get; set; }
     public Command CleanQueueCommand { get; set; }

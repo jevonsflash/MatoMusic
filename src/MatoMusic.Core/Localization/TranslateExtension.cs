@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Reflection;
 using System.Resources;
 using Abp.Domain.Services;
@@ -21,9 +22,10 @@ namespace MatoMusic.Core
 
         public object ProvideValue(IServiceProvider serviceProvider)
         {
+            Console.WriteLine(CultureInfo.CurrentUICulture);
             if (Text == null)
                 return "";
-            var translation = L(Text);          
+            var translation = L(Text);
             return translation;
         }
 
