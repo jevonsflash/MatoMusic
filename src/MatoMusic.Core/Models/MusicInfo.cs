@@ -18,7 +18,7 @@ namespace MatoMusic.Core
             PropertyChanged += MusicInfo_PropertyChanged;
         }
 
-        private void MusicInfo_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private async void MusicInfo_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             var MusicInfoManager = IocManager.Instance.Resolve<MusicInfoManager>();
 
@@ -26,11 +26,11 @@ namespace MatoMusic.Core
             {
                 if (IsFavourite)
                 {
-                    MusicInfoManager.CreatePlaylistEntryToMyFavourite(this);
+                    await MusicInfoManager.CreatePlaylistEntryToMyFavourite(this);
                 }
                 else
                 {
-                    MusicInfoManager.DeletePlaylistEntryFromMyFavourite(this);
+                    await MusicInfoManager.DeletePlaylistEntryFromMyFavourite(this);
                 }
             }
         }

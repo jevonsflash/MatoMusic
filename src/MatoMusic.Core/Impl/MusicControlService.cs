@@ -25,9 +25,9 @@ namespace MatoMusic.Core
 
         public event EventHandler<bool> OnPlayStatusChanged;
 
-        public MusicControlService()
+        public MusicControlService(IMusicInfoManager musicInfoManager)
         {
-
+            this.MusicInfoManager=musicInfoManager;
         }
 
 

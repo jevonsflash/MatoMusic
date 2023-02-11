@@ -14,13 +14,6 @@ namespace MatoMusic.Core
     public partial class MusicControlService : IMusicControlService
     {
 
-
-        private void InitializeAudioListener()
-        {
-
-        }
-
-
         private MediaPlayer _currentWindowsPlayer;
 
         private MediaPlayer CurrentWindowsPlayer

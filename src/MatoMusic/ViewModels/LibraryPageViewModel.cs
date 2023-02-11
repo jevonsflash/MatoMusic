@@ -169,7 +169,10 @@ namespace MatoMusic.ViewModels
 
         public override async void ChangeMusic(MusicInfo musicInfo)
         {
-            await MusicInfoManager.InsertToEndQueueEntry(musicInfo);
+            if (! await MusicInfoManager.GetIsQueueContains(musicInfo.Title))
+            {
+                await MusicInfoManager.InsertToEndQueueEntry(musicInfo);
+            }
 
             //await RebuildMusicInfos();
 

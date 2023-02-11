@@ -30,7 +30,7 @@ namespace MatoMusic.Core
     }
     public partial class MusicControlService : IMusicControlService
     {
-       
+
         private MediaPlayer _currentAndroidPlayer;
 
         private MediaPlayer CurrentAndroidPlayer
@@ -70,16 +70,16 @@ namespace MatoMusic.Core
 
 
 
-        public partial double Duration() {  return CurrentAndroidPlayer.Duration;  }
+        public partial double Duration() { return CurrentAndroidPlayer.Duration; }
 
 
-        public partial double CurrentTime() { return CurrentAndroidPlayer.CurrentPosition;  }
+        public partial double CurrentTime() { return CurrentAndroidPlayer.CurrentPosition; }
 
 
-        public partial bool IsPlaying() {  return CurrentAndroidPlayer.IsPlaying;  }
+        public partial bool IsPlaying() { return CurrentAndroidPlayer.IsPlaying; }
 
 
-        public partial bool IsInitFinished() {return true; }
+        public partial bool IsInitFinished() { return true; }
 
 
         public partial void SeekTo(double position)
@@ -168,10 +168,14 @@ namespace MatoMusic.Core
 
         public partial async Task InitPlayer(MusicInfo musicInfo)
         {
-            CurrentAndroidPlayer.Reset();
-            CurrentAndroidPlayer.SetDataSource(musicInfo.Url);
+            lock (this)
+            {
+                CurrentAndroidPlayer.Reset();
+                CurrentAndroidPlayer.SetDataSource(musicInfo.Url);
+                Thread.Sleep(500);
+                CurrentAndroidPlayer.Prepare();
+            }
 
-            CurrentAndroidPlayer.Prepare();
         }
 
         public partial void Play(MusicInfo currentMusic)

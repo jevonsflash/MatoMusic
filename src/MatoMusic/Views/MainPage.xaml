@@ -10,7 +10,7 @@
                     Text="MATO_MUSIC" 
                     FontSize="50"
                     FontAttributes="Bold"
-                    TextColor="Teal"
+                    TextColor="#00c4c4"
                     Margin="0,20"
                     HorizontalOptions="Center"></Label>
 
@@ -24,7 +24,7 @@
             <StackLayout Orientation="Vertical">
                 <Image Source="dotnet_bot.svg"></Image>
                 <Label Text="This app is build with .NET MAUI"
-                    TextColor="Teal"
+                    TextColor="#00c4c4"
                     Margin="0,20"
                     HorizontalOptions="Center">
 

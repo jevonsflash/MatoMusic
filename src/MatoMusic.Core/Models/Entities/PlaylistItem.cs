@@ -14,9 +14,10 @@ namespace MatoMusic.Core.Models.Entities
         {
 
         }
-        public PlaylistItem(long playlistId, string musicTitle, int rank)
+        public PlaylistItem(long playlistId, long musicInfoId, string musicTitle, int rank)
         {
             PlaylistId = playlistId;
+            MusicInfoId= musicInfoId;
             MusicTitle = musicTitle;
             Rank = rank;
         }
