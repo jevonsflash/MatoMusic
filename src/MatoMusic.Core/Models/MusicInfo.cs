@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Abp.Dependency;
+using MatoMusic.Core.Interfaces;
 using MatoMusic.Infrastructure;
 using MatoMusic.Infrastructure.Common;
 using Microsoft.Maui.Controls;
@@ -20,7 +21,7 @@ namespace MatoMusic.Core
 
         private async void MusicInfo_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            var MusicInfoManager = IocManager.Instance.Resolve<MusicInfoManager>();
+            var MusicInfoManager = IocManager.Instance.Resolve<IMusicInfoManager>();
 
             if (e.PropertyName == nameof(IsFavourite))
             {
