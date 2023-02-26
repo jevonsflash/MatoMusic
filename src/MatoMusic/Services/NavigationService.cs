@@ -30,16 +30,26 @@ namespace MatoMusic.Services
 
         }
 
-        public void GoNavigate(string pageName, object[] args = null)
-        {
-            var page = GetPageInstance(pageName, args);
-            mainPageNavigation.PushAsync(page);
-        }
-
-        public async Task GoNavigateAsync(string pageName, object[] args = null)
+        public async Task PushAsync(string pageName, object[] args = null)
         {
             var page = GetPageInstance(pageName, args);
             await mainPageNavigation.PushAsync(page);
+        }
+
+        public async Task PushModalAsync(string pageName, object[] args = null)
+        {
+            var page = GetPageInstance(pageName, args);
+            await mainPageNavigation.PushModalAsync(page);
+        }
+
+        public async Task PushAsync(Page page)
+        {
+            await mainPageNavigation.PushAsync(page);
+        }
+
+        public async Task PushModalAsync(Page page)
+        {
+            await mainPageNavigation.PushModalAsync(page);
         }
 
         public async Task PopAsync()
@@ -52,15 +62,6 @@ namespace MatoMusic.Services
             await mainPageNavigation.PopToRootAsync();
         }
 
-        public async Task PushAsync(Page page)
-        {
-            await mainPageNavigation.PushAsync(page);
-        }
-
-        public async Task PushModalAsync(Page page)
-        {
-            await mainPageNavigation.PushModalAsync(page);
-        }
 
         public async Task GoPageAsync(string obj)
         {
@@ -85,9 +86,6 @@ namespace MatoMusic.Services
             {
                 try
                 {
-
-
-
                     var ctorInfo = pageType.GetConstructors()
                                           .Select(m => new
                                           {
@@ -95,7 +93,6 @@ namespace MatoMusic.Services
                                               Params = m.GetParameters(),
                                           }).Where(c => c.Params.Length == args.Length)
                                           .FirstOrDefault();
-
                     if (ctorInfo==null)
                     {
                         throw new Exception("找不到对应的构造函数");
@@ -109,7 +106,7 @@ namespace MatoMusic.Services
                         argsDict.Add(arg.Name, args[i]);
                     }
 
-                    var pageObj = iocManager.IocContainer.Resolve(pageType, argsDict) as Page; 
+                    var pageObj = iocManager.IocContainer.Resolve(pageType, argsDict) as Page;
 
                     if (barItem != null && barItem.Count > 0)
                     {
@@ -118,9 +115,7 @@ namespace MatoMusic.Services
                             pageObj.ToolbarItems.Add(toolbarItem);
                         }
                     }
-
                     result = pageObj;
-
                 }
                 catch (Exception e)
                 {
@@ -129,11 +124,5 @@ namespace MatoMusic.Services
             }
             return result;
         }
-
-        public static void GoUrl(object obj)
-        {
-            throw new NotImplementedException();
-        }
-
     }
 }

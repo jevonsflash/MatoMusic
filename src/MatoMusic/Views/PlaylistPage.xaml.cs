@@ -37,12 +37,12 @@ namespace MatoMusic
             await (this.BindingContext as PlaylistPageViewModel).Init();
         }
 
-        private void ListView_OnItemSelected(object sender, SelectedItemChangedEventArgs e)
+        private async void ListView_OnItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
             var playlist = e.SelectedItem as PlaylistInfo;
             if (playlist != null)
             {
-                navigationService.GoNavigate("PlaylistEntryPage", new object[] { playlist });
+                await navigationService.PushAsync("PlaylistEntryPage", new object[] { playlist });
                 (sender as ListView).SelectedItem = null;
 
 

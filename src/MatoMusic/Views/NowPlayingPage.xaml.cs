@@ -143,7 +143,7 @@ namespace MatoMusic
                 }
                 list = isSucc.Result;
                 var albumInfo = list.Find(c => c.Title == (e.MusicInfo as MusicInfo).AlbumTitle);
-                navigationService.GoNavigate("MusicCollectionPage", new object[] { albumInfo });
+                await navigationService.PushAsync("MusicCollectionPage", new object[] { albumInfo });
             }
             else if (e.MenuCellInfo.Code == "GoArtistPage")
             {
@@ -156,7 +156,7 @@ namespace MatoMusic
                 }
                 list = isSucc.Result;
                 var artistInfo = list.Find(c => c.Title == (e.MusicInfo as MusicInfo).Artist);
-                navigationService.GoNavigate("MusicCollectionPage", new object[] { artistInfo });
+                await navigationService.PushAsync("MusicCollectionPage", new object[] { artistInfo });
             }
 
         }

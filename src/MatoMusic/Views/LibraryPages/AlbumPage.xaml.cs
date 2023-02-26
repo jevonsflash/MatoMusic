@@ -36,18 +36,18 @@ namespace MatoMusic
         }
 
 
-        private void ListView_OnItemSelected(object sender, SelectedItemChangedEventArgs e)
+        private async void ListView_OnItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
             if (e.SelectedItem is ArtistInfo)
             {
                 var artistInfo = e.SelectedItem as ArtistInfo;
-                navigationService.GoNavigate("MusicCollectionPage", new object[] { artistInfo });
+                await navigationService.PushAsync("MusicCollectionPage", new object[] { artistInfo });
 
             }
             else if (e.SelectedItem is AlbumInfo)
             {
                 var albumInfo = e.SelectedItem as AlbumInfo;
-                navigationService.GoNavigate("MusicCollectionPage", new object[] { albumInfo });
+               await navigationService.PushAsync("MusicCollectionPage", new object[] { albumInfo });
             }
                 (sender as ListView).SelectedItem = null;
         }
