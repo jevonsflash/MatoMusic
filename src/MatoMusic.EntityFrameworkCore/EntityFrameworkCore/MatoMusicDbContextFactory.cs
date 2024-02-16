@@ -17,7 +17,7 @@ namespace MatoMusic.EntityFrameworkCore
             var sqliteFilename = "mato.db";
             string documentsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), sqliteFilename);
             var builder = new DbContextOptionsBuilder<MatoMusicDbContext>();
-            var hostFolder = Path.Combine(Environment.CurrentDirectory, "bin", "Debug", "net6.0");
+            var hostFolder = Path.Combine(Environment.CurrentDirectory, "bin", "Debug", "net8.0");
 
             var configuration = AppConfigurations.Get(hostFolder);
             DbContextOptionsConfigurer.Configure(
